@@ -100,7 +100,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "set \"GENERATE_SOURCEMAP=false\" && BUILD_PATH='../Backend/build' react-app-rewired build",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "lint": "eslint src/**/*.js src/**/*.jsx",

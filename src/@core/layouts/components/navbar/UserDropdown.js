@@ -26,6 +26,7 @@ const UserDropdown = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const [isPasswordModal, setPasswordModal] = useState(false)
+  const [isRuleModal, setRuleModal] = useState(false)
   const [password, setPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -57,6 +58,12 @@ const UserDropdown = () => {
     }
   }
 
+  useEffect(() => {
+    if (userData.role === "user") {
+      setRuleModal(true)
+    }
+  }, [])
+
   //** Vars
   const userAvatar = (userData && userData.avatar) || defaultAvatar
 
@@ -83,6 +90,7 @@ const UserDropdown = () => {
           <span className='align-middle'>{getTextByLanguage("Logout")}</span>
         </DropdownItem>
       </DropdownMenu>
+
       <Modal isOpen={isPasswordModal} toggle={() => setPasswordModal(!isPasswordModal)} className="changepassword modal-lg modal-dialog-centered">
         <ModalHeader toggle={() => setPasswordModal(!isPasswordModal)}>
           <div className="left">
@@ -116,6 +124,27 @@ const UserDropdown = () => {
               <Input type='password' placeholder='' required onChange={e => { setConfirmPassword(e.target.value) }} />
             </Col>
           </FormGroup>
+        </ModalBody>
+        <ModalFooter className="m-auto">
+          <Button color='primary' className="save mr-1" onClick={e => { handleChangePassword() }}>
+            {getTextByLanguage("Save")}
+          </Button>
+          <Button color='primary' className="cancel" onClick={e => { setPasswordModal(!isPasswordModal) }}>
+            {getTextByLanguage("Cancel")}
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={isRuleModal} toggle={() => setRuleModal(!isRuleModal)} className="changepassword modal-lg modal-dialog-centered">
+        <ModalHeader toggle={() => setRuleModal(!isRuleModal)}>
+          <div className="left">
+            <div className="logo-user">
+              <h6>{getTextByLanguage("Rule")}</h6>
+            </div>
+          </div>
+        </ModalHeader>
+        <ModalBody className="useredit-form">
+
         </ModalBody>
         <ModalFooter className="m-auto">
           <Button color='primary' className="save mr-1" onClick={e => { handleChangePassword() }}>

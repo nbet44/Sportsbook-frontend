@@ -98,7 +98,6 @@ const HeaderCmp = () => {
         console.log(response)
 
     }, [])
-
     return (
         <div className="content-header row mx-0 mb-2">
             <Card className="b-video mb-0">
@@ -137,9 +136,9 @@ const HeaderCmp = () => {
                                 <>
                                     {
                                         userData.role === "reporter" ? (
-                                            <li><a href="/admin/pre-result" data-nsfw-filter-status="swf">{getTextByLanguage("Admin")}</a></li>
+                                            <li><a href="/admin/pre-result" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
                                         ) : (
-                                            <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage("Admin")}</a></li>
+                                            <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
                                         )
                                     }
                                 </>

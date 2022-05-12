@@ -56,28 +56,28 @@ const AppCollapse = props => {
         <Card
           className={classnames('app-collapse', {
             [item.className]: item.className,
-            open: accordion ? openCollapse === index : openCollapse.includes(index) && type === 'shadow'
+            open: !accordion ? openCollapse === index : openCollapse.includes(index) && type === 'shadow'
           })}
           key={index}
         >
           <CardHeader
             className={classnames('align-items-center', {
-              collapsed: accordion ? openCollapse !== index : !openCollapse.includes(index)
+              collapsed: !(accordion ? openCollapse !== index : !openCollapse.includes(index))
             })}
             /*eslint-disable */
             {...(toggle === 'hover'
               ? {
-                  onMouseEnter: () => handleCollapseToggle(index)
-                }
+                onMouseEnter: () => handleCollapseToggle(index)
+              }
               : {
-                  onClick: () => handleCollapseToggle(index)
-                })}
-            /*eslint-enable */
+                onClick: () => handleCollapseToggle(index)
+              })}
+          /*eslint-enable */
           >
             <CardTitle className='collapse-title w-100 text-center'>{title}</CardTitle>
             <ChevronUp size={14} />
           </CardHeader>
-              
+
           <Collapse isOpen={accordion ? openCollapse === index : !openCollapse.includes(index)}>
             <CardBody>{content}</CardBody>
           </Collapse>

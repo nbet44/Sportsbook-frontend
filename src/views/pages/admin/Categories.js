@@ -16,21 +16,21 @@ const CategoriesCmp = () => {
                     </>
                 ) : (
                     <>
-                        <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
-                        <li><a href="/admin/casino-list" data-nsfw-filter-status="swf">{getTextByLanguage("Casino List")}</a></li>
                         {userData && userData.permission && userData.permission.player ? (
-                            <React.Fragment>
-                                <li><a href="/admin/user-list" data-nsfw-filter-status="swf">{getTextByLanguage("User List")}</a></li>
-                                <li><a href="/admin/create-new-player" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Player")}</a></li>
-                            </React.Fragment>
+                            <li><a href="/admin/user-list" data-nsfw-filter-status="swf">{getTextByLanguage("User List")}</a></li>
                         ) : ""}
-                        {userData && userData.permission && userData.permission.agent ? (
-                            <React.Fragment>
-                                <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
-                                <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
-                            </React.Fragment>
+                        <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
+                        {userData && userData.permission && userData.permission.player ? (
+                            <li><a href="/admin/create-new-player" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Player/Agent")}</a></li>
                         ) : ""}
+                        {/* {userData && userData.permission && userData.permission.agent ? (
+                            <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
+                        ) : ""} */}
                         <li><a href="/admin/transaction" data-nsfw-filter-status="swf">{getTextByLanguage("Transaction")}</a></li>
+                        <li><a href="/admin/casino-list" data-nsfw-filter-status="swf">{getTextByLanguage("Casino List")}</a></li>
+                        {/* {userData && userData.permission && userData.permission.agent ? (
+                            <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
+                        ) : ""} */}
                         {userData.role === "admin" ? (
                             <React.Fragment>
                                 <li><a href="/admin/setting" data-nsfw-filter-status="swf">{getTextByLanguage("Setting")}</a></li>

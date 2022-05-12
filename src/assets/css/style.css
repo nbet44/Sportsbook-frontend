@@ -37,6 +37,8 @@ h4 {
 
 .dark-layout .react-dataTable .rdt_TableBody .rdt_TableRow .rdt_TableCell {
     color: #d0d2d6 !important;
+    width: 100% !important;
+    text-align: center !important;
 }
 
 .dark-layout .react-dataTable .rdt_TableBody .rdt_TableRow {
@@ -510,8 +512,23 @@ h4 {
 }
 
 h2.new-player {
-    background: url(../images/logo-user.png) no-repeat 0 20px!important;
+    background: url(../images/logo-user.png) no-repeat 20px 20px!important;
     padding: 25px 55px;
+    cursor: pointer;
+}
+
+.new-player-tab {
+    border-bottom: 4px solid #696a6f;
+}
+
+.new-player-active1 {
+    border-bottom: 4px solid #696a6f;
+    border-right: 4px solid #696a6f;
+}
+
+.new-player-active2 {
+    border-bottom: 4px solid #696a6f;
+    border-left: 4px solid #696a6f;
 }
 
 .back-site {
@@ -677,6 +694,10 @@ opacity: 1;
     vertical-align: middle;
 }
 
+.table.bet-list-tab td {
+    border-left: 1px solid #33363b;
+}
+
 .table:first-child {
     border-top: none;
 }
@@ -828,6 +849,7 @@ a:hover {
     text-align: center;
     line-height: 45px;
     font-weight: bold;
+    text-transform: capitalize;
 }
 
 .content-news {
@@ -944,7 +966,7 @@ a:hover {
 .b-team__list {
     border: 3px solid #6a6b70;
     border-radius: 0px;
-    width: 70%;
+    width: 100%;
 }
 
 .tab-pane .b-team__list {
@@ -1108,4 +1130,43 @@ footer {
 
 [dir=rtl] .waves-effect.btn-icon.btn.btn-danger {
     float: left !important;
+}
+
+.ch-permitoin-userlist {
+    background: #82868b;
+    border-radius: 50px;
+    padding: 0;
+}
+
+.ch-permitoin-btn {
+    border-radius: 50px;
+}
+
+.home-red {
+    padding-right: 5px;
+    border-right: 4px solid red;
+}
+
+.away-yellow {
+    padding-right: 5px;
+    border-right: 4px solid yellow;
+}
+
+/* datatable  */
+.dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
+    border-right: 1px solid #3b4253;
+}
+
+.dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol div{
+    width: 100%;
+    text-align: center;
+}
+
+.dark-layout .react-dataTable .rdt_TableBody .rdt_TableRow .rdt_TableCell {
+    border-right: 1px solid #3b4253;
+}
+
+[dir=ltr] .dark-layout .react-dataTable .rdt_TableBody .rdt_TableRow .rdt_TableCell span {
+    width: 100%;
+    text-align: center;
 }
