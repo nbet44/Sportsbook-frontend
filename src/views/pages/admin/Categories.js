@@ -21,7 +21,8 @@ const CategoriesCmp = () => {
                         ) : ""}
                         <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
                         {userData && userData.permission && userData.permission.player ? (
-                            <li><a href="/admin/create-new-player" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Player/Agent")}</a></li>
+                            <li><a href="/admin/create-new-player" data-nsfw-filter-status="swf">
+                                {userData.role === "agent" ? getTextByLanguage("Create New Player") : getTextByLanguage("Create New Player/Agent")}</a></li>
                         ) : ""}
                         {/* {userData && userData.permission && userData.permission.agent ? (
                             <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
@@ -35,6 +36,9 @@ const CategoriesCmp = () => {
                             <React.Fragment>
                                 <li><a href="/admin/setting" data-nsfw-filter-status="swf">{getTextByLanguage("Setting")}</a></li>
                             </React.Fragment>
+                        ) : ""}
+                        {userData.role === "agent" ? (
+                            <li><a href="/admin/user-manage" data-nsfw-filter-status="swf">{getTextByLanguage("User Management")}</a></li>
                         ) : ""}
                     </>
                 )}

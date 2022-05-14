@@ -157,11 +157,15 @@ const NewPlayerCmp = () => {
                 <Card className="b-team__list">
                     <CardHeader className="main-title p-0">
                         <div className="left w-50">
-                            <h2 className={switchUser === 'U' ? "m-auto new-player text-center" : "m-auto new-player text-center new-player-active1"} onClick={() => handleSwitch('U')}>{getTextByLanguage("Create New Player")}</h2>
+                            <h2 className={switchUser === 'U' ? (userData.role === 'agent' ? "m-auto new-player pl-6" : "m-auto new-player text-center") : "m-auto new-player text-center new-player-active1"} onClick={() => handleSwitch('U')}>{getTextByLanguage("Create New Player")}</h2>
                         </div>
-                        <div className="right w-50">
-                            <h2 className={switchUser === 'A' ? "m-auto new-player text-center" : "m-auto new-player text-center new-player-active2"} onClick={() => handleSwitch('A')}>{getTextByLanguage("Create New Agent")}</h2>
-                        </div>
+                        {
+                            userData.role === 'admin' ? (
+                                <div className="right w-50">
+                                    <h2 className={switchUser === 'A' ? "m-auto new-player text-center" : "m-auto new-player text-center new-player-active2"} onClick={() => handleSwitch('A')}>{getTextByLanguage("Create New Agent")}</h2>
+                                </div>
+                            ) : null
+                        }
                     </CardHeader>
                     {
                         switchUser === 'U' ? (

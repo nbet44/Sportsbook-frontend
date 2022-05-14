@@ -532,6 +532,18 @@ const UserListCmp = () => {
     { value: '7', label: getTextByLanguage('Sunday') }
   ]
 
+  const weekOptions = [
+    { value: '1', label: getTextByLanguage('Current week') },
+    { value: '2', label: getTextByLanguage('Last week') },
+    { value: '3', label: getTextByLanguage('Two weeks ago') },
+    { value: '4', label: getTextByLanguage('Three weeks ago') },
+    { value: '5', label: getTextByLanguage('Four weeks ago') }
+  ]
+
+  const handleSelectOption = () => {
+
+  }
+
   const switchListHandl = async (s) => {
     setFilterData([])
     setSwitchList(s)
@@ -1068,6 +1080,39 @@ const UserListCmp = () => {
             ) : ""}
           </CardBody>
         </Card>
+        <Col sm='12' className='row m-0 p-0'>
+          <Col sm='6' className='pl-0'>
+            <Card >
+              <CardBody>
+                <Col sm='12' className='pb-2 m-0 px-0 row'>
+                  <Select
+                    options={weekOptions}
+                    defaultValue={weekOptions[0]}
+                    className="react-select sbHolder w-100"
+                    theme={selectThemeColors}
+                    classNamePrefix='select'
+                    onChange={e => { handleSelectOption("week", e) }}
+                  />
+                </Col>
+                <Col sm='12' className='tableRow d-flex'>
+                  <span>Total Balance</span>
+                  <span>$ 300</span>
+                </Col>
+                <Col sm='12' className='tableRow d-flex'>
+                  <span>Total Balance</span>
+                  <span>$ 300</span>
+                </Col>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col sm='6' className='pr-0'>
+            <Card >
+              <CardBody>
+
+              </CardBody>
+            </Card>
+          </Col>
+        </Col>
       </div>
     </div>
   )

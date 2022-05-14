@@ -6,6 +6,10 @@ h4 {
     font-weight: 800 !important;
 }
 
+.pl-6 {
+    padding-left: 6rem !important;
+}
+
 .uppy-Dashboard-inner {
     background-color: #32393f !important;
 }
@@ -1150,6 +1154,23 @@ footer {
 .away-yellow {
     padding-right: 5px;
     border-right: 4px solid yellow;
+}
+
+.agent-history-switch {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-weight: 100;
+    min-width: 8rem;
+    font-size: 1rem;
+    /* border-radius: unset; */
+}
+
+.tableRow {
+    justify-content: space-between;
+    border-bottom: 1px solid #3b4253;
+    color: #c7c9ce;
+    background: #2b3037;
+    padding: 0.5rem;
 }
 
 /* datatable  */

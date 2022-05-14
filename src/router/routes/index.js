@@ -33,6 +33,10 @@ const Routes = [
     component: lazy(() => import('../../views/pages/admin/siteSetting'))
   },
   {
+    path: '/admin/user-manage',
+    component: lazy(() => import('../../views/pages/admin/UserManage'))
+  },
+  {
     path: '/admin/user-list',
     component: lazy(() => import('../../views/pages/admin/UserList'))
   },
