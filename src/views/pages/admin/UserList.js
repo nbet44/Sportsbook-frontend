@@ -317,15 +317,17 @@ const UserListCmp = () => {
       autoWeeklyCredit: autoWeeklyCreditAgent,
       extraCredit: agentExtraCredit,
       withdrawalCredit: withdrawalCreditAgent,
-      platformCommission,
       userId: modalData._id,
       created: Date.now()
     }
+    request.platformCommission = platformCommission
+
     const response = await Axios({
       endpoint: "/agent/update-balance",
       method: "POST",
       params: request
     })
+
     if (response.status === 200) {
       setFilterData(response.data.tableData)
       setAgentBalanceModal(!isAgentBalanceModal)
@@ -923,7 +925,7 @@ const UserListCmp = () => {
               {getTextByLanguage("Platform Commission")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={userData.platformCommission} disable='true' readOnly={true} />
+              <Input type="number" value={modalData ? modalData.platformCommission : 0} disable='true' readOnly={true} />
             </Col>
           </FormGroup>
           <FormGroup row>
