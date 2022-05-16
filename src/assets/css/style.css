@@ -578,10 +578,11 @@ opacity: 1;
     padding: 0 0 0 39px;
 }
 
-.path li a {
+.path li a, .path li span {
     font-size: 17px;
     color: #fff;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 .path li:first-child {
@@ -589,7 +590,7 @@ opacity: 1;
     padding-left: 0;
 }
 
-.path li a:hover, .path li a.active {
+.path li a:hover, .path li a.active, .path li span:hover, .path li span.active {
     text-decoration: none;
     color: #cf2424;
 }

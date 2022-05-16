@@ -1,12 +1,12 @@
 // ** React Imports
-import { Suspense, useContext, lazy } from 'react'
-
+import { Suspense, useContext, lazy, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 // ** Utils
 import { isUserLoggedIn } from '@utils'
 import { useLayout } from '@hooks/useLayout'
 import { AbilityContext } from '@src/utility/context/Can'
 import { useRouterTransition } from '@hooks/useRouterTransition'
-
+import { socketInit } from '../redux/actions/auth'
 // ** Custom Components
 // import Spinner from '@components/spinner/Loading-spinner' // Uncomment if your require content fallback
 import LayoutWrapper from '@layouts/components/layout-wrapper'
@@ -40,6 +40,8 @@ const Router = () => {
   // ** Current Active Item
   const currentActiveItem = null
 
+  const dispatch = useDispatch()
+
   // ** Return Filtered Array of Routes & Paths
   const LayoutRoutesAndPaths = layout => {
     const LayoutRoutes = []
@@ -62,6 +64,12 @@ const Router = () => {
 
   // ** Init Error Component
   const Error = lazy(() => import('@src/views/Error'))
+
+  useEffect(() => {
+    if (isUserLoggedIn()) {
+      dispatch(socketInit())
+    }
+  }, [])
 
   /**
    ** Final Route Component Checks for Login & User Role and then redirects to the route

@@ -1,6 +1,6 @@
 // ** Router Import
-import Router from './router/Router'
+import MainRouter from './router/Router'
 
-const App = props => <Router />
+const App = props => <MainRouter />
 
 export default App

@@ -108,7 +108,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Agent Commission%'),
-      selector: "agetnCommiPer",
+      selector: "agentCommiPer",
       sortable: true,
       minWidth: "50px"
     },
@@ -175,7 +175,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Agent Commission%'),
-      selector: "agetnCommiPer",
+      selector: "agentCommiPer",
       sortable: true,
       minWidth: "50px"
     },
@@ -248,7 +248,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Agent Commission%'),
-      selector: "agetnCommiPer",
+      selector: "agentCommiPer",
       sortable: true,
       minWidth: "50px"
     },
@@ -338,15 +338,13 @@ const UserManageByAgent = () => {
     />
   )
 
-  const handleSelectOption = async (type, event) => {
-    const value = event.value
-    const filter = {
-      status: type === "status" ? value : activeStatus,
-      week: type === "week" ? value : selectedWeek
-    }
+  useEffect(async () => {
     const request = {
       agentId: userData._id,
-      filter
+      filter: {
+        status: activeStatus,
+        week: selectedWeek
+      }
     }
     const response = await Axios({
       endpoint: "/agent/user-manage-angent",
@@ -362,13 +360,31 @@ const UserManageByAgent = () => {
       toast.error(getTextByLanguage(response.data))
       setIsLoading(true)
     }
-    if (type === "status") {
-      setActiveStatus(value)
+  }, [selectedWeek])
+
+  useEffect(async () => {
+    const request = {
+      agentId: userData._id,
+      filter: {
+        status: activeStatus,
+        week: selectedWeek
+      }
     }
-    if (type === "week") {
-      setSelectedWeek(value)
+    const response = await Axios({
+      endpoint: "/agent/user-manage-angent",
+      method: "POST",
+      params: request
+    })
+    console.log(response)
+    if (response.status === 200) {
+      setTableData(response.data)
+      setFilterData(response.data)
+      setIsLoading(false)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+      setIsLoading(true)
     }
-  }
+  }, [activeStatus])
 
   const handleSearch = () => {
     const result = []
@@ -473,11 +489,11 @@ const UserManageByAgent = () => {
                   className="react-select sbHolder"
                   theme={selectThemeColors}
                   classNamePrefix='select'
-                  onChange={e => { handleSelectOption(e) }}
+                  onChange={(e) => { setSelectedWeek(e) }}
                 />
               </div>
               <div>
-                <CustomInput type='checkbox' className='custom-control-Primary' id='Activem' label='Active Users' />
+                <CustomInput type='checkbox' className='custom-control-Primary' id='Activem' label='Active Users' onClick={() => setActiveStatus(!activeStatus)} />
               </div>
             </div>
             <div className='col-5 d-flex justify-content-center align-items-center' >

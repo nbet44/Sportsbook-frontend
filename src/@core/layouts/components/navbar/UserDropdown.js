@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom'
 import Avatar from '@components/avatar'
 
 // ** Utils
-import { isUserLoggedIn } from '@utils'
+import { isFirstLogin } from '@utils'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
@@ -58,8 +58,13 @@ const UserDropdown = () => {
     }
   }
 
+  const handleRoleModal = async () => {
+    setRuleModal(false)
+    localStorage.setItem('isFirst', JSON.stringify(false))
+  }
+
   useEffect(() => {
-    if (userData.role === "user") {
+    if (userData.setting && userData.setting.showRule && userData.role === "user" && isFirstLogin()) {
       setRuleModal(true)
     }
   }, [])
@@ -135,24 +140,43 @@ const UserDropdown = () => {
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={isRuleModal} toggle={() => setRuleModal(!isRuleModal)} className="changepassword modal-lg modal-dialog-centered">
-        <ModalHeader toggle={() => setRuleModal(!isRuleModal)}>
+      <Modal isOpen={isRuleModal} className="changepassword modal-lg modal-dialog-centered">
+        <ModalHeader>
           <div className="left">
-            <div className="logo-user">
-              <h6>{getTextByLanguage("Rule")}</h6>
+            <div className="b-list m-auto px-5 py-1 transaction-title">
+              <h2>{getTextByLanguage("Betting Rules")}</h2>
             </div>
           </div>
         </ModalHeader>
         <ModalBody className="useredit-form">
-
+          <ol type='1'>
+            <li className='my-1'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            </li>
+            <li className='my-1'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            </li>
+            <li className='my-1'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            </li>
+            <li className='my-1'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            </li>
+            <li className='my-1'>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            </li>
+          </ol>
         </ModalBody>
-        <ModalFooter className="m-auto">
-          <Button color='primary' className="save mr-1" onClick={e => { handleChangePassword() }}>
-            {getTextByLanguage("Save")}
-          </Button>
-          <Button color='primary' className="cancel" onClick={e => { setPasswordModal(!isPasswordModal) }}>
-            {getTextByLanguage("Cancel")}
-          </Button>
+        <ModalFooter className="justify-content-between">
+          <h3>{getTextByLanguage("Are you agree?")}</h3>
+          <div className='d-flex'>
+            <Button color='primary' className="save mr-1" onClick={() => handleRoleModal(!isRuleModal)}>
+              {getTextByLanguage("Yes")}
+            </Button>
+            <Button color='primary' className="cancel" onClick={() => dispatch(handleLogout())} >
+              {getTextByLanguage("No")}
+            </Button>
+          </div>
         </ModalFooter>
       </Modal>
     </UncontrolledDropdown>

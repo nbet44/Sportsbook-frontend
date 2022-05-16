@@ -27,6 +27,7 @@ const UserListCmp = () => {
   const [isBalanceModal, setBalanceModal] = useState(false)
   const [isUserInfoModal, setUserInfoModal] = useState(false)
   const [isAccountDelete, setAccountDelete] = useState(false)
+  const [showRule, setShowRule] = useState(false)
   const [isAgentDelete, setAgentDelete] = useState(false)
   const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
   const [modalData, setModalData] = useState(null)
@@ -51,6 +52,8 @@ const UserListCmp = () => {
   const [rightData, setRightData] = useState({})
   const [leftWeek, setLeftWeek] = useState(1)
   const [rightWeek, setRightWeek] = useState(1)
+  const [agentCommission, setAgentCommission] = useState(0)
+  const [platformCommission, setPlatformCommission] = useState(0)
 
   const levelOptions = [
     { value: 'normal', label: getTextByLanguage('Normal') },
@@ -126,6 +129,9 @@ const UserListCmp = () => {
   // functions for user data handl
   const showUserInfoModal = (data) => {
     setModalData(data)
+    if (data.setting && data.setting.showRule) {
+      setShowRule(data.setting.showRule)
+    }
     setUserInfoModal(!isUserInfoModal)
   }
 
@@ -133,6 +139,7 @@ const UserListCmp = () => {
     setModalData(data)
     setAutoWeeklyCredit(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
     setWithdrawalCredit(data.withdrawalCredit ? data.withdrawalCredit : 0)
+    setAgentCommission(data.agentCommission ? data.agentCommission : 0)
     setBalanceModal(!isBalanceModal)
   }
 
@@ -162,6 +169,7 @@ const UserListCmp = () => {
       password: modalData.password,
       maxBetLimit: modalData.maxBetLimit,
       delete: isAccountDelete,
+      showRule,
       level: accountLevel.value,
       updated: Date.now()
     }
@@ -203,6 +211,7 @@ const UserListCmp = () => {
       autoWeeklyCredit,
       extraCredit,
       withdrawalCredit,
+      agentCommission,
       userId: modalData._id,
       created: Date.now()
     }
@@ -239,6 +248,7 @@ const UserListCmp = () => {
     setWeeklyCreditResetState(data.weeklyCreditResetState ? data.weeklyCreditResetState : { value: 'false', label: getTextByLanguage('No') })
     setAutoWeeklyCreditAgent(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
     setWithdrawalCreditAgent(data.withdrawalCredit ? data.withdrawalCredit : 0)
+    setPlatformCommission(data.platformCommission ? data.platformCommission : 0)
     setModalData(data)
     setAgentBalanceModal(!isAgentBalanceModal)
   }
@@ -307,6 +317,7 @@ const UserListCmp = () => {
       autoWeeklyCredit: autoWeeklyCreditAgent,
       extraCredit: agentExtraCredit,
       withdrawalCredit: withdrawalCreditAgent,
+      platformCommission,
       userId: modalData._id,
       created: Date.now()
     }
@@ -572,7 +583,7 @@ const UserListCmp = () => {
     }
   }
 
-  const switchListHandl = async (s) => {
+  const switchListHandle = async (s) => {
     setFilterData([])
     setSwitchList(s)
     if (s === 'U') {
@@ -581,7 +592,7 @@ const UserListCmp = () => {
         _id: userData._id
       }
       const response = await Axios({
-        endpoint: "/agent/get-users",
+        endpoint: "/agent/get-users-all",
         method: "POST",
         params: request
       })
@@ -616,45 +627,64 @@ const UserListCmp = () => {
   useEffect(async () => {
     setTableColumns(userTableColumns)
     setSwitchList('U')
-    const request = {
-      _id: userData._id
-    }
-    const response = await Axios({
-      endpoint: "/agent/get-users",
-      method: "POST",
-      params: request
-    })
-    if (response.status === 200) {
-      setTableData(response.data)
-      setFilterData(response.data)
-      setIsLoading(false)
-    } else {
-      toast.error(getTextByLanguage(response.data))
-      setIsLoading(true)
-    }
 
-    const responseLf = await Axios({
-      endpoint: "/agent/agent-info-lf",
-      method: "POST",
-      params: { agentId: userData._id, week: leftWeek }
-    })
-    console.log(responseLf)
-    if (responseLf.status === 200) {
-      setLeftData(responseLf.data)
-    } else {
-      toast.error(getTextByLanguage(responseLf.data))
-    }
+    if (userData.role === 'agent') {
+      const request = {
+        _id: userData._id
+      }
+      const response = await Axios({
+        endpoint: "/agent/get-users",
+        method: "POST",
+        params: request
+      })
+      if (response.status === 200) {
+        setTableData(response.data)
+        setFilterData(response.data)
+        setIsLoading(false)
+      } else {
+        toast.error(getTextByLanguage(response.data))
+        setIsLoading(true)
+      }
+      const responseLf = await Axios({
+        endpoint: "/agent/agent-info-lf",
+        method: "POST",
+        params: { agentId: userData._id, week: leftWeek }
+      })
+      console.log(responseLf)
+      if (responseLf.status === 200) {
+        setLeftData(responseLf.data)
+      } else {
+        toast.error(getTextByLanguage(responseLf.data))
+      }
 
-    const responseRg = await Axios({
-      endpoint: "/agent/agent-info-rg",
-      method: "POST",
-      params: { agentId: userData._id, week: rightWeek }
-    })
-    console.log(responseRg)
-    if (responseRg.status === 200) {
-      setRightData(responseRg.data)
+      const responseRg = await Axios({
+        endpoint: "/agent/agent-info-rg",
+        method: "POST",
+        params: { agentId: userData._id, week: rightWeek }
+      })
+      console.log(responseRg)
+      if (responseRg.status === 200) {
+        setRightData(responseRg.data)
+      } else {
+        toast.error(getTextByLanguage(responseRg.data))
+      }
     } else {
-      toast.error(getTextByLanguage(responseRg.data))
+      const request = {
+        _id: userData._id
+      }
+      const response = await Axios({
+        endpoint: "/agent/get-users-all",
+        method: "POST",
+        params: request
+      })
+      if (response.status === 200) {
+        setTableData(response.data)
+        setFilterData(response.data)
+        setIsLoading(false)
+      } else {
+        toast.error(getTextByLanguage(response.data))
+        setIsLoading(true)
+      }
     }
   }, [])
 
@@ -720,16 +750,31 @@ const UserListCmp = () => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Delete")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <CustomInput
-                id="account_delete_id"
-                type="switch"
-                checked={isAccountDelete}
-                onChange={() => { setAccountDelete(!isAccountDelete) }}
-              />
+            <Col sm='6' className='d-flex pl-0'>
+              <Label sm='6'>
+                {getTextByLanguage("Delete")}
+              </Label>
+              <Col sm='6 align-items-center d-flex'>
+                <CustomInput
+                  id="account_delete_id"
+                  type="switch"
+                  checked={isAccountDelete}
+                  onChange={() => { setAccountDelete(!isAccountDelete) }}
+                />
+              </Col>
+            </Col>
+            <Col sm='6' className='d-flex pl-0'>
+              <Label sm='6'>
+                {getTextByLanguage("Show Rule")}
+              </Label>
+              <Col sm='6 align-items-center d-flex'>
+                <CustomInput
+                  id="show_role"
+                  type="switch"
+                  checked={showRule}
+                  onChange={() => { setShowRule(!showRule) }}
+                />
+              </Col>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -871,6 +916,30 @@ const UserListCmp = () => {
             </Label>
             <Col sm='6 align-items-center d-flex'>
               <span>{modalData ? modalData.extraCredit : 0}</span>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Platform Commission")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={userData.platformCommission} disable='true' readOnly={true} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Agent Commission %")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={agentCommission} onChange={e => { setAgentCommission(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Agent Commission")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? (agentCommission * modalData.balance * 0.01) : 0} disable='true' readOnly={true} />
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -1029,6 +1098,14 @@ const UserListCmp = () => {
           </FormGroup>
           <FormGroup row>
             <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Platform Commission")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={platformCommission} onChange={e => { setPlatformCommission(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
               {getTextByLanguage("Auto weekly credit")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
@@ -1103,8 +1180,8 @@ const UserListCmp = () => {
             {
               userData && userData.role === 'admin' ? (
                 <Col sm='4 align-items-center d-flex ch-permitoin-userlist'>
-                  <Button className={switchList === 'U' ? 'w-50 ch-permitoin-btn btn-success' : 'w-50 ch-permitoin-btn'} onClick={() => switchListHandl('U')}>{getTextByLanguage("Users")}</Button>
-                  <Button className={switchList === 'A' ? 'w-50 ch-permitoin-btn btn-success' : 'w-50 ch-permitoin-btn'} onClick={() => switchListHandl('A')}>{getTextByLanguage("Agents")}</Button>
+                  <Button className={switchList === 'U' ? 'w-50 ch-permitoin-btn btn-success' : 'w-50 ch-permitoin-btn'} onClick={() => switchListHandle('U')}>{getTextByLanguage("Users")}</Button>
+                  <Button className={switchList === 'A' ? 'w-50 ch-permitoin-btn btn-success' : 'w-50 ch-permitoin-btn'} onClick={() => switchListHandle('A')}>{getTextByLanguage("Agents")}</Button>
                 </Col>
               ) : null
             }
@@ -1132,56 +1209,60 @@ const UserListCmp = () => {
             ) : ""}
           </CardBody>
         </Card>
-        <Col sm='12' className='row m-0 p-0'>
-          <Col sm='6' className='pl-0'>
-            <Card >
-              <CardBody>
-                <Col sm='12' className='pb-2 m-0 px-0 row'>
-                  <Select
-                    options={weekOptions}
-                    defaultValue={weekOptions[0]}
-                    className="react-select sbHolder w-100"
-                    theme={selectThemeColors}
-                    classNamePrefix='select'
-                    onChange={e => { handleSelectLeft(e) }}
-                  />
-                </Col>
-                {
-                  Object.keys(leftData).map((key, i) => (
-                    <Col sm='12' className='tableRow d-flex' key={i}>
-                      <span>{getTextByLanguage(leftData[key].label)}</span>
-                      <span>{leftData[key].value}</span>
+        {
+          userData && userData.role === 'agent' ? (
+            <Col sm='12' className='row m-0 p-0'>
+              <Col sm='6' className='pl-0'>
+                <Card >
+                  <CardBody>
+                    <Col sm='12' className='pb-2 m-0 px-0 row'>
+                      <Select
+                        options={weekOptions}
+                        defaultValue={weekOptions[0]}
+                        className="react-select sbHolder w-100"
+                        theme={selectThemeColors}
+                        classNamePrefix='select'
+                        onChange={e => { handleSelectLeft(e) }}
+                      />
                     </Col>
-                  ))
-                }
-              </CardBody>
-            </Card>
-          </Col>
-          <Col sm='6' className='pr-0'>
-            <Card >
-              <CardBody>
-                <Col sm='12' className='pb-2 m-0 px-0 row'>
-                  <Select
-                    options={weekOptions}
-                    defaultValue={weekOptions[0]}
-                    className="react-select sbHolder w-100"
-                    theme={selectThemeColors}
-                    classNamePrefix='select'
-                    onChange={e => { handleSelectRight(e) }}
-                  />
-                </Col>
-                {
-                  Object.keys(rightData).map((key, i) => (
-                    <Col sm='12' className='tableRow d-flex' key={i}>
-                      <span>{getTextByLanguage(rightData[key].label)}</span>
-                      <span>{rightData[key].value}</span>
+                    {
+                      Object.keys(leftData).map((key, i) => (
+                        <Col sm='12' className='tableRow d-flex' key={i}>
+                          <span>{getTextByLanguage(leftData[key].label)}</span>
+                          <span>{leftData[key].value}</span>
+                        </Col>
+                      ))
+                    }
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col sm='6' className='pr-0'>
+                <Card >
+                  <CardBody>
+                    <Col sm='12' className='pb-2 m-0 px-0 row'>
+                      <Select
+                        options={weekOptions}
+                        defaultValue={weekOptions[0]}
+                        className="react-select sbHolder w-100"
+                        theme={selectThemeColors}
+                        classNamePrefix='select'
+                        onChange={e => { handleSelectRight(e) }}
+                      />
                     </Col>
-                  ))
-                }
-              </CardBody>
-            </Card>
-          </Col>
-        </Col>
+                    {
+                      Object.keys(rightData).map((key, i) => (
+                        <Col sm='12' className='tableRow d-flex' key={i}>
+                          <span>{getTextByLanguage(rightData[key].label)}</span>
+                          <span>{rightData[key].value}</span>
+                        </Col>
+                      ))
+                    }
+                  </CardBody>
+                </Card>
+              </Col>
+            </Col>
+          ) : null
+        }
       </div>
     </div>
   )

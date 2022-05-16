@@ -4,7 +4,7 @@ export const mainConfig = {
         request_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/admin" : "https://nBet44.com/admin",
         image_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/images" : "https://nBet44.com/images",
         upload_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/uploads" : "https://nBet44.com/uploads",
-        socket_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "https://nBet44.com"
+        socket_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:6500" : "http://113.30.189.37:6500"
     },
     siteId: "2002",
     socket: null

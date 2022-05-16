@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslator } from '@hooks/useTranslator'
+// import { history } from '@src/history'
+import { useHistory } from "react-router-dom"
 
 const CategoriesCmp = () => {
     const userData = useSelector((state) => state.auth.userData)
     const [getTextByLanguage] = useTranslator()
+    const history = useHistory()
 
     return (
         <div className="content-tab d-flex">
@@ -16,30 +19,46 @@ const CategoriesCmp = () => {
                     </>
                 ) : (
                     <>
-                        {userData && userData.permission && userData.permission.player ? (
-                            <li><a href="/admin/user-list" data-nsfw-filter-status="swf">{getTextByLanguage("User List")}</a></li>
-                        ) : ""}
-                        <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
-                        {userData && userData.permission && userData.permission.player ? (
-                            <li><a href="/admin/create-new-player" data-nsfw-filter-status="swf">
-                                {userData.role === "agent" ? getTextByLanguage("Create New Player") : getTextByLanguage("Create New Player/Agent")}</a></li>
-                        ) : ""}
-                        {/* {userData && userData.permission && userData.permission.agent ? (
-                            <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
-                        ) : ""} */}
-                        <li><a href="/admin/transaction" data-nsfw-filter-status="swf">{getTextByLanguage("Transaction")}</a></li>
-                        <li><a href="/admin/casino-list" data-nsfw-filter-status="swf">{getTextByLanguage("Casino List")}</a></li>
-                        {/* {userData && userData.permission && userData.permission.agent ? (
-                            <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
-                        ) : ""} */}
-                        {userData.role === "admin" ? (
-                            <React.Fragment>
-                                <li><a href="/admin/setting" data-nsfw-filter-status="swf">{getTextByLanguage("Setting")}</a></li>
-                            </React.Fragment>
-                        ) : ""}
-                        {userData.role === "agent" ? (
-                            <li><a href="/admin/user-manage" data-nsfw-filter-status="swf">{getTextByLanguage("User Management")}</a></li>
-                        ) : ""}
+                        {
+                            userData && userData.permission && userData.permission.player ? (
+                                <li><span onClick={() => history.push("/admin/user-list")}>{getTextByLanguage("User List")}</span></li>
+                            ) : null
+                        }
+
+                        <li><span onClick={() => history.push("/admin/bet-list")}>{getTextByLanguage("Bet List")}</span></li>
+
+                        {
+                            userData && userData.permission && userData.permission.player ? (
+                                <li><span onClick={() => history.push("/admin/create-new-player")}>
+                                    {userData.role === "agent" ? getTextByLanguage("Create New Player") : getTextByLanguage("Create New Player/Agent")}
+                                </span></li>
+                            ) : null
+                        }
+
+                        <li><span onClick={() => history.push('/admin/transaction')}>{getTextByLanguage('Transaction')}</span></li>
+                        <li><span onClick={() => history.push("/admin/casino-list")}>{getTextByLanguage("Casino List")}</span></li>
+
+                        {
+                            userData.role === "admin" ? (
+                                <li><span onClick={() => history.push("/admin/setting")}>{getTextByLanguage("Setting")}</span></li>
+                            ) : null
+                        }
+                        {
+                            userData.role === "agent" ? (
+                                <li><span onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage("User Management")}</span></li>
+                            ) : null
+                        }
+
+                        {
+                            /* {userData && userData.permission && userData.permission.agent ? (
+                                <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
+                            ) : ""} */
+                        }
+                        {
+                            /* {userData && userData.permission && userData.permission.agent ? (
+                                <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
+                            ) : ""} */
+                        }
                     </>
                 )}
             </ul>
