@@ -47,6 +47,10 @@ const UserListCmp = () => {
   const [withdrawalCreditAgent, setWithdrawalCreditAgent] = useState(0)
   const [weeklyCreditResetDay, setWeeklyCreditResetDay] = useState({ value: '2', label: getTextByLanguage('Tuesday') })
   const [weeklyCreditResetState, setWeeklyCreditResetState] = useState({ value: 'false', label: getTextByLanguage('No') })
+  const [leftData, setLeftData] = useState({})
+  const [rightData, setRightData] = useState({})
+  const [leftWeek, setLeftWeek] = useState(1)
+  const [rightWeek, setRightWeek] = useState(1)
 
   const levelOptions = [
     { value: 'normal', label: getTextByLanguage('Normal') },
@@ -540,8 +544,32 @@ const UserListCmp = () => {
     { value: '5', label: getTextByLanguage('Four weeks ago') }
   ]
 
-  const handleSelectOption = () => {
+  const handleSelectLeft = async (value) => {
+    const responseAgent = await Axios({
+      endpoint: "/agent/agent-info-lf",
+      method: "POST",
+      params: { agentId: userData._id, week: value }
+    })
+    if (responseAgent.status === 200) {
+      setLeftData(responseAgent.data)
+      setLeftWeek(value)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+    }
+  }
 
+  const handleSelectRight = async (value) => {
+    const responseAgent = await Axios({
+      endpoint: "/agent/agent-info-rg",
+      method: "POST",
+      params: { agentId: userData._id, week: value }
+    })
+    if (responseAgent.status === 200) {
+      setRightData(responseAgent.data)
+      setRightWeek(value)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+    }
   }
 
   const switchListHandl = async (s) => {
@@ -603,6 +631,30 @@ const UserListCmp = () => {
     } else {
       toast.error(getTextByLanguage(response.data))
       setIsLoading(true)
+    }
+
+    const responseLf = await Axios({
+      endpoint: "/agent/agent-info-lf",
+      method: "POST",
+      params: { agentId: userData._id, week: leftWeek }
+    })
+    console.log(responseLf)
+    if (responseLf.status === 200) {
+      setLeftData(responseLf.data)
+    } else {
+      toast.error(getTextByLanguage(responseLf.data))
+    }
+
+    const responseRg = await Axios({
+      endpoint: "/agent/agent-info-rg",
+      method: "POST",
+      params: { agentId: userData._id, week: rightWeek }
+    })
+    console.log(responseRg)
+    if (responseRg.status === 200) {
+      setRightData(responseRg.data)
+    } else {
+      toast.error(getTextByLanguage(responseRg.data))
     }
   }, [])
 
@@ -1091,24 +1143,41 @@ const UserListCmp = () => {
                     className="react-select sbHolder w-100"
                     theme={selectThemeColors}
                     classNamePrefix='select'
-                    onChange={e => { handleSelectOption("week", e) }}
+                    onChange={e => { handleSelectLeft(e) }}
                   />
                 </Col>
-                <Col sm='12' className='tableRow d-flex'>
-                  <span>Total Balance</span>
-                  <span>$ 300</span>
-                </Col>
-                <Col sm='12' className='tableRow d-flex'>
-                  <span>Total Balance</span>
-                  <span>$ 300</span>
-                </Col>
+                {
+                  Object.keys(leftData).map((key, i) => (
+                    <Col sm='12' className='tableRow d-flex' key={i}>
+                      <span>{getTextByLanguage(leftData[key].label)}</span>
+                      <span>{leftData[key].value}</span>
+                    </Col>
+                  ))
+                }
               </CardBody>
             </Card>
           </Col>
           <Col sm='6' className='pr-0'>
             <Card >
               <CardBody>
-
+                <Col sm='12' className='pb-2 m-0 px-0 row'>
+                  <Select
+                    options={weekOptions}
+                    defaultValue={weekOptions[0]}
+                    className="react-select sbHolder w-100"
+                    theme={selectThemeColors}
+                    classNamePrefix='select'
+                    onChange={e => { handleSelectRight(e) }}
+                  />
+                </Col>
+                {
+                  Object.keys(rightData).map((key, i) => (
+                    <Col sm='12' className='tableRow d-flex' key={i}>
+                      <span>{getTextByLanguage(rightData[key].label)}</span>
+                      <span>{rightData[key].value}</span>
+                    </Col>
+                  ))
+                }
               </CardBody>
             </Card>
           </Col>

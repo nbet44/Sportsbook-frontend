@@ -473,7 +473,7 @@ const UserManageByAgent = () => {
                   className="react-select sbHolder"
                   theme={selectThemeColors}
                   classNamePrefix='select'
-                  onChange={e => { handleSelectOption("week", e) }}
+                  onChange={e => { handleSelectOption(e) }}
                 />
               </div>
               <div>
