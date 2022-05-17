@@ -34,10 +34,10 @@ export const socketInit = () => {
     const user = getState().auth.userData
     mainConfig.socket = io.connect(mainConfig.server.socket_url,
       {
-        transports: ['websocket'],
-        reconnectionAttempts: 1,
-        reconnectionDelay: 10000,
-        timeout: 10000,
+        // transports: ['websocket'],
+        // reconnectionAttempts: 1,
+        // reconnectionDelay: 10000,
+        // timeout: 10000,
         query: { roomName: user._id ? user._id : null }
       })
 

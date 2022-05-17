@@ -44,7 +44,7 @@ const CategoriesCmp = () => {
                             ) : null
                         }
                         {
-                            userData.role === "agent" ? (
+                            userData.role === "agent" || userData.role === "admin" ? (
                                 <li><span onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage("User Management")}</span></li>
                             ) : null
                         }
