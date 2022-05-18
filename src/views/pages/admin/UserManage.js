@@ -54,6 +54,29 @@ const UserManageByAgent = () => {
   ]
 
   const spreadOptions = [
+    { value: '0', label: getTextByLanguage('0') },
+    { value: '10', label: getTextByLanguage('10') },
+    { value: '12', label: getTextByLanguage('12') },
+    { value: '14', label: getTextByLanguage('14') },
+    { value: '16', label: getTextByLanguage('16') },
+    { value: '18', label: getTextByLanguage('18') },
+    { value: '19', label: getTextByLanguage('19') },
+    { value: '20', label: getTextByLanguage('20') },
+    { value: '21', label: getTextByLanguage('21') },
+    { value: '22', label: getTextByLanguage('22') },
+    { value: '23', label: getTextByLanguage('23') },
+    { value: '24', label: getTextByLanguage('24') },
+    { value: '25', label: getTextByLanguage('25') },
+    { value: '26', label: getTextByLanguage('26') },
+    { value: '27', label: getTextByLanguage('27') },
+    { value: '28', label: getTextByLanguage('28') },
+    { value: '29', label: getTextByLanguage('29') },
+    { value: '30', label: getTextByLanguage('30') },
+    { value: '31', label: getTextByLanguage('31') },
+    { value: '32', label: getTextByLanguage('32') },
+    { value: '33', label: getTextByLanguage('33') },
+    { value: '34', label: getTextByLanguage('34') },
+    { value: '35', label: getTextByLanguage('35') },
     { value: '36', label: getTextByLanguage('36') },
     { value: '37', label: getTextByLanguage('37') },
     { value: '38', label: getTextByLanguage('38') },
@@ -64,7 +87,9 @@ const UserManageByAgent = () => {
     { value: '70', label: getTextByLanguage('70') },
     { value: '80', label: getTextByLanguage('80') },
     { value: '90', label: getTextByLanguage('90') },
-    { value: '100', label: getTextByLanguage('100') }
+    { value: '100', label: getTextByLanguage('100') },
+    { value: '110', label: getTextByLanguage('110') },
+    { value: '120', label: getTextByLanguage('120') }
   ]
 
   const levelOptions = [
@@ -81,8 +106,12 @@ const UserManageByAgent = () => {
     } else {
       setShowRule(false)
     }
+    if (data.isOnline === "Blocked") {
+      setAccountDelete(true)
+    } else {
+      setAccountDelete(false)
+    }
     setUserInfoModal(!isUserInfoModal)
-    setAccountDelete(false)
   }
 
   const saveUserInfo = async () => {
@@ -203,7 +232,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
       )
     },
     {
@@ -304,7 +333,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
       )
     },
     {
@@ -378,7 +407,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
       )
     },
     {
@@ -621,76 +650,6 @@ const UserManageByAgent = () => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Col sm='6' className='d-flex pl-0'>
-              <Label sm='6'>
-                {getTextByLanguage("Delete")}
-              </Label>
-              <Col sm='6 align-items-center d-flex'>
-                <CustomInput
-                  id="account_delete_id"
-                  type="switch"
-                  checked={isAccountDelete}
-                  onChange={() => { setAccountDelete(true) }}
-                />
-              </Col>
-            </Col>
-            <Col sm='6' className='d-flex pl-0'>
-              <Label sm='6'>
-                {getTextByLanguage("Show Rule")}
-              </Label>
-              <Col sm='6 align-items-center d-flex'>
-                <CustomInput
-                  id="show_role"
-                  type="switch"
-                  checked={showRule}
-                  onChange={() => { setShowRule(!showRule) }}
-                />
-              </Col>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Prematch Spread")}
-            </Label>
-            <Col sm='6 align-items-center'>
-              <Select
-                options={spreadOptions}
-                defaultValue={spreadOptions[0]}
-                className="react-select"
-                theme={selectThemeColors}
-                classNamePrefix='select'
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Live Spread")}
-            </Label>
-            <Col sm='6 align-items-center'>
-              <Select
-                options={spreadOptions}
-                defaultValue={spreadOptions[0]}
-                className="react-select"
-                theme={selectThemeColors}
-                classNamePrefix='select'
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Mix Spread")}
-            </Label>
-            <Col sm='6 align-items-center'>
-              <Select
-                options={spreadOptions}
-                defaultValue={spreadOptions[0]}
-                className="react-select"
-                theme={selectThemeColors}
-                classNamePrefix='select'
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
             <Label sm='6'>
               {getTextByLanguage("Account level")}
             </Label>
@@ -705,6 +664,175 @@ const UserManageByAgent = () => {
               />
             </Col>
           </FormGroup>
+
+          <FormGroup row>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Block")}
+              </Label>
+              <CustomInput
+                id="account_delete_id"
+                type="switch"
+                checked={isAccountDelete}
+                onChange={() => { setAccountDelete(!isAccountDelete) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Show Rule")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Unlimited Mix")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Include Reschedule")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Blocked From Live")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Allow multi-session")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("User Dangerous")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Allow Cashout ")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+            <Col sm='3 d-flex justify-content-between align-items-center'>
+              <Label sm='pl-0'>
+                {getTextByLanguage("Login Notification ")}
+              </Label>
+              <CustomInput
+                id="show_role"
+                type="checkbox"
+                checked={showRule}
+                onChange={() => { setShowRule(!showRule) }}
+              />
+            </Col>
+          </FormGroup>
+
+          <FormGroup row className='py-1'>
+            <Col sm='12 p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("Spreads")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 d-flex'>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label>{getTextByLanguage("Prematch Spread")}</Label>
+                  <Select
+                    options={spreadOptions}
+                    defaultValue={spreadOptions[0]}
+                    className="react-select w-50"
+                    theme={selectThemeColors}
+                    classNamePrefix='select'
+                  />
+                </Col>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label> {getTextByLanguage("Live Spread")}</Label>
+                  <Select
+                    options={spreadOptions}
+                    defaultValue={spreadOptions[0]}
+                    className="react-select w-50"
+                    theme={selectThemeColors}
+                    classNamePrefix='select'
+                  />
+                </Col>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label>{getTextByLanguage("Mix Spread")}</Label>
+                  <Select
+                    options={spreadOptions}
+                    defaultValue={spreadOptions[0]}
+                    className="react-select w-50"
+                    theme={selectThemeColors}
+                    classNamePrefix='select'
+                  />
+                </Col>
+              </Col>
+            </Col>
+          </FormGroup>
+
+          <FormGroup row className='py-1'>
+            <Col sm='12' className='p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("Ratios")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 d-flex'>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label>{getTextByLanguage("1x2 Ratio")}</Label>
+                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                </Col>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label> {getTextByLanguage("1x2 Ratio live")}</Label>
+                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                </Col>
+                <Col sm='4 d-flex align-items-center justify-content-between'>
+                  <Label>{getTextByLanguage("Ratio Spacial ")}</Label>
+                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                </Col>
+              </Col>
+            </Col>
+          </FormGroup>
+
           <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
         </ModalBody>
         <ModalFooter className="m-auto border-0">
@@ -816,7 +944,7 @@ const UserManageByAgent = () => {
         <Card className="b-team__list">
           <CardHeader >
             <div className="left">
-              <h2 className="b-list m-auto px-5 py-1 transaction-title">{getTextByLanguage("Bet List")}</h2>
+              <h2 className="b-list m-auto px-5 py-1 transaction-title">{getTextByLanguage("User Management")}</h2>
             </div>
           </CardHeader>
           <div className="title bet-list-t row m-0">

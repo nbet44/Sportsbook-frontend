@@ -134,6 +134,11 @@ const UserListCmp = () => {
     if (data.setting && data.setting.showRule) {
       setShowRule(data.setting.showRule)
     }
+    if (data.isOnline === 'Blocked') {
+      setAccountDelete(true)
+    } else {
+      setAccountDelete(false)
+    }
     setUserInfoModal(!isUserInfoModal)
   }
 
@@ -173,7 +178,11 @@ const UserListCmp = () => {
       delete: isAccountDelete,
       showRule,
       level: accountLevel.value,
-      updated: Date.now()
+      updated: Date.now(),
+      filter: {
+        status: false,
+        week: 6
+      }
     }
     const response = await Axios({
       endpoint: "/agent/update-user",
@@ -242,6 +251,11 @@ const UserListCmp = () => {
   const showAgentInfoModal = (data) => {
     setModalData(data)
     // setAccountLevel(data.level)
+    if (data.isOnline === 'Blocked') {
+      setAccountDelete(true)
+    } else {
+      setAccountDelete(false)
+    }
     setAgentInfoModal(!isAgentInfoModal)
   }
 
@@ -271,7 +285,11 @@ const UserListCmp = () => {
       password: modalData.password,
       delete: isAgentDelete,
       level: accountLevel.value,
-      updated: Date.now()
+      updated: Date.now(),
+      filter: {
+        status: false,
+        week: 6
+      }
     }
     const response = await Axios({
       endpoint: "/agent/update-user",
@@ -760,7 +778,7 @@ const UserListCmp = () => {
           <FormGroup row>
             <Col sm='6' className='d-flex pl-0'>
               <Label sm='6'>
-                {getTextByLanguage("Delete")}
+                {getTextByLanguage("Block")}
               </Label>
               <Col sm='6 align-items-center d-flex'>
                 <CustomInput
@@ -1026,7 +1044,7 @@ const UserListCmp = () => {
           </FormGroup>
           <FormGroup row>
             <Label sm='6'>
-              {getTextByLanguage("Delete")}
+              {getTextByLanguage("Block")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
               <CustomInput
