@@ -10,14 +10,16 @@ import DataTable from 'react-data-table-component'
 import ReactPaginate from 'react-paginate'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import CategoriesCmp from './Categories'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Axios from '../../../utility/hooks/Axios'
 import Spinner from "@components/spinner/Fallback-spinner"
 import { toast } from 'react-toastify'
+import { handleSession } from '@store/actions/auth'
 import moment from 'moment'
 import { useTranslator } from '@hooks/useTranslator'
 
 const UserManageByAgent = () => {
+  const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [tableData, setTableData] = useState([])
@@ -35,6 +37,13 @@ const UserManageByAgent = () => {
   const [isAccountDelete, setAccountDelete] = useState(false)
   const [showRule, setShowRule] = useState(false)
   const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
+
+  const [autoWeeklyCredit, setAutoWeeklyCredit] = useState(0)
+  const [withdrawalCredit, setWithdrawalCredit] = useState(0)
+  const [agentCommission, setAgentCommission] = useState(0)
+  const [isBalanceModal, setBalanceModal] = useState(false)
+  const [extraCredit, setExtraCredit] = useState(0)
+
 
   const weekOptions = [
     { value: '1', label: getTextByLanguage('Current week') },
@@ -122,6 +131,56 @@ const UserManageByAgent = () => {
     setModalData(null)
   }
 
+  const showUserBalanceModal = (data) => {
+    setModalData(data)
+    setAutoWeeklyCredit(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
+    setWithdrawalCredit(data.withdrawalCredit ? data.withdrawalCredit : 0)
+    setAgentCommission(data.agentCommission ? data.agentCommission : 0)
+    setBalanceModal(!isBalanceModal)
+  }
+
+  const saveUserBalance = async () => {
+    if ((parseInt(extraCredit) + parseInt(autoWeeklyCredit)) > parseInt(userData.balance)) {
+      toast.error(getTextByLanguage("Invalid amount"))
+      return false
+    }
+    if (parseInt(extraCredit) < 0) {
+      toast.error(getTextByLanguage("Invalid amount"))
+      return false
+    }
+    const request = {
+      ...modalData,
+      autoWeeklyCredit,
+      extraCredit,
+      withdrawalCredit,
+      agentCommission,
+      userId: modalData._id,
+      created: Date.now(),
+      filter: {
+        status: activeStatus,
+        week: selectedWeek
+      }
+    }
+    const response = await Axios({
+      endpoint: "/agent/update-balance",
+      method: "POST",
+      params: request
+    })
+    if (response.status === 200) {
+      setTableData(response.data.tableData)
+      setBalanceModal(!isBalanceModal)
+      dispatch(handleSession(response.data.userData))
+      toast.success(getTextByLanguage("success"))
+    } else {
+      toast.error(getTextByLanguage(response.data))
+    }
+  }
+
+  const cancelUserBalance = () => {
+    setBalanceModal(!isBalanceModal)
+    setModalData(null)
+  }
+
   const sportsColumns = [
     {
       name: getTextByLanguage('User ID'),
@@ -142,13 +201,19 @@ const UserManageByAgent = () => {
     {
       name: getTextByLanguage('Status'),
       selector: 'isOnline',
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+      )
     },
     {
       name: getTextByLanguage('Credit'),
       selector: "credit",
       sortable: true,
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.credit}</span>
+      )
     },
     {
       name: getTextByLanguage('Balance in risk'),
@@ -237,7 +302,10 @@ const UserManageByAgent = () => {
     {
       name: getTextByLanguage('Status'),
       selector: 'isOnline',
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+      )
     },
     {
       name: getTextByLanguage('Credit'),
@@ -308,7 +376,10 @@ const UserManageByAgent = () => {
     {
       name: getTextByLanguage('Status'),
       selector: 'isOnline',
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span className={row.isOnline === 'Online' ? 'btn-success' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+      )
     },
     {
       name: getTextByLanguage('Credit'),
@@ -365,6 +436,7 @@ const UserManageByAgent = () => {
       sortable: true
     }
   ]
+
   useEffect(async () => {
     setTableColumns(sportsColumns)
     if (userData) {
@@ -640,6 +712,99 @@ const UserManageByAgent = () => {
             {getTextByLanguage("Save")}
           </Button>
           <Button color='primary' className="cancel" onClick={e => { cancelUserInfo() }}>
+            {getTextByLanguage("Cancel")}
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={isBalanceModal} toggle={() => setBalanceModal(!isBalanceModal)} className="balanceedit modal-lg modal-dialog-centered">
+        <ModalHeader toggle={() => setBalanceModal(!isBalanceModal)}>
+          <div className="left">
+            <div className="logo-user pl-6">
+              <h6>{getTextByLanguage("Edit credit")} {modalData ? modalData.userId : ""}</h6>
+            </div>
+          </div>
+        </ModalHeader>
+        <ModalBody className="useredit-form">
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Weekly credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <span>{modalData ? parseInt(modalData.autoWeeklyCredit ? modalData.autoWeeklyCredit : 0) + parseInt(modalData.extraCredit ? modalData.extraCredit : 0) : 0}</span>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Less credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <span>{modalData ? modalData.balance : 0}</span>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Extra credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <span>{modalData ? modalData.extraCredit : 0}</span>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Platform Commission")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? modalData.platformCommission : 0} disable='true' readOnly={true} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Agent Commission %")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={agentCommission} onChange={e => { setAgentCommission(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Agent Commission")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? (agentCommission * modalData.balance * 0.01) : 0} disable='true' readOnly={true} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Auto weekly credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={autoWeeklyCredit} onChange={e => { setAutoWeeklyCredit(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Add extra credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={extraCredit} onChange={e => { setExtraCredit(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex'>
+              {getTextByLanguage("Withdrawal credit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
+            </Col>
+          </FormGroup>
+          <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
+        </ModalBody>
+        <ModalFooter className="m-auto border-0">
+          <Button color='primary' className="save" onClick={e => { saveUserBalance() }}>
+            {getTextByLanguage("Save")}
+          </Button>
+          <Button color='primary' className="cancel" onClick={e => { cancelUserBalance() }}>
             {getTextByLanguage("Cancel")}
           </Button>
         </ModalFooter>

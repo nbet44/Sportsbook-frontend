@@ -54,6 +54,8 @@ const UserListCmp = () => {
   const [rightWeek, setRightWeek] = useState(1)
   const [agentCommission, setAgentCommission] = useState(0)
   const [platformCommission, setPlatformCommission] = useState(0)
+  const [sportsCommission, setSportsCommission] = useState(0)
+  const [casinoCommission, setCasinoCommission] = useState(0)
 
   const levelOptions = [
     { value: 'normal', label: getTextByLanguage('Normal') },
@@ -249,6 +251,8 @@ const UserListCmp = () => {
     setAutoWeeklyCreditAgent(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
     setWithdrawalCreditAgent(data.withdrawalCredit ? data.withdrawalCredit : 0)
     setPlatformCommission(data.platformCommission ? data.platformCommission : 0)
+    setSportsCommission(data.sportsCommission ? data.sportsCommission : 0)
+    setCasinoCommission(data.casinoCommission ? data.casinoCommission : 0)
     setModalData(data)
     setAgentBalanceModal(!isAgentBalanceModal)
   }
@@ -317,6 +321,8 @@ const UserListCmp = () => {
       autoWeeklyCredit: autoWeeklyCreditAgent,
       extraCredit: agentExtraCredit,
       withdrawalCredit: withdrawalCreditAgent,
+      sportsCommission,
+      casinoCommission,
       userId: modalData._id,
       created: Date.now()
     }
@@ -1067,27 +1073,21 @@ const UserListCmp = () => {
         </ModalHeader>
         <ModalBody className="useredit-form">
           <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Currency")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <span>{modalData ? modalData.currency : "TRY"}</span>
+            <Col sm='6' className='d-flex p-0'>
+              <Label sm='6 align-items-center d-flex'>
+                {getTextByLanguage("Weekly credit")}
+              </Label>
+              <Col sm='6 align-items-center d-flex'>
+                <span>{modalData ? parseInt(modalData.autoWeeklyCredit ? modalData.autoWeeklyCredit : 0) + parseInt(modalData.extraCredit ? modalData.extraCredit : 0) : 0}</span>
+              </Col>
             </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Weekly credit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <span>{modalData ? parseInt(modalData.autoWeeklyCredit ? modalData.autoWeeklyCredit : 0) + parseInt(modalData.extraCredit ? modalData.extraCredit : 0) : 0}</span>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Less credit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <span>{modalData ? modalData.balance : 0}</span>
+            <Col sm='6' className='d-flex p-0'>
+              <Label sm='6 align-items-center d-flex'>
+                {getTextByLanguage("Less credit")}
+              </Label>
+              <Col sm='6 align-items-center d-flex'>
+                <span>{modalData ? modalData.balance : 0}</span>
+              </Col>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -1096,38 +1096,6 @@ const UserListCmp = () => {
             </Label>
             <Col sm='6 align-items-center d-flex'>
               <span>{modalData ? modalData.extraCredit : 0}</span>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Platform Commission")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={platformCommission} onChange={e => { setPlatformCommission(e.target.value) }} />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Auto weekly credit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={autoWeeklyCreditAgent} onChange={e => { setAutoWeeklyCreditAgent(e.target.value) }} />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Add extra credit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={agentExtraCredit} onChange={e => { setAgentExtraCredit(e.target.value) }} />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
-              {getTextByLanguage("Withdrawal credit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={withdrawalCreditAgent} onChange={e => { setWithdrawalCreditAgent(e.target.value) }} />
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -1160,6 +1128,54 @@ const UserListCmp = () => {
               />
             </Col>
           </FormGroup>
+          <FormGroup row className='py-1'>
+            <Col sm='12' className='p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("Credits")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 d-flex'>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Auto weekly credit")}</Label>
+                  <Input type="number" value={autoWeeklyCreditAgent} onChange={e => { setAutoWeeklyCreditAgent(e.target.value) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label> {getTextByLanguage("Add extra credit")}</Label>
+                  <Input type="number" value={agentExtraCredit} onChange={e => { setAgentExtraCredit(e.target.value) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Withdrawal credit")}</Label>
+                  <Input type="number" value={withdrawalCreditAgent} onChange={e => { setWithdrawalCreditAgent(e.target.value) }} />
+                </Col>
+              </Col>
+            </Col>
+          </FormGroup>
+
+          <FormGroup row className='py-1'>
+            <Col sm='12' className='p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("Commissions")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 d-flex'>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Platform Commission")}</Label>
+                  <Input type="number" value={platformCommission} onChange={e => { setPlatformCommission(e.target.value) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Sports Commission")}</Label>
+                  <Input type="number" value={sportsCommission} onChange={e => { setSportsCommission(e.target.value) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Casino Commission")}</Label>
+                  <Input type="number" value={casinoCommission} onChange={e => { setCasinoCommission(e.target.value) }} />
+                </Col>
+              </Col>
+            </Col>
+          </FormGroup>
+
           <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
         </ModalBody>
         <ModalFooter className="m-auto border-0">
