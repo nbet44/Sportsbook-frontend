@@ -22,19 +22,19 @@ const UserManageByAgent = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [tableData, setTableData] = useState([])
   const [filterData, setFilterData] = useState([])
-  const [expandTableData, setExpandTableData] = useState(null)
   const userData = useSelector((state) => state.auth.userData)
   const [selectedWeek, setSelectedWeek] = useState(1)
-  const [selectedStatus, setSelectedStatus] = useState("all")
-  const [selectedSort, setSelectedSort] = useState("date")
-  const [searchIdBet, setSearchIdBet] = useState("")
-  const [searchMoneyLimit, setSearchMoneyLimit] = useState("")
   const [searchUserName, setSearchUserName] = useState("")
-  const [isDetailsModal, setDetailsModal] = useState(false)
   const [activeStatus, setActiveStatus] = useState(false)
-  const [modalData, setModalData] = useState(null)
   const [tableColumns, setTableColumns] = useState([])
   const [getTextByLanguage] = useTranslator()
+  const [dataKind, setDataKind] = useState(1)
+
+  const [modalData, setModalData] = useState(null)
+  const [isUserInfoModal, setUserInfoModal] = useState(false)
+  const [isAccountDelete, setAccountDelete] = useState(false)
+  const [showRule, setShowRule] = useState(false)
+  const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
 
   const weekOptions = [
     { value: '1', label: getTextByLanguage('Current week') },
@@ -44,18 +44,104 @@ const UserManageByAgent = () => {
     { value: '5', label: getTextByLanguage('Four weeks ago') }
   ]
 
-  const [dataKind, setDataKind] = useState(1)
+  const spreadOptions = [
+    { value: '36', label: getTextByLanguage('36') },
+    { value: '37', label: getTextByLanguage('37') },
+    { value: '38', label: getTextByLanguage('38') },
+    { value: '39', label: getTextByLanguage('39') },
+    { value: '40', label: getTextByLanguage('40') },
+    { value: '50', label: getTextByLanguage('50') },
+    { value: '60', label: getTextByLanguage('60') },
+    { value: '70', label: getTextByLanguage('70') },
+    { value: '80', label: getTextByLanguage('80') },
+    { value: '90', label: getTextByLanguage('90') },
+    { value: '100', label: getTextByLanguage('100') }
+  ]
+
+  const levelOptions = [
+    { value: 'normal', label: getTextByLanguage('Normal') },
+    { value: 'dangerous', label: getTextByLanguage('Dangerous') },
+    { value: 'very_dangerous', label: getTextByLanguage('Very Dangerous') },
+    { value: 'extra_dangerous', label: getTextByLanguage('Extra Dangerous') }
+  ]
+
+  const showUserInfoModal = (data) => {
+    setModalData(data)
+    if (data.setting && data.setting.showRule) {
+      setShowRule(data.setting.showRule)
+    } else {
+      setShowRule(false)
+    }
+    setUserInfoModal(!isUserInfoModal)
+    setAccountDelete(false)
+  }
+
+  const saveUserInfo = async () => {
+    if ((modalData.newPassword && modalData.confirmPassword) && modalData.newPassword !== modalData.confirmPassword) {
+      toast.error(getTextByLanguage("Confirm new password"))
+      return false
+    } else if ((modalData.newPassword && modalData.confirmPassword) && modalData.newPassword === modalData.confirmPassword) {
+      modalData.password = modalData.confirmPassword
+    }
+    const request = {
+      agentId: modalData.agentId,
+      userId: modalData._id,
+      username: modalData.username,
+      password: modalData.password,
+      maxBetLimit: modalData.maxBetLimit,
+      delete: isAccountDelete,
+      showRule,
+      level: accountLevel.value,
+      updated: Date.now(),
+      role: userData.role,
+      filter: {
+        status: activeStatus,
+        week: selectedWeek
+      }
+    }
+    console.log(request)
+    const response = await Axios({
+      endpoint: "/agent/update-user",
+      method: "POST",
+      params: request
+    })
+    if (response.status === 200) {
+      setUserInfoModal(!isUserInfoModal)
+      setTableData(response.data)
+      setFilterData(response.data)
+      toast.success(getTextByLanguage("success"))
+      // setIsLoading(false)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+      // setIsLoading(true)
+    }
+  }
+
+  const cancelUserInfo = () => {
+    setUserInfoModal(!isUserInfoModal)
+    setModalData(null)
+  }
 
   const sportsColumns = [
     {
       name: getTextByLanguage('User ID'),
-      selector: 'userId',
+      selector: '_id',
       minWidth: "50px",
       sortable: true
     },
     {
+      name: getTextByLanguage('Name'),
+      selector: 'name',
+      minWidth: "50px",
+      sortable: true,
+      cell: row => (
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+      )
+    },
+
+    {
       name: getTextByLanguage('Status'),
-      selector: 'status',
+      selector: 'isOnline',
       minWidth: "50px"
     },
     {
@@ -126,7 +212,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Username'),
-      selector: 'username',
+      selector: 'userId',
       minWidth: "50px",
       sortable: true
     }
@@ -142,11 +228,15 @@ const UserManageByAgent = () => {
     {
       name: getTextByLanguage('Name'),
       selector: 'name',
-      minWidth: "50px"
+      minWidth: "50px",
+      sortable: true,
+      cell: row => (
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+      )
     },
     {
       name: getTextByLanguage('Status'),
-      selector: 'status',
+      selector: 'isOnline',
       minWidth: "50px"
     },
     {
@@ -193,7 +283,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Username'),
-      selector: 'username',
+      selector: 'userId',
       minWidth: "50px",
       sortable: true
     }
@@ -209,11 +299,15 @@ const UserManageByAgent = () => {
     {
       name: getTextByLanguage('Name'),
       selector: 'name',
-      minWidth: "50px"
+      minWidth: "50px",
+      sortable: true,
+      cell: row => (
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+      )
     },
     {
       name: getTextByLanguage('Status'),
-      selector: 'status',
+      selector: 'isOnline',
       minWidth: "50px"
     },
     {
@@ -266,7 +360,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Username'),
-      selector: 'username',
+      selector: 'userId',
       minWidth: "50px",
       sortable: true
     }
@@ -276,6 +370,7 @@ const UserManageByAgent = () => {
     if (userData) {
       const request = {
         agentId: userData._id,
+        role: userData.role,
         filter: {
           status: activeStatus,
           week: selectedWeek
@@ -341,6 +436,7 @@ const UserManageByAgent = () => {
   useEffect(async () => {
     const request = {
       agentId: userData._id,
+      role: userData.role,
       filter: {
         status: activeStatus,
         week: selectedWeek
@@ -365,6 +461,7 @@ const UserManageByAgent = () => {
   useEffect(async () => {
     const request = {
       agentId: userData._id,
+      role: userData.role,
       filter: {
         status: activeStatus,
         week: selectedWeek
@@ -404,72 +501,149 @@ const UserManageByAgent = () => {
 
   return (
     <div>
-      {modalData ? (
-        <Modal isOpen={isDetailsModal} toggle={() => setDetailsModal(!isDetailsModal)} className="changepassword modal-lg modal-dialog-centered">
-          <ModalHeader toggle={() => setDetailsModal(!isDetailsModal)}>
-            <div className="left">
-              <div className="px-5 py-1 view-details">
-                <h3>{getTextByLanguage("Details of a Bet")} {modalData.betId}</h3>
-              </div>
-            </div>
-          </ModalHeader>
-          <ModalBody className="useredit-form bet-list-details">
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("UserId")}
-              </Label>
-              <span>{modalData.userId}</span>
+      <Modal isOpen={isUserInfoModal} toggle={() => setUserInfoModal(!isUserInfoModal)} className="balanceedit modal-lg modal-dialog-centered">
+        <ModalHeader toggle={() => setUserInfoModal(!isUserInfoModal)}>
+          <div className="left">
+            <h2 className="new-player m-auto pl-6">{getTextByLanguage("Edit User ")}{modalData ? modalData.userId : ""}</h2>
+          </div>
+        </ModalHeader>
+        <ModalBody className="useredit-form">
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Username")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              {modalData ? modalData.userId : ""}
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Username")}
-              </Label>
-              <span>{modalData.username}</span>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Name")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="text" value={modalData ? modalData.username : ""} onChange={e => { setModalData({ ...modalData, ["username"]: e.target.value }) }} />
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Sport")}
-              </Label>
-              <span>{modalData.sport}</span>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("New Password")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="password" onChange={e => { setModalData({ ...modalData, ["newPassword"]: e.target.value }) }} />
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Odds")}
-              </Label>
-              <span>{modalData.odds}</span>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Confirm Password")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="password" onChange={e => { setModalData({ ...modalData, ["confirmPassword"]: e.target.value }) }} />
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Amount")}
-              </Label>
-              <span>{modalData.amount}</span>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Max per match limit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Result")}
+          </FormGroup>
+          <FormGroup row>
+            <Col sm='6' className='d-flex pl-0'>
+              <Label sm='6'>
+                {getTextByLanguage("Delete")}
               </Label>
-              <span>{modalData.result}</span>
+              <Col sm='6 align-items-center d-flex'>
+                <CustomInput
+                  id="account_delete_id"
+                  type="switch"
+                  checked={isAccountDelete}
+                  onChange={() => { setAccountDelete(true) }}
+                />
+              </Col>
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Time")}
+            <Col sm='6' className='d-flex pl-0'>
+              <Label sm='6'>
+                {getTextByLanguage("Show Rule")}
               </Label>
-              <span>{moment(modalData.created).format('mm:HH/DD.M.YYYY')}</span>
+              <Col sm='6 align-items-center d-flex'>
+                <CustomInput
+                  id="show_role"
+                  type="switch"
+                  checked={showRule}
+                  onChange={() => { setShowRule(!showRule) }}
+                />
+              </Col>
             </Col>
-            <Col className="mb-1" sm='12'>
-              <Label>
-                {getTextByLanguage("Description")}
-              </Label>
-              <span>{modalData.desc}</span>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Prematch Spread")}
+            </Label>
+            <Col sm='6 align-items-center'>
+              <Select
+                options={spreadOptions}
+                defaultValue={spreadOptions[0]}
+                className="react-select"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+              />
             </Col>
-          </ModalBody>
-          <ModalFooter className="m-auto">
-            <Button color='primary' className="cancel" onClick={e => { setDetailsModal(!isDetailsModal) }}>
-              {getTextByLanguage("Cancel")}
-            </Button>
-          </ModalFooter>
-        </Modal>
-      ) : ""}
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Live Spread")}
+            </Label>
+            <Col sm='6 align-items-center'>
+              <Select
+                options={spreadOptions}
+                defaultValue={spreadOptions[0]}
+                className="react-select"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Mix Spread")}
+            </Label>
+            <Col sm='6 align-items-center'>
+              <Select
+                options={spreadOptions}
+                defaultValue={spreadOptions[0]}
+                className="react-select"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6'>
+              {getTextByLanguage("Account level")}
+            </Label>
+            <Col sm='6 align-items-center'>
+              <Select
+                onChange={e => { setAccountLevel(e) }}
+                defaultValue={accountLevel}
+                options={levelOptions}
+                className="react-select"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+              />
+            </Col>
+          </FormGroup>
+          <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
+        </ModalBody>
+        <ModalFooter className="m-auto border-0">
+          <Button color='primary' className="save" onClick={e => { saveUserInfo() }}>
+            {getTextByLanguage("Save")}
+          </Button>
+          <Button color='primary' className="cancel" onClick={e => { cancelUserInfo() }}>
+            {getTextByLanguage("Cancel")}
+          </Button>
+        </ModalFooter>
+      </Modal>
 
       <CategoriesCmp />
 

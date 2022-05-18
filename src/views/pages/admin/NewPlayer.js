@@ -83,13 +83,14 @@ const NewPlayerCmp = () => {
     }
 
     // careate agent
-    const [permission, setPermission] = useState({ player: true, agent: true })
+    const [permission, setPermission] = useState({ SuperAgent: false, agent: true })
     const [agentShare, setAgentShare] = useState("85")
     const [roleValue, setRoleValue] = useState([])
 
     const permissionOptions = [
-        { value: 'player', label: getTextByLanguage('Player'), isFixed: true },
-        { value: 'agent', label: getTextByLanguage('Agent'), isFixed: true }
+        // { value: 'player', label: getTextByLanguage('Player'), isFixed: true },
+        { value: 'agent', label: getTextByLanguage('Agent'), isFixed: true },
+        { value: 'superAgent', label: getTextByLanguage('Super Agent'), isFixed: true }
     ]
 
     const handleCreateAgent = async () => {
@@ -122,7 +123,6 @@ const NewPlayerCmp = () => {
 
     const handlePermission = async (options) => {
         setRoleValue(options)
-        console.log(options)
         const newPermission = permission
         for (const i in newPermission) {
             newPermission[i] = false
@@ -146,7 +146,7 @@ const NewPlayerCmp = () => {
         setLanguage("english")
         setCurrency('TRY')
         setRole({ value: "user" })
-        setPermission({ player: true, agent: true })
+        setPermission({ SuperAgent: false, agent: true })
         setAgentShare("85")
     }
 
@@ -170,10 +170,10 @@ const NewPlayerCmp = () => {
                     {
                         switchUser === 'U' ? (
                             <CardBody className="b-team py-0">
-                                <ModalBody className="useredit-form">
+                                <ModalBody className="useredit-form mt-1">
                                     <FormGroup row>
                                         <Label sm='6'>
-                                            {getTextByLanguage("Login")}
+                                            {getTextByLanguage("Username")}
                                         </Label>
                                         <Col sm='6'>
                                             <Input
@@ -285,7 +285,7 @@ const NewPlayerCmp = () => {
                             </CardBody>
                         ) : (
                             <CardBody>
-                                <ModalBody className="useredit-form">
+                                <ModalBody className="useredit-form mt-1">
                                     <FormGroup row>
                                         <Label sm='6'>
                                             {getTextByLanguage("Agent Share")}
@@ -302,7 +302,7 @@ const NewPlayerCmp = () => {
                                     </FormGroup>
                                     <FormGroup row>
                                         <Label sm='6'>
-                                            {getTextByLanguage("Login")}
+                                            {getTextByLanguage("Username")}
                                         </Label>
                                         <Col sm='6'>
                                             <Input
