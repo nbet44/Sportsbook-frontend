@@ -35,8 +35,21 @@ const UserManageByAgent = () => {
   const [modalData, setModalData] = useState(null)
   const [isUserInfoModal, setUserInfoModal] = useState(false)
   const [isAccountDelete, setAccountDelete] = useState(false)
-  const [showRule, setShowRule] = useState(false)
   const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
+  const [showRule, setShowRule] = useState(false)
+  const [setting, setSetting] = useState({
+    showRule: false,
+    unlimitedMix: false,
+    reschedule: false,
+    blockLive: false,
+    multiSession: false,
+    danger: false,
+    cashout: false,
+    loginNotify: false,
+    betNotify: {},
+    maxBetPerGame: {},
+    betLimitMin: {}
+  })
 
   const [autoWeeklyCredit, setAutoWeeklyCredit] = useState(0)
   const [withdrawalCredit, setWithdrawalCredit] = useState(0)
@@ -99,13 +112,27 @@ const UserManageByAgent = () => {
     { value: 'extra_dangerous', label: getTextByLanguage('Extra Dangerous') }
   ]
 
+  const maxCountOptions = [
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+    { value: 5, label: 5 }
+  ]
+
+  const notifycationOptions = [
+    { value: 500, label: 500 },
+    { value: 1000, label: 1000 },
+    { value: 1500, label: 1500 },
+    { value: 2000, label: 2000 }
+  ]
+
   const showUserInfoModal = (data) => {
     setModalData(data)
-    if (data.setting && data.setting.showRule) {
-      setShowRule(data.setting.showRule)
-    } else {
-      setShowRule(false)
+    if (data.setting) {
+      setSetting(data.setting)
     }
+
     if (data.isOnline === "Blocked") {
       setAccountDelete(true)
     } else {
@@ -124,12 +151,11 @@ const UserManageByAgent = () => {
     const request = {
       agentId: modalData.agentId,
       userId: modalData._id,
-      username: modalData.username,
-      password: modalData.password,
       maxBetLimit: modalData.maxBetLimit,
       delete: isAccountDelete,
-      showRule,
       level: accountLevel.value,
+      setting,
+      update: modalData,
       updated: Date.now(),
       role: userData.role,
       filter: {
@@ -139,7 +165,7 @@ const UserManageByAgent = () => {
     }
     console.log(request)
     const response = await Axios({
-      endpoint: "/agent/update-user",
+      endpoint: "/agent/update-user-mange",
       method: "POST",
       params: request
     })
@@ -605,50 +631,188 @@ const UserManageByAgent = () => {
       <Modal isOpen={isUserInfoModal} toggle={() => setUserInfoModal(!isUserInfoModal)} className="balanceedit modal-lg modal-dialog-centered">
         <ModalHeader toggle={() => setUserInfoModal(!isUserInfoModal)}>
           <div className="left">
-            <h2 className="new-player m-auto pl-6">{getTextByLanguage("Edit User ")}{modalData ? modalData.userId : ""}</h2>
+            <h2 className="new-player m-auto pl-6">{modalData ? modalData.userId : ""}</h2>
           </div>
         </ModalHeader>
         <ModalBody className="useredit-form">
+
           <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Username")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              {modalData ? modalData.userId : ""}
+            <Col sm='12' className='p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("General Info")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 d-flex'>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Name")}</Label>
+                  <Input type="text" value={modalData ? modalData.username : ""} onChange={e => { setModalData({ ...modalData, ["username"]: e.target.value }) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("New Password")}</Label>
+                  <Input type="password" onChange={e => { setModalData({ ...modalData, ["newPassword"]: e.target.value }) }} />
+                </Col>
+                <Col sm='4'>
+                  <Label>{getTextByLanguage("Confirm Password")}</Label>
+                  <Input type="password" onChange={e => { setModalData({ ...modalData, ["confirmPassword"]: e.target.value }) }} />
+                </Col>
+              </Col>
             </Col>
           </FormGroup>
+
           <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Name")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="text" value={modalData ? modalData.username : ""} onChange={e => { setModalData({ ...modalData, ["username"]: e.target.value }) }} />
+            <Col sm='12' className='p-0'>
+              <Label sm='12 wing-name'>
+                <hr className='wing' />
+                {getTextByLanguage("Settings")}
+                <hr className='wing' />
+              </Label>
+              <Col sm='12 row'>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Block")}
+                  </Label>
+                  <CustomInput
+                    id="account_delete_id"
+                    type="switch"
+                    checked={isAccountDelete}
+                    onChange={() => { setAccountDelete(!isAccountDelete) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Show Rule")}
+                  </Label>
+                  <CustomInput
+                    id="show_rule"
+                    type="checkbox"
+                    checked={setting.showRule}
+                    onChange={() => { setSetting({ ...setting, showRule: !setting.showRule }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Unlimited Mix")}
+                  </Label>
+                  <CustomInput
+                    id="Unlimited"
+                    type="checkbox"
+                    checked={setting.unlimitedMix}
+                    onChange={() => { setSetting({ ...setting, unlimitedMix: !setting.unlimitedMix }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Include Reschedule")}
+                  </Label>
+                  <CustomInput
+                    id="Reschedule"
+                    type="checkbox"
+                    checked={setting.reschedule}
+                    onChange={() => { setSetting({ ...setting, reschedule: !setting.reschedule }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Blocked From Live")}
+                  </Label>
+                  <CustomInput
+                    id="Blocked"
+                    type="checkbox"
+                    checked={setting.blockLive}
+                    onChange={() => { setSetting({ ...setting, blockLive: !setting.blockLive }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Allow multi-session")}
+                  </Label>
+                  <CustomInput
+                    id="multi-session"
+                    type="checkbox"
+                    checked={setting.multiSession}
+                    onChange={() => { setSetting({ ...setting, multiSession: !setting.multiSession }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("User Dangerous")}
+                  </Label>
+                  <CustomInput
+                    id="Dangerous"
+                    type="checkbox"
+                    checked={setting.dangerous}
+                    onChange={() => { setSetting({ ...setting, dangerous: !setting.dangerous }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Allow Cashout ")}
+                  </Label>
+                  <CustomInput
+                    id="Cashout"
+                    type="checkbox"
+                    checked={setting.cashout}
+                    onChange={() => { setSetting({ ...setting, cashout: !setting.cashout }) }}
+                  />
+                </Col>
+                <Col sm='3 d-flex justify-content-between align-items-center'>
+                  <Label sm='pl-0'>
+                    {getTextByLanguage("Login Notification ")}
+                  </Label>
+                  <CustomInput
+                    id="Notification"
+                    type="checkbox"
+                    checked={setting.loginNotify}
+                    onChange={() => { setSetting({ ...setting, loginNotify: !setting.loginNotify }) }}
+                  />
+                </Col>
+              </Col>
             </Col>
           </FormGroup>
+
           <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("New Password")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="password" onChange={e => { setModalData({ ...modalData, ["newPassword"]: e.target.value }) }} />
+            <Col sm='4 d-flex justify-content-between align-items-center'>
+              <Label sm='p-0'>
+                {getTextByLanguage("Max Bets Per Game")}
+              </Label>
+              <Select
+                options={maxCountOptions}
+                defaultValue={setting.maxBetPerGame}
+                className="react-select w-40"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+                onChange={e => { setSetting({ ...setting, maxBetPerGame: e }) }}
+              />
+            </Col>
+            <Col sm='4 d-flex justify-content-between align-items-center'>
+              <Label sm='p-0'>
+                {getTextByLanguage("Bet Limit Minimum")}
+              </Label>
+              <Select
+                options={maxCountOptions}
+                defaultValue={setting.betLimitMin}
+                className="react-select w-40"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+                onChange={e => { setSetting({ ...setting, betLimitMin: e }) }}
+              />
+            </Col>
+            <Col sm='4 d-flex justify-content-between align-items-center'>
+              <Label sm='p-0'>
+                {getTextByLanguage("Bet Notification")}
+              </Label>
+              <Select
+                options={notifycationOptions}
+                defaultValue={setting.betNotify}
+                className="react-select w-50"
+                theme={selectThemeColors}
+                classNamePrefix='select'
+                onChange={e => { setSetting({ ...setting, betNotify: e }) }}
+              />
             </Col>
           </FormGroup>
-          <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Confirm Password")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="password" onChange={e => { setModalData({ ...modalData, ["confirmPassword"]: e.target.value }) }} />
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label sm='6'>
-              {getTextByLanguage("Max per match limit")}
-            </Label>
-            <Col sm='6 align-items-center d-flex'>
-              <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
-            </Col>
-          </FormGroup>
+
           <FormGroup row>
             <Label sm='6'>
               {getTextByLanguage("Account level")}
@@ -666,108 +830,15 @@ const UserManageByAgent = () => {
           </FormGroup>
 
           <FormGroup row>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Block")}
-              </Label>
-              <CustomInput
-                id="account_delete_id"
-                type="switch"
-                checked={isAccountDelete}
-                onChange={() => { setAccountDelete(!isAccountDelete) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Show Rule")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Unlimited Mix")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Include Reschedule")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Blocked From Live")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Allow multi-session")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("User Dangerous")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Allow Cashout ")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
-            </Col>
-            <Col sm='3 d-flex justify-content-between align-items-center'>
-              <Label sm='pl-0'>
-                {getTextByLanguage("Login Notification ")}
-              </Label>
-              <CustomInput
-                id="show_role"
-                type="checkbox"
-                checked={showRule}
-                onChange={() => { setShowRule(!showRule) }}
-              />
+            <Label sm='6'>
+              {getTextByLanguage("Max per match limit")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
             </Col>
           </FormGroup>
 
-          <FormGroup row className='py-1'>
+          <FormGroup row className='pt-1'>
             <Col sm='12 p-0'>
               <Label sm='12 wing-name'>
                 <hr className='wing' />
@@ -779,30 +850,33 @@ const UserManageByAgent = () => {
                   <Label>{getTextByLanguage("Prematch Spread")}</Label>
                   <Select
                     options={spreadOptions}
-                    defaultValue={spreadOptions[0]}
+                    defaultValue={modalData ? modalData.prematchSpread : spreadOptions[0]}
                     className="react-select w-50"
                     theme={selectThemeColors}
                     classNamePrefix='select'
+                    onChange={e => { setModalData({ ...modalData, spreadOptions: e }) }}
                   />
                 </Col>
                 <Col sm='4 d-flex align-items-center justify-content-between'>
                   <Label> {getTextByLanguage("Live Spread")}</Label>
                   <Select
                     options={spreadOptions}
-                    defaultValue={spreadOptions[0]}
+                    defaultValue={modalData ? modalData.liveSpread : spreadOptions[0]}
                     className="react-select w-50"
                     theme={selectThemeColors}
                     classNamePrefix='select'
+                    onChange={e => { setModalData({ ...modalData, liveSpread: e }) }}
                   />
                 </Col>
                 <Col sm='4 d-flex align-items-center justify-content-between'>
                   <Label>{getTextByLanguage("Mix Spread")}</Label>
                   <Select
                     options={spreadOptions}
-                    defaultValue={spreadOptions[0]}
+                    defaultValue={modalData ? modalData.mixSpread : spreadOptions[0]}
                     className="react-select w-50"
                     theme={selectThemeColors}
                     classNamePrefix='select'
+                    onChange={e => { setModalData({ ...modalData, mixSpread: e }) }}
                   />
                 </Col>
               </Col>
@@ -819,15 +893,15 @@ const UserManageByAgent = () => {
               <Col sm='12 d-flex'>
                 <Col sm='4 d-flex align-items-center justify-content-between'>
                   <Label>{getTextByLanguage("1x2 Ratio")}</Label>
-                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                  <Input type="number" value={modalData ? modalData.ratio : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratio: e.target.value }) }} />
                 </Col>
                 <Col sm='4 d-flex align-items-center justify-content-between'>
                   <Label> {getTextByLanguage("1x2 Ratio live")}</Label>
-                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                  <Input type="number" value={modalData ? modalData.ratioLive : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratioLive: e.target.value }) }} />
                 </Col>
                 <Col sm='4 d-flex align-items-center justify-content-between'>
                   <Label>{getTextByLanguage("Ratio Spacial ")}</Label>
-                  <Input type="number" value={0} className='w-50' onChange={e => { console.log(e.target.value) }} />
+                  <Input type="number" value={modalData ? modalData.ratioSpacial : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratioSpacial: e.target.value }) }} />
                 </Col>
               </Col>
             </Col>
