@@ -54,11 +54,9 @@ const CategoriesCmp = () => {
                                 <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
                             ) : ""} */
                         }
-                        {
-                            /* {userData && userData.permission && userData.permission.agent ? (
-                                <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
-                            ) : ""} */
-                        }
+                        {userData && userData.permission && userData.permission.agent ? (
+                            <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
+                        ) : ""}
                     </>
                 )}
             </ul>
