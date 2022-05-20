@@ -1185,6 +1185,20 @@ footer {
     margin: 0;
     width: 40%;
 }
+
+.tab-wrap {
+    border-bottom: 2px solid #ee9e40;
+    margin: 0px;
+}
+
+.tab-btn {
+    border-radius: unset;
+}
+
+.modal-boder {
+    border-bottom: 1px solid #6a6b70
+}
+
 /* datatable  */
 .dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
     border-right: 1px solid #3b4253;

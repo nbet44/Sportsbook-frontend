@@ -61,6 +61,7 @@ const UserManageByAgent = () => {
   const [rightData, setRightData] = useState({})
   const [leftWeek, setLeftWeek] = useState(1)
   const [rightWeek, setRightWeek] = useState(1)
+  const [modalTap, setModalTap] = useState(1)
 
   //-----------------setting options-----------------
   const weekOptions = [
@@ -152,6 +153,7 @@ const UserManageByAgent = () => {
     if (data._id === userData._id) {
       return false
     }
+
     setModalData(data)
     if (data.setting) {
       setSetting(data.setting)
@@ -161,6 +163,12 @@ const UserManageByAgent = () => {
       setAccountDelete(true)
     } else {
       setAccountDelete(false)
+    }
+
+    if (data.level) {
+      setAccountLevel({ value: data.level, label: data.level })
+    } else {
+      setAccountLevel({ value: "normal", label: "Normal" })
     }
     setUserInfoModal(!isUserInfoModal)
   }
@@ -172,6 +180,8 @@ const UserManageByAgent = () => {
     } else if ((modalData.newPassword && modalData.confirmPassword) && modalData.newPassword === modalData.confirmPassword) {
       modalData.password = modalData.confirmPassword
     }
+
+    modalData.level = accountLevel.value
     const request = {
       delete: isAccountDelete,
       level: accountLevel.value,
@@ -893,34 +903,277 @@ const UserManageByAgent = () => {
       <Modal isOpen={isUserInfoModal} toggle={() => setUserInfoModal(!isUserInfoModal)} className="balanceedit modal-lg modal-dialog-centered">
         <ModalHeader toggle={() => setUserInfoModal(!isUserInfoModal)}>
           <div className="left">
-            <h2 className="new-player m-auto pl-6">{modalData ? modalData.userId : ""}</h2>
+            <h2 className="new-player m-auto pl-6">{getTextByLanguage("Edit credit")}  {modalData ? modalData.userId : ""}</h2>
           </div>
         </ModalHeader>
         <ModalBody className="useredit-form">
+          <Col sm='12 row my-1 tab-wrap'>
+            <Button className={modalTap === 1 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(1)}>Profile</Button>
+            <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>Setting</Button>
+            <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>Module</Button>
+          </Col>
+          {
+            modalTap === 1 ? (
+              <React.Fragment>
 
-          <FormGroup row>
-            <Col sm='12' className='p-0'>
-              <Label sm='12 wing-name'>
-                <hr className='wing' />
-                {getTextByLanguage("General Info")}
-                <hr className='wing' />
-              </Label>
-              <Col sm='12 d-flex'>
-                <Col sm='4'>
-                  <Label>{getTextByLanguage("Name")}</Label>
-                  <Input type="text" value={modalData ? modalData.username : ""} onChange={e => { setModalData({ ...modalData, ["username"]: e.target.value }) }} />
-                </Col>
-                <Col sm='4'>
-                  <Label>{getTextByLanguage("New Password")}</Label>
-                  <Input type="password" onChange={e => { setModalData({ ...modalData, ["newPassword"]: e.target.value }) }} />
-                </Col>
-                <Col sm='4'>
-                  <Label>{getTextByLanguage("Confirm Password")}</Label>
-                  <Input type="password" onChange={e => { setModalData({ ...modalData, ["confirmPassword"]: e.target.value }) }} />
-                </Col>
-              </Col>
-            </Col>
-          </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Login")}</Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <span>{modalData ? modalData.userId : ""}</span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Name")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="text" value={modalData ? modalData.username : ""} onChange={e => { setModalData({ ...modalData, ["username"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("New Password")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="password" onChange={e => { setModalData({ ...modalData, ["newPassword"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Confirm Password")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="password" onChange={e => { setModalData({ ...modalData, ["confirmPassword"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Block")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="account_delete_id"
+                      type="switch"
+                      checked={isAccountDelete}
+                      onChange={() => { setAccountDelete(!isAccountDelete) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Account level")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      onChange={e => { setAccountLevel(e) }}
+                      defaultValue={accountLevel}
+                      options={levelOptions}
+                      className="react-select"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Max per match limit")}</Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+
+              </React.Fragment>
+            ) : null
+          }
+
+          {
+            modalTap === 2 ? (
+              <React.Fragment>
+
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Show Rule")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="show_rule"
+                      type="checkbox"
+                      checked={setting.showRule}
+                      onChange={() => { setSetting({ ...setting, showRule: !setting.showRule }) }}
+                    />
+                  </Col>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Unlimited Mix")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Unlimited"
+                      type="checkbox"
+                      checked={setting.unlimitedMix}
+                      onChange={() => { setSetting({ ...setting, unlimitedMix: !setting.unlimitedMix }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Include Reschedule")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Reschedule"
+                      type="checkbox"
+                      checked={setting.reschedule}
+                      onChange={() => { setSetting({ ...setting, reschedule: !setting.reschedule }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Blocked From Live")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Blocked"
+                      type="checkbox"
+                      checked={setting.blockLive}
+                      onChange={() => { setSetting({ ...setting, blockLive: !setting.blockLive }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Allow multi-session")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="multi-session"
+                      type="checkbox"
+                      checked={setting.multiSession}
+                      onChange={() => { setSetting({ ...setting, multiSession: !setting.multiSession }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("User Dangerous")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Dangerous"
+                      type="checkbox"
+                      checked={setting.dangerous}
+                      onChange={() => { setSetting({ ...setting, dangerous: !setting.dangerous }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Allow Cashout")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Cashout"
+                      type="checkbox"
+                      checked={setting.cashout}
+                      onChange={() => { setSetting({ ...setting, cashout: !setting.cashout }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Login Notification")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <CustomInput
+                      id="Notification"
+                      type="checkbox"
+                      checked={setting.loginNotify}
+                      onChange={() => { setSetting({ ...setting, loginNotify: !setting.loginNotify }) }}
+                    />
+                  </Col>
+                </FormGroup>
+
+              </React.Fragment>
+            ) : null
+          }
+
+          {
+            modalTap === 3 ? (
+              <React.Fragment>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Max Bets Per Game")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={maxCountOptions}
+                      defaultValue={setting.maxBetPerGame}
+                      className="react-select w-40"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setSetting({ ...setting, maxBetPerGame: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Bet Limit Minimum")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={maxCountOptions}
+                      defaultValue={setting.betLimitMin}
+                      className="react-select w-40"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setSetting({ ...setting, betLimitMin: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Bet Notification")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={notifycationOptions}
+                      defaultValue={setting.betNotify}
+                      className="react-select"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setSetting({ ...setting, betNotify: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Prematch Spread")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={spreadOptions}
+                      defaultValue={modalData ? modalData.prematchSpread : spreadOptions[0]}
+                      className="react-select"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setModalData({ ...modalData, spreadOptions: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Live Spread")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={spreadOptions}
+                      defaultValue={modalData ? modalData.liveSpread : spreadOptions[0]}
+                      className="react-select"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setModalData({ ...modalData, liveSpread: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Mix Spread")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Select
+                      options={spreadOptions}
+                      defaultValue={modalData ? modalData.mixSpread : spreadOptions[0]}
+                      className="react-select"
+                      theme={selectThemeColors}
+                      classNamePrefix='select'
+                      onChange={e => { setModalData({ ...modalData, mixSpread: e }) }}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("1x2 Ratio")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.ratio : 0} onChange={e => { setModalData({ ...modalData, ratio: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("1x2 Ratio live")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.ratioLive : 0} onChange={e => { setModalData({ ...modalData, ratioLive: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Ratio Spacial")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.ratioSpacial : 0} onChange={e => { setModalData({ ...modalData, ratioSpacial: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+              </React.Fragment>
+            ) : null
+          }
+
+
           {
             modalData && modalData.role === 'agent' ? (
               <React.Fragment>
@@ -954,254 +1207,7 @@ const UserManageByAgent = () => {
                 </FormGroup>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                <FormGroup row>
-                  <Col sm='12' className='p-0'>
-                    <Label sm='12 wing-name'>
-                      <hr className='wing' />
-                      {getTextByLanguage("Settings")}
-                      <hr className='wing' />
-                    </Label>
-                    <Col sm='12 row'>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Block")}
-                        </Label>
-                        <CustomInput
-                          id="account_delete_id"
-                          type="switch"
-                          checked={isAccountDelete}
-                          onChange={() => { setAccountDelete(!isAccountDelete) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Show Rule")}
-                        </Label>
-                        <CustomInput
-                          id="show_rule"
-                          type="checkbox"
-                          checked={setting.showRule}
-                          onChange={() => { setSetting({ ...setting, showRule: !setting.showRule }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Unlimited Mix")}
-                        </Label>
-                        <CustomInput
-                          id="Unlimited"
-                          type="checkbox"
-                          checked={setting.unlimitedMix}
-                          onChange={() => { setSetting({ ...setting, unlimitedMix: !setting.unlimitedMix }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Include Reschedule")}
-                        </Label>
-                        <CustomInput
-                          id="Reschedule"
-                          type="checkbox"
-                          checked={setting.reschedule}
-                          onChange={() => { setSetting({ ...setting, reschedule: !setting.reschedule }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Blocked From Live")}
-                        </Label>
-                        <CustomInput
-                          id="Blocked"
-                          type="checkbox"
-                          checked={setting.blockLive}
-                          onChange={() => { setSetting({ ...setting, blockLive: !setting.blockLive }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Allow multi-session")}
-                        </Label>
-                        <CustomInput
-                          id="multi-session"
-                          type="checkbox"
-                          checked={setting.multiSession}
-                          onChange={() => { setSetting({ ...setting, multiSession: !setting.multiSession }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("User Dangerous")}
-                        </Label>
-                        <CustomInput
-                          id="Dangerous"
-                          type="checkbox"
-                          checked={setting.dangerous}
-                          onChange={() => { setSetting({ ...setting, dangerous: !setting.dangerous }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Allow Cashout ")}
-                        </Label>
-                        <CustomInput
-                          id="Cashout"
-                          type="checkbox"
-                          checked={setting.cashout}
-                          onChange={() => { setSetting({ ...setting, cashout: !setting.cashout }) }}
-                        />
-                      </Col>
-                      <Col sm='3 d-flex justify-content-between align-items-center'>
-                        <Label sm='pl-0'>
-                          {getTextByLanguage("Login Notification ")}
-                        </Label>
-                        <CustomInput
-                          id="Notification"
-                          type="checkbox"
-                          checked={setting.loginNotify}
-                          onChange={() => { setSetting({ ...setting, loginNotify: !setting.loginNotify }) }}
-                        />
-                      </Col>
-                    </Col>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Col sm='4 d-flex justify-content-between align-items-center'>
-                    <Label sm='p-0'>
-                      {getTextByLanguage("Max Bets Per Game")}
-                    </Label>
-                    <Select
-                      options={maxCountOptions}
-                      defaultValue={setting.maxBetPerGame}
-                      className="react-select w-40"
-                      theme={selectThemeColors}
-                      classNamePrefix='select'
-                      onChange={e => { setSetting({ ...setting, maxBetPerGame: e }) }}
-                    />
-                  </Col>
-                  <Col sm='4 d-flex justify-content-between align-items-center'>
-                    <Label sm='p-0'>
-                      {getTextByLanguage("Bet Limit Minimum")}
-                    </Label>
-                    <Select
-                      options={maxCountOptions}
-                      defaultValue={setting.betLimitMin}
-                      className="react-select w-40"
-                      theme={selectThemeColors}
-                      classNamePrefix='select'
-                      onChange={e => { setSetting({ ...setting, betLimitMin: e }) }}
-                    />
-                  </Col>
-                  <Col sm='4 d-flex justify-content-between align-items-center'>
-                    <Label sm='p-0'>
-                      {getTextByLanguage("Bet Notification")}
-                    </Label>
-                    <Select
-                      options={notifycationOptions}
-                      defaultValue={setting.betNotify}
-                      className="react-select w-50"
-                      theme={selectThemeColors}
-                      classNamePrefix='select'
-                      onChange={e => { setSetting({ ...setting, betNotify: e }) }}
-                    />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Label sm='6'>
-                    {getTextByLanguage("Account level")}
-                  </Label>
-                  <Col sm='6 align-items-center'>
-                    <Select
-                      onChange={e => { setAccountLevel(e) }}
-                      defaultValue={accountLevel}
-                      options={levelOptions}
-                      className="react-select"
-                      theme={selectThemeColors}
-                      classNamePrefix='select'
-                    />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row>
-                  <Label sm='6'>
-                    {getTextByLanguage("Max per match limit")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row className='pt-1'>
-                  <Col sm='12 p-0'>
-                    <Label sm='12 wing-name'>
-                      <hr className='wing' />
-                      {getTextByLanguage("Spreads")}
-                      <hr className='wing' />
-                    </Label>
-                    <Col sm='12 d-flex'>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label>{getTextByLanguage("Prematch Spread")}</Label>
-                        <Select
-                          options={spreadOptions}
-                          defaultValue={modalData ? modalData.prematchSpread : spreadOptions[0]}
-                          className="react-select w-50"
-                          theme={selectThemeColors}
-                          classNamePrefix='select'
-                          onChange={e => { setModalData({ ...modalData, spreadOptions: e }) }}
-                        />
-                      </Col>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label> {getTextByLanguage("Live Spread")}</Label>
-                        <Select
-                          options={spreadOptions}
-                          defaultValue={modalData ? modalData.liveSpread : spreadOptions[0]}
-                          className="react-select w-50"
-                          theme={selectThemeColors}
-                          classNamePrefix='select'
-                          onChange={e => { setModalData({ ...modalData, liveSpread: e }) }}
-                        />
-                      </Col>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label>{getTextByLanguage("Mix Spread")}</Label>
-                        <Select
-                          options={spreadOptions}
-                          defaultValue={modalData ? modalData.mixSpread : spreadOptions[0]}
-                          className="react-select w-50"
-                          theme={selectThemeColors}
-                          classNamePrefix='select'
-                          onChange={e => { setModalData({ ...modalData, mixSpread: e }) }}
-                        />
-                      </Col>
-                    </Col>
-                  </Col>
-                </FormGroup>
-
-                <FormGroup row className='py-1'>
-                  <Col sm='12' className='p-0'>
-                    <Label sm='12 wing-name'>
-                      <hr className='wing' />
-                      {getTextByLanguage("Ratios")}
-                      <hr className='wing' />
-                    </Label>
-                    <Col sm='12 d-flex'>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label>{getTextByLanguage("1x2 Ratio")}</Label>
-                        <Input type="number" value={modalData ? modalData.ratio : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratio: e.target.value }) }} />
-                      </Col>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label> {getTextByLanguage("1x2 Ratio live")}</Label>
-                        <Input type="number" value={modalData ? modalData.ratioLive : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratioLive: e.target.value }) }} />
-                      </Col>
-                      <Col sm='4 d-flex align-items-center justify-content-between'>
-                        <Label>{getTextByLanguage("Ratio Spacial ")}</Label>
-                        <Input type="number" value={modalData ? modalData.ratioSpacial : 0} className='w-50' onChange={e => { setModalData({ ...modalData, ratioSpacial: e.target.value }) }} />
-                      </Col>
-                    </Col>
-                  </Col>
-                </FormGroup>
-              </React.Fragment>
+              null
             )
           }
 
@@ -1227,7 +1233,7 @@ const UserManageByAgent = () => {
         </ModalHeader>
         <ModalBody className="useredit-form">
           <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
+            <Label sm='6 align-items-center d-flex  modal-boder'>
               {getTextByLanguage("Weekly credit")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
@@ -1235,7 +1241,7 @@ const UserManageByAgent = () => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
+            <Label sm='6 align-items-center d-flex modal-boder'>
               {getTextByLanguage("Less credit")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
@@ -1243,7 +1249,7 @@ const UserManageByAgent = () => {
             </Col>
           </FormGroup>
           <FormGroup row>
-            <Label sm='6 align-items-center d-flex'>
+            <Label sm='6 align-items-center d-flex modal-boder'>
               {getTextByLanguage("Extra credit")}
             </Label>
             <Col sm='6 align-items-center d-flex'>
@@ -1254,7 +1260,7 @@ const UserManageByAgent = () => {
             modalData && modalData.role === 'agent' ? (
               <React.Fragment>
                 <FormGroup row>
-                  <Label sm='6 align-items-center d-flex'>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
                     {getTextByLanguage("Weekly balance reset")}
                   </Label>
                   <Col sm='6 align-items-center'>
@@ -1269,7 +1275,7 @@ const UserManageByAgent = () => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6 align-items-center d-flex'>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
                     {getTextByLanguage("Weekly balance reset day")}
                   </Label>
                   <Col sm='6 align-items-center'>
@@ -1283,66 +1289,57 @@ const UserManageByAgent = () => {
                     />
                   </Col>
                 </FormGroup>
-                <FormGroup row className='py-1'>
-                  <Col sm='12' className='p-0'>
-                    <Label sm='12 wing-name'>
-                      <hr className='wing' />
-                      {getTextByLanguage("Credits")}
-                      <hr className='wing' />
-                    </Label>
-                    <Col sm='12 d-flex'>
-                      <Col sm='4'>
-                        <Label>{getTextByLanguage("Auto weekly credit")}</Label>
-                        <Input type="number" value={autoWeeklyCredit} onChange={e => { setAutoWeeklyCredit(e.target.value) }} />
-                      </Col>
-                      <Col sm='4'>
-                        <Label> {getTextByLanguage("Add extra credit")}</Label>
-                        <Input type="number" value={extraCredit} onChange={e => { setExtraCredit(e.target.value) }} />
-                      </Col>
-                      <Col sm='4'>
-                        <Label>{getTextByLanguage("Withdrawal credit")}</Label>
-                        <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
-                      </Col>
-                    </Col>
+
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Auto weekly credit")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={autoWeeklyCredit} onChange={e => { setAutoWeeklyCredit(e.target.value) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Add extra credit")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={extraCredit} onChange={e => { setExtraCredit(e.target.value) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Withdrawal credit")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Platform Commission")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.platformCommission : 0} onChange={e => { setModalData({ ...modalData, ["platformCommission"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Sports Commission")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.sportsCommission : 0} onChange={e => { setModalData({ ...modalData, ["sportsCommission"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Casino Commission")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.casinoCommission : 0} onChange={e => { setModalData({ ...modalData, ["casinoCommission"]: e.target.value }) }} />
                   </Col>
                 </FormGroup>
 
-                <FormGroup row className='py-1'>
-                  <Col sm='12' className='p-0'>
-                    <Label sm='12 wing-name'>
-                      <hr className='wing' />
-                      {getTextByLanguage("Commissions")}
-                      <hr className='wing' />
-                    </Label>
-                    <Col sm='12 d-flex'>
-                      <Col sm='4'>
-                        <Label>{getTextByLanguage("Platform Commission")}</Label>
-                        <Input type="number" value={modalData ? modalData.platformCommission : 0} onChange={e => { setModalData({ ...modalData, ["platformCommission"]: e.target.value }) }} />
-                      </Col>
-                      <Col sm='4'>
-                        <Label>{getTextByLanguage("Sports Commission")}</Label>
-                        <Input type="number" value={modalData ? modalData.sportsCommission : 0} onChange={e => { setModalData({ ...modalData, ["sportsCommission"]: e.target.value }) }} />
-                      </Col>
-                      <Col sm='4'>
-                        <Label>{getTextByLanguage("Casino Commission")}</Label>
-                        <Input type="number" value={modalData ? modalData.casinoCommission : 0} onChange={e => { setModalData({ ...modalData, ["casinoCommission"]: e.target.value }) }} />
-                      </Col>
-                    </Col>
-                  </Col>
-                </FormGroup>
               </React.Fragment>
             ) : (
               <React.Fragment>
                 <FormGroup row>
-                  <Label sm='6'>
+                  <Label sm='6 modal-boder'>
                     {getTextByLanguage("Platform Commission")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={modalData ? modalData.platformCommission : 0} disable='true' readOnly={true} />
+                    <span>{modalData ? modalData.platformCommission : 0} </span>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6'>
+                  <Label sm='6 modal-boder'>
                     {getTextByLanguage("Agent Commission %")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
@@ -1350,7 +1347,7 @@ const UserManageByAgent = () => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6'>
+                  <Label sm='6 modal-boder'>
                     {getTextByLanguage("Agent Commission")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
@@ -1358,7 +1355,7 @@ const UserManageByAgent = () => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6 align-items-center d-flex'>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
                     {getTextByLanguage("Auto weekly credit")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
@@ -1366,7 +1363,7 @@ const UserManageByAgent = () => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6 align-items-center d-flex'>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
                     {getTextByLanguage("Add extra credit")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
@@ -1374,7 +1371,7 @@ const UserManageByAgent = () => {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm='6 align-items-center d-flex'>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
                     {getTextByLanguage("Withdrawal credit")}
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
