@@ -56,6 +56,10 @@ const UserManageByAgent = () => {
   const [isBalanceModal, setBalanceModal] = useState(false)
   const [extraCredit, setExtraCredit] = useState(0)
 
+  const [leftData, setLeftData] = useState({})
+  const [rightData, setRightData] = useState({})
+  const [leftWeek, setLeftWeek] = useState(1)
+  const [rightWeek, setRightWeek] = useState(1)
 
   const weekOptions = [
     { value: '1', label: getTextByLanguage('Current week') },
@@ -235,6 +239,34 @@ const UserManageByAgent = () => {
     setModalData(null)
   }
 
+  const handleSelectLeft = async (value) => {
+    const responseAgent = await Axios({
+      endpoint: "/agent/agent-info-lf",
+      method: "POST",
+      params: { agentId: userData._id, week: value }
+    })
+    if (responseAgent.status === 200) {
+      setLeftData(responseAgent.data)
+      setLeftWeek(value)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+    }
+  }
+
+  const handleSelectRight = async (value) => {
+    const responseAgent = await Axios({
+      endpoint: "/agent/agent-info-rg",
+      method: "POST",
+      params: { agentId: userData._id, week: value }
+    })
+    if (responseAgent.status === 200) {
+      setRightData(responseAgent.data)
+      setRightWeek(value)
+    } else {
+      toast.error(getTextByLanguage(response.data))
+    }
+  }
+
   const sportsColumns = [
     {
       name: getTextByLanguage('User ID'),
@@ -262,11 +294,11 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Credit'),
-      selector: "credit",
+      selector: "balance",
       sortable: true,
       minWidth: "50px",
       cell: row => (
-        <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.credit}</span>
+        <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.balance}</span>
       )
     },
     {
@@ -319,7 +351,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Platform Commission'),
-      selector: "platformCommi",
+      selector: "platformCommission",
       sortable: true,
       minWidth: "50px"
     },
@@ -363,9 +395,12 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Credit'),
-      selector: "credit",
+      selector: "balance",
       sortable: true,
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.balance}</span>
+      )
     },
     {
       name: getTextByLanguage('Total'),
@@ -393,7 +428,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Platform Commission'),
-      selector: "platformCommi",
+      selector: "platformCommission",
       sortable: true,
       minWidth: "50px"
     },
@@ -437,9 +472,12 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Credit'),
-      selector: "credit",
+      selector: "balance",
       sortable: true,
-      minWidth: "50px"
+      minWidth: "50px",
+      cell: row => (
+        <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.balance}</span>
+      )
     },
     {
       name: getTextByLanguage('Turnover'),
@@ -473,7 +511,7 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Platform Commission'),
-      selector: "platformCommi",
+      selector: "platformCommission",
       sortable: true,
       minWidth: "50px"
     },
@@ -516,6 +554,32 @@ const UserManageByAgent = () => {
       } else {
         toast.error(getTextByLanguage(response.data))
         setIsLoading(true)
+      }
+
+      if (userData.role === 'agent') {
+        const responseLf = await Axios({
+          endpoint: "/agent/agent-info-lf",
+          method: "POST",
+          params: { agentId: userData._id, week: leftWeek }
+        })
+        console.log(responseLf)
+        if (responseLf.status === 200) {
+          setLeftData(responseLf.data)
+        } else {
+          toast.error(getTextByLanguage(responseLf.data))
+        }
+
+        const responseRg = await Axios({
+          endpoint: "/agent/agent-info-rg",
+          method: "POST",
+          params: { agentId: userData._id, week: rightWeek }
+        })
+        console.log(responseRg)
+        if (responseRg.status === 200) {
+          setRightData(responseRg.data)
+        } else {
+          toast.error(getTextByLanguage(responseRg.data))
+        }
       }
     }
   }, [])
@@ -616,7 +680,9 @@ const UserManageByAgent = () => {
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
-                      <div>{item["credit"]}</div>
+                      <div>
+                        <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
+                      </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
                       <div>{item["risk"]}</div>
@@ -676,7 +742,9 @@ const UserManageByAgent = () => {
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
-                      <div>{item["credit"]}</div>
+                      <div>
+                        <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
+                      </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
                       <div>{item["total"]}</div>
@@ -724,7 +792,9 @@ const UserManageByAgent = () => {
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
-                      <div>{item["credit"]}</div>
+                      <div>
+                        <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
+                      </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
                       <div>{item["turnover"]}</div>
@@ -1232,6 +1302,60 @@ const UserManageByAgent = () => {
             ) : ""}
           </CardBody>
         </Card>
+        {
+          userData && userData.role === 'agent' ? (
+            <Col sm='12' className='row m-0 p-0'>
+              <Col sm='6' className='pl-0'>
+                <Card >
+                  <CardBody>
+                    <Col sm='12' className='pb-2 m-0 px-0 row'>
+                      <Select
+                        options={weekOptions}
+                        defaultValue={weekOptions[0]}
+                        className="react-select sbHolder w-100"
+                        theme={selectThemeColors}
+                        classNamePrefix='select'
+                        onChange={e => { handleSelectLeft(e) }}
+                      />
+                    </Col>
+                    {
+                      Object.keys(leftData).map((key, i) => (
+                        <Col sm='12' className='tableRow d-flex' key={i}>
+                          <span>{getTextByLanguage(leftData[key].label)}</span>
+                          <span>{leftData[key].value}</span>
+                        </Col>
+                      ))
+                    }
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col sm='6' className='pr-0'>
+                <Card >
+                  <CardBody>
+                    <Col sm='12' className='pb-2 m-0 px-0 row'>
+                      <Select
+                        options={weekOptions}
+                        defaultValue={weekOptions[0]}
+                        className="react-select sbHolder w-100"
+                        theme={selectThemeColors}
+                        classNamePrefix='select'
+                        onChange={e => { handleSelectRight(e) }}
+                      />
+                    </Col>
+                    {
+                      Object.keys(rightData).map((key, i) => (
+                        <Col sm='12' className='tableRow d-flex' key={i}>
+                          <span>{getTextByLanguage(rightData[key].label)}</span>
+                          <span>{rightData[key].value}</span>
+                        </Col>
+                      ))
+                    }
+                  </CardBody>
+                </Card>
+              </Col>
+            </Col>
+          ) : null
+        }
       </div>
     </div>
   )
