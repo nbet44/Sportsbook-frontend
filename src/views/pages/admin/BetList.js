@@ -323,6 +323,7 @@ const BetListCmp = (props) => {
   }
 
   const ExpandableTable = ({ data }) => {
+    console.log(data, expandTableData)
     if (expandTableData[data["betId"]]) {
       const subData = expandTableData[data["betId"]]
       return (
@@ -382,6 +383,17 @@ const BetListCmp = (props) => {
       )
     }
   }
+
+  useEffect(() => {
+    if (filterData.length > 0) {
+      if (document.getElementById('row-0')) {
+        document.getElementById('row-0').children[0].click()
+      }
+      if (document.getElementById('row-1')) {
+        document.getElementById('row-1').children[0].click()
+      }
+    }
+  }, [filterData])
 
   if (isLoading) {
     return (
@@ -552,6 +564,7 @@ const BetListCmp = (props) => {
                   expandOnRowClicked
                   expandableRowsComponent={<ExpandableTable history={filterData} />}
                   noHeader={true}
+                  expandableInheritConditionalStyles
                 // subHeader={false}
                 // subHeaderWrap={true}
                 // subHeaderComponent={<DataTableHeader />}

@@ -25,18 +25,17 @@ const UserManageByAgent = () => {
   const [tableData, setTableData] = useState([])
   const [filterData, setFilterData] = useState([])
   const userData = useSelector((state) => state.auth.userData)
-  const [selectedWeek, setSelectedWeek] = useState(1)
+  const [selectedWeek, setSelectedWeek] = useState({ value: 1 })
   const [searchUserName, setSearchUserName] = useState("")
   const [activeStatus, setActiveStatus] = useState(false)
   const [tableColumns, setTableColumns] = useState([])
   const [getTextByLanguage] = useTranslator()
   const [dataKind, setDataKind] = useState(1)
-
+  const [expandTableData, setExpandTableData] = useState({})
   const [modalData, setModalData] = useState(null)
   const [isUserInfoModal, setUserInfoModal] = useState(false)
   const [isAccountDelete, setAccountDelete] = useState(false)
   const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
-  const [showRule, setShowRule] = useState(false)
   const [setting, setSetting] = useState({
     showRule: false,
     unlimitedMix: false,
@@ -510,8 +509,9 @@ const UserManageByAgent = () => {
       })
       console.log(response)
       if (response.status === 200) {
-        setTableData(response.data)
-        setFilterData(response.data)
+        setTableData(response.data.agent)
+        setFilterData(response.data.agent)
+        setExpandTableData(response.data.user)
         setIsLoading(false)
       } else {
         toast.error(getTextByLanguage(response.data))
@@ -531,35 +531,6 @@ const UserManageByAgent = () => {
     }
   }
 
-  // ** Function to handle Pagination
-  const handlePagination = page => {
-    setCurrentPage(page.selected)
-  }
-
-  // ** Custom Pagination
-  const CustomPagination = () => (
-    <ReactPaginate
-      previousLabel=''
-      nextLabel=''
-      forcePage={currentPage}
-      onPageChange={page => handlePagination(page)}
-      pageCount={tableData.length / 7 || 1}
-      breakLabel='...'
-      pageRangeDisplayed={2}
-      marginPagesDisplayed={2}
-      activeClassName='active'
-      pageClassName='page-item'
-      breakClassName='page-item'
-      breakLinkClassName='page-link'
-      nextLinkClassName='page-link'
-      nextClassName='page-item next'
-      previousClassName='page-item prev'
-      previousLinkClassName='page-link'
-      pageLinkClassName='page-link'
-      containerClassName='pagination react-paginate separated-pagination pagination-sm justify-content-end pr-1 mt-1'
-    />
-  )
-
   useEffect(async () => {
     const request = {
       agentId: userData._id,
@@ -576,8 +547,9 @@ const UserManageByAgent = () => {
     })
     console.log(response)
     if (response.status === 200) {
-      setTableData(response.data)
-      setFilterData(response.data)
+      setTableData(response.data.agent)
+      setFilterData(response.data.agent)
+      setExpandTableData(response.data.user)
       setIsLoading(false)
     } else {
       toast.error(getTextByLanguage(response.data))
@@ -601,8 +573,9 @@ const UserManageByAgent = () => {
     })
     console.log(response)
     if (response.status === 200) {
-      setTableData(response.data)
-      setFilterData(response.data)
+      setTableData(response.data.agent)
+      setFilterData(response.data.agent)
+      setExpandTableData(response.data.user)
       setIsLoading(false)
     } else {
       toast.error(getTextByLanguage(response.data))
@@ -618,6 +591,178 @@ const UserManageByAgent = () => {
       }
     }
     setFilterData(result)
+  }
+
+  const ExpandableTable = ({ data }) => {
+    if (expandTableData[data["_id"]]) {
+      const subData = expandTableData[data["_id"]]
+
+      if (dataKind === 1) {
+        return (
+          <div>
+            <div className="expand-table" style={{ width: "100%" }}>
+              {subData.map((item, index) => {
+                return (
+                  <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                      <div>{item["_id"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>
+                        <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
+                      </div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["credit"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["risk"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["openBets"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["closeBets"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["turnover"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["discount"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["total"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["totalNet"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agentCommiPer"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["platformCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agetnCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["userId"]}</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      } else if (dataKind === 2) {
+        return (
+          <div>
+            <div className="expand-table" style={{ width: "100%" }}>
+              {subData.map((item, index) => {
+                return (
+                  <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                      <div>{item["_id"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>
+                        <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
+                      </div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["credit"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["total"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["discount"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["totalNet"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agentCommiPer"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["platformCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agetnCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["userId"]}</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      } else {
+        return (
+          <div>
+            <div className="expand-table" style={{ width: "100%" }}>
+              {subData.map((item, index) => {
+                return (
+                  <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                      <div>{item["_id"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>
+                        <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
+                      </div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["credit"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["turnover"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["total"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["discount"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["totalNet"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agentCommiPer"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["platformCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["agetnCommi"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                      <div>{item["userId"]}</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )
+      }
+    } else {
+      return (
+        <div>
+        </div>
+      )
+    }
   }
 
   if (isLoading) {
@@ -1023,6 +1168,9 @@ const UserManageByAgent = () => {
           </CardHeader>
           <div className="title bet-list-t row m-0">
             <div className="col-3 d-flex justify-content-between align-items-center bet-list-select-options">
+              <div>
+                <CustomInput type='checkbox' className='custom-control-Primary' id='Activem' label='Active Users' onClick={() => setActiveStatus(!activeStatus)} />
+              </div>
               <div className="gray-sel third">
                 <Select
                   options={weekOptions}
@@ -1032,9 +1180,6 @@ const UserManageByAgent = () => {
                   classNamePrefix='select'
                   onChange={(e) => { setSelectedWeek(e) }}
                 />
-              </div>
-              <div>
-                <CustomInput type='checkbox' className='custom-control-Primary' id='Activem' label='Active Users' onClick={() => setActiveStatus(!activeStatus)} />
               </div>
             </div>
             <div className='col-5 d-flex justify-content-center align-items-center' >
@@ -1068,18 +1213,20 @@ const UserManageByAgent = () => {
             {filterData.length > 0 ? (
               <React.Fragment>
                 <DataTable
-                  pagination
+                  // pagination
+                  // paginationPerPage={10}
+                  // paginationDefaultPage={currentPage + 1}
+                  // paginationComponent={CustomPagination}
+                  sortIcon={<ChevronDown size={5} />}
                   columns={tableColumns}
-                  paginationPerPage={10}
-                  className='react-dataTable'
-                  paginationDefaultPage={currentPage + 1}
-                  paginationComponent={CustomPagination}
                   data={filterData}
-                  // sortIcon={<ChevronDown size={10} />}
                   expandableRowsHideExpander={true}
-                  // expandableRows
-                  // expandOnRowClicked
+                  expandableRows
+                  expandOnRowClicked
+                  expandableRowsComponent={<ExpandableTable history={filterData} />}
                   noHeader={true}
+                  expandableRowExpanded={(row) => true}
+                  className='react-dataTable'
                 />
               </React.Fragment>
             ) : ""}
