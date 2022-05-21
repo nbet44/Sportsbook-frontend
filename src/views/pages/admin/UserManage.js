@@ -227,8 +227,9 @@ const UserManageByAgent = () => {
     }
     setModalData(data)
     setAutoWeeklyCredit(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
-    setWithdrawalCredit(data.withdrawalCredit ? data.withdrawalCredit : 0)
+    setWithdrawalCredit(0)
     setAgentCommission(data.agentCommission ? data.agentCommission : 0)
+    setExtraCredit(0)
     setBalanceModal(!isBalanceModal)
   }
 
@@ -275,7 +276,9 @@ const UserManageByAgent = () => {
       setFilterData(response.data.agent)
       setExpandTableData(response.data.user)
       setExpandTableDataFilter(response.data.user)
-      dispatch(handleSession(response.data.userData))
+      if (response.data.userData._id === userData._id) {
+        dispatch(handleSession(response.data.userData))
+      }
       toast.success(getTextByLanguage("success"))
     } else {
       toast.error(getTextByLanguage(response.data))
@@ -909,8 +912,14 @@ const UserManageByAgent = () => {
         <ModalBody className="useredit-form">
           <Col sm='12 row my-1 tab-wrap'>
             <Button className={modalTap === 1 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(1)}>Profile</Button>
-            <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>Setting</Button>
-            <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>Module</Button>
+            {
+              modalData && modalData.role !== 'agent' ? (
+                <React.Fragment>
+                  <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>Setting</Button>
+                  <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>Module</Button>
+                </React.Fragment>
+              ) : null
+            }
           </Col>
           {
             modalTap === 1 ? (
@@ -962,12 +971,6 @@ const UserManageByAgent = () => {
                       theme={selectThemeColors}
                       classNamePrefix='select'
                     />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 modal-boder'>{getTextByLanguage("Max per match limit")}</Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
                   </Col>
                 </FormGroup>
 
@@ -1074,6 +1077,12 @@ const UserManageByAgent = () => {
             modalTap === 3 ? (
               <React.Fragment>
                 <FormGroup row>
+                  <Label sm='6 modal-boder'>{getTextByLanguage("Max per match limit")}</Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input type="number" value={modalData ? modalData.maxBetLimit : ""} onChange={e => { setModalData({ ...modalData, ["maxBetLimit"]: e.target.value }) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
                   <Label sm='6 modal-boder'>{getTextByLanguage("Max Bets Per Game")}</Label>
                   <Col sm='6 align-items-center'>
                     <Select
@@ -1171,44 +1180,6 @@ const UserManageByAgent = () => {
                 </FormGroup>
               </React.Fragment>
             ) : null
-          }
-
-
-          {
-            modalData && modalData.role === 'agent' ? (
-              <React.Fragment>
-                <FormGroup row className='pt-1'>
-                  <Label sm='6'>
-                    {getTextByLanguage("Block")}
-                  </Label>
-                  <Col sm='6 align-items-center'>
-                    <CustomInput
-                      id="account_delete_id"
-                      type="switch"
-                      checked={isAccountDelete}
-                      onChange={() => { setAccountDelete(!isAccountDelete) }}
-                    />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6'>
-                    {getTextByLanguage("Account level")}
-                  </Label>
-                  <Col sm='6 align-items-center'>
-                    <Select
-                      onChange={e => { setAccountLevel(e) }}
-                      defaultValue={accountLevel}
-                      options={levelOptions}
-                      className="react-select"
-                      theme={selectThemeColors}
-                      classNamePrefix='select'
-                    />
-                  </Col>
-                </FormGroup>
-              </React.Fragment>
-            ) : (
-              null
-            )
           }
 
           <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
