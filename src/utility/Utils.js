@@ -73,7 +73,7 @@ export const isFirstLogin = () => JSON.parse(localStorage.getItem('isFirst'))
 export const getHomeRouteForLoggedInUser = userRole => {
   //admin
   // if (userRole === 'admin' || userRole === 'agent') return '/admin'
-  if (userRole === 'admin' || userRole === 'agent') return '/admin/user-list'
+  if (userRole === 'admin' || userRole === 'agent') return '/admin/user-manage'
   if (userRole === 'user') return '/home'
   return '/login'
 }

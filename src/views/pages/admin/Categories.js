@@ -20,10 +20,15 @@ const CategoriesCmp = () => {
                 ) : (
                     <>
                         {
+                            userData.role === "agent" || userData.role === "admin" ? (
+                                <li><span onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage("User List")}</span></li>
+                            ) : null
+                        }
+                        {/* {
                             userData && userData.permission && userData.permission.agent ? (
                                 <li><span onClick={() => history.push("/admin/user-list")}>{getTextByLanguage("User List")}</span></li>
                             ) : null
-                        }
+                        } */}
 
                         <li><span onClick={() => history.push("/admin/bet-list")}>{getTextByLanguage("Bet List")}</span></li>
 
@@ -43,20 +48,16 @@ const CategoriesCmp = () => {
                                 <li><span onClick={() => history.push("/admin/setting")}>{getTextByLanguage("Setting")}</span></li>
                             ) : null
                         }
-                        {
-                            userData.role === "agent" || userData.role === "admin" ? (
-                                <li><span onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage("User Management")}</span></li>
-                            ) : null
-                        }
+
 
                         {
                             /* {userData && userData.permission && userData.permission.agent ? (
                                 <li><a href="/admin/create-new-agent" data-nsfw-filter-status="swf">{getTextByLanguage("Create New Agent")}</a></li>
                             ) : ""} */
                         }
-                        {userData && userData.permission && userData.permission.agent ? (
+                        {/* {userData && userData.permission && userData.permission.agent ? (
                             <li><a href="/admin/agent-list" data-nsfw-filter-status="swf">{getTextByLanguage("Agent List")}</a></li>
-                        ) : ""}
+                        ) : ""} */}
                     </>
                 )}
             </ul>
