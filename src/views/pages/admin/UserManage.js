@@ -728,53 +728,53 @@ const UserManageByAgent = () => {
               {subData.map((item, index) => {
                 return (
                   <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell extra_center">
                       <div>{item["_id"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["risk"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["openBets"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["closeBets"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["turnover"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["discount"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["total"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["totalNet"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agentCommiPer"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["platformCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agetnCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
                     </div>
                   </div>
@@ -790,41 +790,41 @@ const UserManageByAgent = () => {
               {subData.map((item, index) => {
                 return (
                   <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell extra_center">
                       <div>{item["_id"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["total"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["discount"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["totalNet"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agentCommiPer"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["platformCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agetnCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
                     </div>
                   </div>
@@ -840,44 +840,44 @@ const UserManageByAgent = () => {
               {subData.map((item, index) => {
                 return (
                   <div className="expand-row sc-fzoLsD cPZdFe rdt_TableRow" key={index}>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl iNQeVO rdt_TableCell extra_center">
                       <div>{item["_id"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserInfoModal(item) }} style={{ cursor: "pointer" }}>{item.username}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["turnover"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["total"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["discount"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["totalNet"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agentCommiPer"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["platformCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["agetnCommi"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
                     </div>
                   </div>
@@ -911,12 +911,12 @@ const UserManageByAgent = () => {
         </ModalHeader>
         <ModalBody className="useredit-form">
           <Col sm='12 row my-1 tab-wrap'>
-            <Button className={modalTap === 1 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(1)}>Profile</Button>
+            <Button className={modalTap === 1 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(1)}>{getTextByLanguage('Profile')}</Button>
             {
               modalData && modalData.role !== 'agent' ? (
                 <React.Fragment>
-                  <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>Setting</Button>
-                  <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>Module</Button>
+                  <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>{getTextByLanguage('Setting')}</Button>
+                  <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>{getTextByLanguage('Module')}</Button>
                 </React.Fragment>
               ) : null
             }
@@ -1370,7 +1370,7 @@ const UserManageByAgent = () => {
         <Card className="b-team__list">
           <CardHeader >
             <div className="left">
-              <h2 className="b-list m-auto px-5 py-1 transaction-title">{getTextByLanguage("User Management")}</h2>
+              <h2 className="b-list m-auto px-5 py-1 transaction-title">{getTextByLanguage("User List")}</h2>
             </div>
           </CardHeader>
           <div className="title bet-list-t row m-0">

@@ -1199,6 +1199,10 @@ footer {
     border-bottom: 1px solid #6a6b70
 }
 
+.extra_center, .rdt_TableCell {
+    justify-content: center;
+}
+
 /* datatable  */
 .dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
     border-right: 1px solid #3b4253;
