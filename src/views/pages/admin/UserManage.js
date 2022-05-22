@@ -59,8 +59,8 @@ const UserManageByAgent = () => {
 
   const [leftData, setLeftData] = useState({})
   const [rightData, setRightData] = useState({})
-  const [leftWeek, setLeftWeek] = useState(1)
-  const [rightWeek, setRightWeek] = useState(1)
+  const [leftWeek, setLeftWeek] = useState({ value: 1 })
+  const [rightWeek, setRightWeek] = useState({ value: 1 })
   const [modalTap, setModalTap] = useState(1)
 
   //-----------------setting options-----------------
@@ -1347,6 +1347,22 @@ const UserManageByAgent = () => {
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
                     <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
+                    {getTextByLanguage("Sports Discount")}
+                  </Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input type="number" value={modalData ? modalData.sportsDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["sportsDiscount"]: e.target.value }) } }} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
+                    {getTextByLanguage("Casino Discount")}
+                  </Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input type="number" value={modalData ? modalData.casinoDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["casinoDiscount"]: e.target.value }) } }} />
                   </Col>
                 </FormGroup>
               </React.Fragment>
