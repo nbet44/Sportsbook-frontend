@@ -152,7 +152,6 @@ const BetSlipCmp = () => {
             }
         }
         setMinAmountError(ErrorID)
-        // if (ErrorID.length === 0) {
         if (!isObjEmpty(slipData)) {
             const request = {
                 ...slipData,
@@ -182,11 +181,9 @@ const BetSlipCmp = () => {
         setTimeout(() => {
             setMinAmountError([])
         }, 1000)
-        // }
     }
 
     useEffect(() => {
-        console.log("--- activeEvent ---")
         for (const i in activeEvent) {
             if (activeEvent[i].isOddChanged) {
                 setAccept(true)
@@ -200,7 +197,6 @@ const BetSlipCmp = () => {
     }, [activeEvent])
 
     useEffect(() => {
-        console.log("--- slipType ---")
         if (window.innerWidth < 1184) {
             setClientPlatform("mobile")
         } else {
