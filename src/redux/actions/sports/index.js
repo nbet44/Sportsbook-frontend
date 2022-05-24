@@ -37,9 +37,9 @@ export const changeOdds = (oldData, newData) => {
             oldData[i].isOddChanged = true
         }
     }
-    console.log("changed odds")
-    console.log(oldData)
-    console.log("changed odds")
+    // console.log("changed odds")
+    // console.log(oldData)
+    // console.log("changed odds")
     return dispatch => {
         dispatch({
             type: "CHANGE_ODDS",
