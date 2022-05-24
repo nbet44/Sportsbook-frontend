@@ -47,16 +47,16 @@ export const sportsNameById = {
     16: "Handball",
     12: "Ice Hockey",
     11: "American Football",
-    // 70: "Futsal",
     56: "Table Tennis",
-    // 32: "Rugby Union",
     24: "Boxing",
+    7: "Baketball",
+    18: "Volleyball"
+    // 70: "Futsal",
+    // 32: "Rugby Union",
     // 6: "Formula 1",
     // 40: "Motorbikes",
     // 9: "Alpine Skiing",
     // 100: "E-sports",
-    7: "Baketball",
-    18: "Volleyball"
     // 23: "Baseball"
     // 33: "Snooker",
     // 22: "Cricket",
