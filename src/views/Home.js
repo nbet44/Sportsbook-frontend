@@ -108,7 +108,6 @@ const Home = () => {
     } else {
       toast.error(response.data)
     }
-    // console.log(convertIdFromText("Please enter same password"))
   }, [])
 
   const TopFootballLeaguesCmp = () => {
@@ -140,7 +139,7 @@ const Home = () => {
   if (isLoading) {
     return (
       <div>
-       <HeaderCmp />
+        <HeaderCmp />
         <Spinner />
       </div>
     )
