@@ -1440,7 +1440,7 @@ const UserManageByAgent = () => {
                   // paginationPerPage={10}
                   // paginationDefaultPage={currentPage + 1}
                   // paginationComponent={CustomPagination}
-                  sortIcon={<ChevronDown size={5} />}
+                  sortIcon={<ChevronDown size={1} />}
                   columns={tableColumns}
                   data={filterData}
                   expandableRowsHideExpander={true}
