@@ -1297,7 +1297,6 @@ const UserManageByAgent = () => {
                     <Input type="number" value={modalData ? modalData.casinoCommission : 0} onChange={e => { setModalData({ ...modalData, ["casinoCommission"]: e.target.value }) }} />
                   </Col>
                 </FormGroup>
-
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -1307,6 +1306,14 @@ const UserManageByAgent = () => {
                   </Label>
                   <Col sm='6 align-items-center d-flex'>
                     <span>{modalData ? modalData.platformCommission : 0} </span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 modal-boder'>
+                    {getTextByLanguage("Used blanace")}
+                  </Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <span>{modalData ? modalData.closeBets : 0} </span>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -1349,25 +1356,25 @@ const UserManageByAgent = () => {
                     <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
                   </Col>
                 </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>
-                    {getTextByLanguage("Sports Discount")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={modalData ? modalData.sportsDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["sportsDiscount"]: e.target.value }) } }} />
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>
-                    {getTextByLanguage("Casino Discount")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={modalData ? modalData.casinoDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["casinoDiscount"]: e.target.value }) } }} />
-                  </Col>
-                </FormGroup>
               </React.Fragment>
             )
           }
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex modal-boder'>
+              {getTextByLanguage("Sports Discount")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? modalData.sportsDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["sportsDiscount"]: e.target.value }) } }} />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label sm='6 align-items-center d-flex modal-boder'>
+              {getTextByLanguage("Casino Discount")}
+            </Label>
+            <Col sm='6 align-items-center d-flex'>
+              <Input type="number" value={modalData ? modalData.casinoDiscount : 0} onChange={e => { { setModalData({ ...modalData, ["casinoDiscount"]: e.target.value }) } }} />
+            </Col>
+          </FormGroup>
           <hr className="row" style={{ borderTop: "2px solid #fff" }}></hr>
         </ModalBody>
         <ModalFooter className="m-auto border-0">
