@@ -276,6 +276,7 @@ const UserManageByAgent = () => {
       setFilterData(response.data.agent)
       setExpandTableData(response.data.user)
       setExpandTableDataFilter(response.data.user)
+      console.log(response, userData)
       if (response.data.userData._id === userData._id) {
         dispatch(handleSession(response.data.userData))
       }
@@ -913,7 +914,7 @@ const UserManageByAgent = () => {
           <Col sm='12 row my-1 tab-wrap'>
             <Button className={modalTap === 1 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(1)}>{getTextByLanguage('Profile')}</Button>
             {
-              modalData && modalData.role !== 'agent' ? (
+              modalData && modalData.role !== 'agent' && modalData.role !== 'superAgent' ? (
                 <React.Fragment>
                   <Button className={modalTap === 2 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(2)}>{getTextByLanguage('Setting')}</Button>
                   <Button className={modalTap === 3 ? 'btn-warning tab-btn' : 'tab-btn'} onClick={() => setModalTap(3)}>{getTextByLanguage('Module')}</Button>

@@ -9,7 +9,7 @@ export const convertIdFromText = (data) => {
 export const useTranslator = () => {
     const { t, i18n } = useTranslation('common')
     /*eslint-disable */
-    console.log('"' + getUuid("Agent Share") + '"' + ':' + '"' + 'Agent Share' + '"')
+    // console.log('"' + getUuid("Agent Share") + '"' + ':' + '"' + 'Agent Share' + '"')
     /*eslint-enable */
     const setValue = value => {
         if (i18n.language !== "en") {
