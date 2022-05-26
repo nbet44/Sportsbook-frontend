@@ -83,9 +83,9 @@ const NewPlayerCmp = () => {
     }
 
     // careate agent
-    const [permission, setPermission] = useState({ SuperAgent: false, agent: true })
+    const [permission, setPermission] = useState({})
     const [agentShare, setAgentShare] = useState("85")
-    const [roleValue, setRoleValue] = useState([])
+    const [roleValue, setRoleValue] = useState({ value: 'agent', label: getTextByLanguage('Agent'), isFixed: true })
 
     const permissionOptions = [
         // { value: 'player', label: getTextByLanguage('Player'), isFixed: true },
@@ -94,7 +94,20 @@ const NewPlayerCmp = () => {
     ]
 
     const handleCreateAgent = async () => {
+        console.log(permission)
         const pid = userData._id
+        if (agentShare > 100) {
+            toast.error(getTextByLanguage("Agent Profit maximum value is 100%"))
+            return false
+        }
+        if (username === "") {
+            toast.error(getTextByLanguage("Please enter username"))
+            return false
+        }
+        if (password === "") {
+            toast.error(getTextByLanguage("Please enter password"))
+            return false
+        }
         if (password !== confirmPassword) {
             toast.error(getTextByLanguage("Please enter same password"))
             return false
@@ -104,11 +117,11 @@ const NewPlayerCmp = () => {
             username,
             userId,
             password,
-            role: "agent",
-            permission,
+            role: roleValue.value,
             pid,
             created: Date.now()
         }
+        console.log(request)
         const response = await Axios({
             endpoint: "/auth/create-agent",
             method: "POST",
@@ -123,16 +136,6 @@ const NewPlayerCmp = () => {
 
     const handlePermission = async (options) => {
         setRoleValue(options)
-        const newPermission = permission
-        for (const i in newPermission) {
-            newPermission[i] = false
-        }
-        for (const i in options) {
-            if (newPermission[options[i]["value"]] !== undefined) {
-                newPermission[options[i]["value"]] = true
-            }
-        }
-        setPermission({ ...newPermission })
     }
 
     const handleSwitch = async (key) => {
@@ -146,7 +149,6 @@ const NewPlayerCmp = () => {
         setLanguage("english")
         setCurrency('TRY')
         setRole({ value: "user" })
-        setPermission({ SuperAgent: false, agent: true })
         setAgentShare("85")
     }
 
@@ -172,7 +174,7 @@ const NewPlayerCmp = () => {
                             <CardBody className="b-team py-0">
                                 <ModalBody className="useredit-form mt-1">
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Username")}
                                         </Label>
                                         <Col sm='6'>
@@ -186,7 +188,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Name")}
                                         </Label>
                                         <Col sm='6'>
@@ -200,7 +202,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Password")}
                                         </Label>
                                         <Col sm='6'>
@@ -214,7 +216,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Confirm password")}
                                         </Label>
                                         <Col sm='6'>
@@ -228,7 +230,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Credit")}
                                         </Label>
                                         <Col sm='6'>
@@ -241,7 +243,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Language")}
                                         </Label>
                                         <Col sm='6'>
@@ -257,7 +259,7 @@ const NewPlayerCmp = () => {
                                     </FormGroup>
                                     {userData.role === "admin" ? (
                                         <FormGroup row>
-                                            <Label sm='6'>
+                                            <Label sm='6 modal-boder'>
                                                 {getTextByLanguage("Role")}
                                             </Label>
                                             <Col sm='6'>
@@ -287,7 +289,24 @@ const NewPlayerCmp = () => {
                             <CardBody>
                                 <ModalBody className="useredit-form mt-1">
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
+                                            {getTextByLanguage("Permission")}
+                                        </Label>
+                                        <Col sm='6'>
+                                            <Select
+                                                isClearable={false}
+                                                theme={selectThemeColors}
+                                                defaultValue={permissionOptions[0]}
+                                                options={permissionOptions}
+                                                className='react-select'
+                                                classNamePrefix='select'
+                                                onChange={e => { handlePermission(e) }}
+                                                value={roleValue}
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Agent Share")}
                                         </Label>
                                         <Col sm='6'>
@@ -295,13 +314,14 @@ const NewPlayerCmp = () => {
                                                 onChange={e => { setAgentShare(e.target.value) }}
                                                 type='number'
                                                 placeholder=''
+                                                maxlimit={100}
                                                 required
                                                 value={agentShare}
                                             />
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Username")}
                                         </Label>
                                         <Col sm='6'>
@@ -315,7 +335,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Name")}
                                         </Label>
                                         <Col sm='6'>
@@ -329,7 +349,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Password")}
                                         </Label>
                                         <Col sm='6'>
@@ -343,7 +363,7 @@ const NewPlayerCmp = () => {
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
-                                        <Label sm='6'>
+                                        <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Confirm password")}
                                         </Label>
                                         <Col sm='6'>
@@ -353,24 +373,6 @@ const NewPlayerCmp = () => {
                                                 placeholder=''
                                                 required
                                                 value={confirmPassword}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup row>
-                                        <Label sm='6'>
-                                            {getTextByLanguage("Permission")}
-                                        </Label>
-                                        <Col sm='6'>
-                                            <Select
-                                                isClearable={false}
-                                                theme={selectThemeColors}
-                                                defaultValue={permissionOptions}
-                                                isMulti
-                                                options={permissionOptions}
-                                                className='react-select'
-                                                classNamePrefix='select'
-                                                onChange={e => { handlePermission(e) }}
-                                                value={roleValue}
                                             />
                                         </Col>
                                     </FormGroup>

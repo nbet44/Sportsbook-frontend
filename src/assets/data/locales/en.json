@@ -2770,5 +2770,14 @@
   "08948a26-a882-5c85-86dc-fd7f6338cf4e": "Weekly balance reset",
   "cc9da3c1-337a-5125-b7de-9b3271a7761e": "Extra credit",
   "207442a9-a89f-5ba9-b769-dc5901849692": "Less credit",
-  "b613d3cc-0e00-512e-8538-23f835d84d07": "Weekly credit"
+  "b613d3cc-0e00-512e-8538-23f835d84d07": "Weekly credit",
+  "f6889fc9-7e14-542d-ac11-a8c183ea791c": "Super",
+  "89082ef9-8c2c-5d23-87d1-d595d193f669": "Please enter username",
+  "bb97d7e2-0518-53c8-bdd0-9411824071b2": "Please enter password",
+  "ff47f4c1-ac0a-54af-9e25-489c03b3abc2": "Agent Profit maximum value is 100%",
+  "77f258c7-b851-56e1-9e82-f4a5f55782a0": "Agent Profit",
+  "a23848cb-58c4-58a3-9765-8e361ad1820c": "Create Agent",
+  "ee9188ed-b194-50e5-9c6b-ca8d93008df7": "Create Player",
+  "82dd2cdf-36f9-536d-89f4-04454654ad3e": "Block",
+  "829ce0ff-f7cb-58de-9a3b-94426c5af1f4": "Agent Share"
 }

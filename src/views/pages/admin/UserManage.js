@@ -333,7 +333,7 @@ const UserManageByAgent = () => {
       minWidth: "50px",
       sortable: true,
       cell: row => (
-        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username} {row.role === 'superAgent' ? <span className='super'>{getTextByLanguage('Super')}</span> : null}</span>
       )
     },
 
@@ -342,7 +342,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {
@@ -435,7 +435,7 @@ const UserManageByAgent = () => {
       minWidth: "50px",
       sortable: true,
       cell: row => (
-        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}{row.role === 'superAgent' ? <span className='super'>{getTextByLanguage('Super')}</span> : null}</span>
       )
     },
     {
@@ -443,7 +443,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {
@@ -512,7 +512,7 @@ const UserManageByAgent = () => {
       minWidth: "50px",
       sortable: true,
       cell: row => (
-        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}</span>
+        <span onClick={e => { showUserInfoModal(row) }} style={{ cursor: "pointer" }}>{row.username}{row.role === 'superAgent' ? <span className='super'>{getTextByLanguage('Super')}</span> : null}</span>
       )
     },
     {
@@ -520,7 +520,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{row.isOnline}</span>
+        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {

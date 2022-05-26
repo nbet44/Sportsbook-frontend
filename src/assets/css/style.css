@@ -1203,6 +1203,17 @@ footer {
     justify-content: center;
 }
 
+.super {
+    border-radius: 30px;
+    background: #e85454;
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    width: 50px !important;
+    color: white;
+    font-size: 12px;
+}
+
 /* datatable  */
 .dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
     border-right: 1px solid #3b4253;

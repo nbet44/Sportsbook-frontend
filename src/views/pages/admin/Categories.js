@@ -33,7 +33,7 @@ const CategoriesCmp = () => {
                         <li><span onClick={() => history.push("/admin/bet-list")}>{getTextByLanguage("Bet List")}</span></li>
 
                         {
-                            userData && userData.permission && userData.permission.agent ? (
+                            userData && userData.role !== "user" ? (
                                 <li><span onClick={() => history.push("/admin/create-new-player")}>
                                     {userData.role === "agent" ? getTextByLanguage("Create New Player") : getTextByLanguage("Create New Player/Agent")}
                                 </span></li>
