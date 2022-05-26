@@ -738,7 +738,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
@@ -800,7 +800,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
@@ -850,7 +850,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{item.isOnline}</span>
+                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
