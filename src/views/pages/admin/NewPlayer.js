@@ -84,7 +84,7 @@ const NewPlayerCmp = () => {
 
     // careate agent
     const [permission, setPermission] = useState({})
-    const [agentShare, setAgentShare] = useState("85")
+    const [agentShare, setAgentShare] = useState(0)
     const [roleValue, setRoleValue] = useState({ value: 'agent', label: getTextByLanguage('Agent'), isFixed: true })
 
     const permissionOptions = [
@@ -149,7 +149,7 @@ const NewPlayerCmp = () => {
         setLanguage("english")
         setCurrency('TRY')
         setRole({ value: "user" })
-        setAgentShare("85")
+        setAgentShare(0)
     }
 
     return (
@@ -318,6 +318,7 @@ const NewPlayerCmp = () => {
                                                 required
                                                 value={agentShare}
                                             />
+                                            <span className='percent'>%</span>
                                         </Col>
                                     </FormGroup>
                                     <FormGroup row>
