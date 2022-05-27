@@ -247,6 +247,7 @@ const UserManageByAgent = () => {
       withdrawalCredit,
       autoWeeklyCredit,
       extraCredit,
+      agentShare,
       userId: modalData._id,
       created: Date.now(),
       filter: {
@@ -261,10 +262,10 @@ const UserManageByAgent = () => {
       request['user'] = {
         autoWeeklyCredit,
         extraCredit,
-        withdrawalCredit,
-        agentShare
+        withdrawalCredit
       }
     }
+    console.log(request, '--------------')
     const response = await Axios({
       endpoint: "/agent/update-userbalance-management",
       method: "POST",
