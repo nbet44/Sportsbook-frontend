@@ -94,7 +94,6 @@ const NewPlayerCmp = () => {
     ]
 
     const handleCreateAgent = async () => {
-        console.log(permission)
         const pid = userData._id
         if (agentShare > 100) {
             toast.error(getTextByLanguage("Agent Profit maximum value is 100%"))
@@ -121,7 +120,6 @@ const NewPlayerCmp = () => {
             pid,
             created: Date.now()
         }
-        console.log(request)
         const response = await Axios({
             endpoint: "/auth/create-agent",
             method: "POST",
@@ -162,7 +160,7 @@ const NewPlayerCmp = () => {
                             <h2 className={switchUser === 'U' ? (userData.role === 'agent' ? "m-auto new-player pl-6" : "m-auto new-player text-center") : "m-auto new-player text-center new-player-active1"} onClick={() => handleSwitch('U')}>{getTextByLanguage("Create New Player")}</h2>
                         </div>
                         {
-                            userData.role === 'admin' ? (
+                            userData.role === 'admin' || userData.role === 'superAgent' ? (
                                 <div className="right w-50">
                                     <h2 className={switchUser === 'A' ? "m-auto new-player text-center" : "m-auto new-player text-center new-player-active2"} onClick={() => handleSwitch('A')}>{getTextByLanguage("Create New Agent")}</h2>
                                 </div>
@@ -288,23 +286,27 @@ const NewPlayerCmp = () => {
                         ) : (
                             <CardBody>
                                 <ModalBody className="useredit-form mt-1">
-                                    <FormGroup row>
-                                        <Label sm='6 modal-boder'>
-                                            {getTextByLanguage("Permission")}
-                                        </Label>
-                                        <Col sm='6'>
-                                            <Select
-                                                isClearable={false}
-                                                theme={selectThemeColors}
-                                                defaultValue={permissionOptions[0]}
-                                                options={permissionOptions}
-                                                className='react-select'
-                                                classNamePrefix='select'
-                                                onChange={e => { handlePermission(e) }}
-                                                value={roleValue}
-                                            />
-                                        </Col>
-                                    </FormGroup>
+                                    {
+                                        userData && userData.role === 'admin' ? (
+                                            <FormGroup row>
+                                                <Label sm='6 modal-boder'>
+                                                    {getTextByLanguage("Permission")}
+                                                </Label>
+                                                <Col sm='6'>
+                                                    <Select
+                                                        isClearable={false}
+                                                        theme={selectThemeColors}
+                                                        defaultValue={permissionOptions[0]}
+                                                        options={permissionOptions}
+                                                        className='react-select'
+                                                        classNamePrefix='select'
+                                                        onChange={e => { handlePermission(e) }}
+                                                        value={roleValue}
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+                                        ) : null
+                                    }
                                     <FormGroup row>
                                         <Label sm='6 modal-boder'>
                                             {getTextByLanguage("Agent Share")}
