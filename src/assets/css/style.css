@@ -1221,6 +1221,9 @@ footer {
 }
 
 /* datatable  */
+.react-dataTable {
+    overflow: hidden !important;
+}
 .dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
     border-right: 1px solid #3b4253;
 }

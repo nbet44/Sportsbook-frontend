@@ -350,7 +350,7 @@ const UserManageByAgent = () => {
       name: getTextByLanguage('Credit'),
       selector: "balance",
       sortable: true,
-      minWidth: "50px",
+      width: "80px",
       cell: row => (
         <span onClick={e => { showUserBalanceModal(row) }} style={{ cursor: "pointer" }}>{row.balance}</span>
       )
@@ -359,19 +359,19 @@ const UserManageByAgent = () => {
       name: getTextByLanguage('Balance in risk'),
       selector: "risk",
       sortable: true,
-      minWidth: "50px"
+      width: "80px"
     },
     {
       name: getTextByLanguage('Open Bets'),
       selector: "openBets",
       sortable: true,
-      minWidth: "50px"
+      width: "60px"
     },
     {
       name: getTextByLanguage('Close Bets'),
       selector: "closeBets",
       sortable: true,
-      minWidth: "50px"
+      width: "60px"
     },
     {
       name: getTextByLanguage('Turnover'),
@@ -383,7 +383,7 @@ const UserManageByAgent = () => {
       name: getTextByLanguage('Discount'),
       selector: "discount",
       sortable: true,
-      minWidth: "50px"
+      width: "80px"
     },
     {
       name: getTextByLanguage('Total'),
@@ -399,9 +399,9 @@ const UserManageByAgent = () => {
     },
     {
       name: getTextByLanguage('Agent Commission%'),
-      selector: "agentCommiPer",
+      selector: "agentShare",
       sortable: true,
-      minWidth: "50px"
+      width: "70px"
     },
     {
       name: getTextByLanguage('Platform Commission'),
@@ -740,24 +740,24 @@ const UserManageByAgent = () => {
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
                       <div>
                         <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
                       <div>{item["risk"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ThIpt rdt_TableCell extra_center">
                       <div>{item["openBets"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ThIpt rdt_TableCell extra_center">
                       <div>{item["closeBets"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["turnover"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
                       <div>{item["discount"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
@@ -766,7 +766,7 @@ const UserManageByAgent = () => {
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["totalNet"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF fOWPbB rdt_TableCell extra_center">
                       <div>{item["agentCommiPer"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
