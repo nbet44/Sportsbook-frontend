@@ -5,7 +5,7 @@ import {
 } from 'reactstrap'
 import Select from 'react-select'
 import { selectThemeColors } from '@utils'
-import { ChevronDown, AlertCircle, Search, Check } from 'react-feather'
+import { ChevronDown, LogIn, AlertCircle, Search, Check } from 'react-feather'
 import DataTable from 'react-data-table-component'
 import ReactPaginate from 'react-paginate'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
@@ -291,6 +291,13 @@ const UserManageByAgent = () => {
     setModalData(null)
   }
 
+  //-----------------Login with other accounts-----------
+  const handleLoginUser = (data) => {
+    localStorage.setItem("subData", JSON.stringify(userData))
+    localStorage.setItem("userData", JSON.stringify(data))
+    window.location.href = "/home"
+  }
+
   //-----------------state-----------------
   const handleSelectLeft = async (value) => {
     const responseAgent = await Axios({
@@ -377,7 +384,7 @@ const UserManageByAgent = () => {
       name: getTextByLanguage('Turnover'),
       selector: "turnover",
       sortable: true,
-      minWidth: "50px"
+      width: "80px"
     },
     {
       name: getTextByLanguage('Discount'),
@@ -420,6 +427,18 @@ const UserManageByAgent = () => {
       selector: 'userId',
       minWidth: "50px",
       sortable: true
+    },
+    {
+      name: getTextByLanguage('Enter'),
+      allowOverflow: true,
+      width: "60px",
+      cell: row => {
+        return (
+          <div className='d-flex' style={{ cursor: "pointer" }} >
+            <LogIn size={20} onClick={e => handleLoginUser(row)} />
+          </div>
+        )
+      }
     }
   ]
 
@@ -497,6 +516,18 @@ const UserManageByAgent = () => {
       selector: 'userId',
       minWidth: "50px",
       sortable: true
+    },
+    {
+      name: getTextByLanguage('Enter'),
+      allowOverflow: true,
+      minWidth: "50px",
+      cell: row => {
+        return (
+          <div className='d-flex' style={{ cursor: "pointer" }} >
+            <LogIn size={20} onClick={e => handleLoginUser(row)} />
+          </div>
+        )
+      }
     }
   ]
 
@@ -580,6 +611,18 @@ const UserManageByAgent = () => {
       selector: 'userId',
       minWidth: "50px",
       sortable: true
+    },
+    {
+      name: getTextByLanguage('Enter'),
+      allowOverflow: true,
+      minWidth: "50px",
+      cell: row => {
+        return (
+          <div className='d-flex' style={{ cursor: "pointer" }} >
+            <LogIn size={20} onClick={e => handleLoginUser(row)} />
+          </div>
+        )
+      }
     }
   ]
 
@@ -740,24 +783,29 @@ const UserManageByAgent = () => {
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <span className={item.isOnline === 'ON' ? 'btn-on' : item.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(item.isOnline)}</span>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ZfIsP rdt_TableCell extra_center">
+                      {/* ezMpHB */}
                       <div>
                         <span onClick={e => { showUserBalanceModal(item) }} style={{ cursor: "pointer" }}>{item.credit}</span>
                       </div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ZfIsP rdt_TableCell extra_center">
+                      {/* ezMpHB */}
                       <div>{item["risk"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ThIpt rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF bmSCnn rdt_TableCell extra_center">
+                      {/* ThIpt */}
                       <div>{item["openBets"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ThIpt rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF bmSCnn rdt_TableCell extra_center">
+                      {/* ThIpt */}
                       <div>{item["closeBets"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["turnover"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ZfIsP rdt_TableCell extra_center">
+                      {/* ezMpHB */}
                       <div>{item["discount"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
@@ -766,7 +814,8 @@ const UserManageByAgent = () => {
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["totalNet"]}</div>
                     </div>
-                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF fOWPbB rdt_TableCell extra_center">
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ctSdAz rdt_TableCell extra_center">
+                      {/* fOWPbB */}
                       <div>{item["agentCommiPer"]}</div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
@@ -777,6 +826,9 @@ const UserManageByAgent = () => {
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF bmSCnn rdt_TableCell extra_center">
+                      <LogIn size={20} onClick={e => handleLoginUser(item)} />
                     </div>
                   </div>
                 )
@@ -827,6 +879,9 @@ const UserManageByAgent = () => {
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                      <LogIn size={20} onClick={e => handleLoginUser(item)} />
                     </div>
                   </div>
                 )
@@ -880,6 +935,9 @@ const UserManageByAgent = () => {
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>{item["userId"]}</div>
+                    </div>
+                    <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
+                      <LogIn size={20} onClick={e => handleLoginUser(item)} />
                     </div>
                   </div>
                 )
