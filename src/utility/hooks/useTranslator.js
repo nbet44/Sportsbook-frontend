@@ -9,7 +9,7 @@ export const convertIdFromText = (data) => {
 export const useTranslator = () => {
     const { t, i18n } = useTranslation('common')
     /*eslint-disable */
-    // console.log('"' + getUuid("Maximum value is") + '"' + ':' + '"' + 'Maximum value is' + '"')
+    // console.log('"' + getUuid("ON") + '"' + ':' + '"' + 'ON' + '"')
     /*eslint-enable */
     const setValue = value => {
         if (i18n.language !== "en") {

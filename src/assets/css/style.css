@@ -1220,6 +1220,84 @@ footer {
     font-size: 12px;
 }
 
+/* status  */
+.btn-on {
+    font-size: 12px;
+    color: #27c657;
+    width: 100%;
+    border: 1px solid #27c657;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+    border-radius: 20px;
+    position: relative;
+    text-align: left !important;
+}
+
+.btn-on::after {
+    content: "";
+    border-radius: 50px;
+    padding: 3px;
+    background-color: #27c657;
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 7px;
+    right: 10px;
+}
+
+.btn-off {
+    font-size: 12px;
+    color: #ff9f43;
+    width: 100%;
+    border: 1px solid #ff9f43 !important;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+    border-radius: 20px;
+    position: relative;
+    text-align: left !important;
+}
+
+.btn-off::after {
+    content: "";
+    border-radius: 50px;
+    padding: 3px;
+    background-color: #ff9f43;
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 7px;
+    right: 10px;
+}
+
+.btn-block {
+    font-size: 12px;
+    color: #e85454;
+    width: 100%;
+    border: 1px solid #e85454;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+    border-radius: 20px;
+    position: relative;
+    text-align: left !important;
+}
+
+.btn-block::after {
+    content: "";
+    border-radius: 50px;
+    padding: 3px;
+    background-color: #e85454;
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 7px;
+    right: 10px;
+}
 /* datatable  */
 .react-dataTable {
     overflow: hidden !important;

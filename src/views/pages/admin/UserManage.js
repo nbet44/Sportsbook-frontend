@@ -159,7 +159,7 @@ const UserManageByAgent = () => {
       setSetting(data.setting)
     }
 
-    if (data.isOnline === "Blocked") {
+    if (data.isOnline === "BLOCK") {
       setAccountDelete(true)
     } else {
       setAccountDelete(false)
@@ -170,6 +170,7 @@ const UserManageByAgent = () => {
     } else {
       setAccountLevel({ value: "normal", label: "Normal" })
     }
+    setAgentShare(data.agentShare ? data.agentShare : 0)
     setUserInfoModal(!isUserInfoModal)
   }
 
@@ -185,6 +186,7 @@ const UserManageByAgent = () => {
     const request = {
       delete: isAccountDelete,
       level: accountLevel.value,
+      agentShare,
       setting,
       update: modalData,
       updated: Date.now(),
@@ -228,7 +230,6 @@ const UserManageByAgent = () => {
     setModalData(data)
     setAutoWeeklyCredit(data.autoWeeklyCredit ? data.autoWeeklyCredit : 0)
     setWithdrawalCredit(0)
-    setAgentShare(data.agentShare ? data.agentShare : 0)
     setExtraCredit(0)
     setBalanceModal(!isBalanceModal)
   }
@@ -247,7 +248,6 @@ const UserManageByAgent = () => {
       withdrawalCredit,
       autoWeeklyCredit,
       extraCredit,
-      agentShare,
       userId: modalData._id,
       created: Date.now(),
       filter: {
@@ -343,7 +343,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
+        <span className={row.isOnline === 'ON' ? 'btn-on' : row.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {
@@ -444,7 +444,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
+        <span className={row.isOnline === 'ON' ? 'btn-on' : row.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {
@@ -521,7 +521,7 @@ const UserManageByAgent = () => {
       selector: 'isOnline',
       minWidth: "50px",
       cell: row => (
-        <span className={row.isOnline === 'Online' ? 'btn-success' : row.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(row.isOnline)}</span>
+        <span className={row.isOnline === 'ON' ? 'btn-on' : row.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(row.isOnline)}</span>
       )
     },
     {
@@ -738,7 +738,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
+                      <span className={item.isOnline === 'ON' ? 'btn-on' : item.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF ezMpHB rdt_TableCell extra_center">
                       <div>
@@ -800,7 +800,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
+                      <span className={item.isOnline === 'ON' ? 'btn-on' : item.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
@@ -850,7 +850,7 @@ const UserManageByAgent = () => {
                       </div>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
-                      <span className={item.isOnline === 'Online' ? 'btn-success' : item.isOnline === 'Offline' ? 'btn-warning' : 'btn-danger'} style={{ cursor: "pointer", borderRadius: 20 }}>{getTextByLanguage(item.isOnline)}</span>
+                      <span className={item.isOnline === 'ON' ? 'btn-on' : item.isOnline === 'OFF' ? 'btn-off' : 'btn-block'} >{getTextByLanguage(item.isOnline)}</span>
                     </div>
                     <div className="sc-AxhCb sc-AxhUy sc-AxgMl gbbhfF rdt_TableCell extra_center">
                       <div>
@@ -907,7 +907,7 @@ const UserManageByAgent = () => {
       <Modal isOpen={isUserInfoModal} toggle={() => setUserInfoModal(!isUserInfoModal)} className="balanceedit modal-lg modal-dialog-centered">
         <ModalHeader toggle={() => setUserInfoModal(!isUserInfoModal)}>
           <div className="left">
-            <h2 className="new-player m-auto pl-6">{getTextByLanguage("Edit credit")}  {modalData ? modalData.userId : ""}</h2>
+            <h2 className="new-player m-auto pl-6">{getTextByLanguage("Edit")}  {modalData ? modalData.userId : ""}</h2>
           </div>
         </ModalHeader>
         <ModalBody className="useredit-form">
@@ -974,7 +974,77 @@ const UserManageByAgent = () => {
                     />
                   </Col>
                 </FormGroup>
-
+                {
+                  modalData && modalData.role !== 'user' ? (
+                    <FormGroup row>
+                      <Label sm='6 modal-boder'>
+                        {getTextByLanguage("Agent Share")}
+                      </Label>
+                      <Col sm='6 align-items-center d-flex'>
+                        <Input type="number" value={agentShare} onChange={e => { setAgentShare(e.target.value) }} />
+                        <span className='percent'>%</span>
+                      </Col>
+                    </FormGroup>
+                  ) : null
+                }
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Sports Commission")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.sportsCommission : 0} onChange={e => { setModalData({ ...modalData, ["sportsCommission"]: e.target.value }) }} />
+                    <span className='percent'>%</span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Casino Commission")}</Label>
+                  <Col sm='6 align-items-center'>
+                    <Input type="number" value={modalData ? modalData.casinoCommission : 0} onChange={e => { setModalData({ ...modalData, ["casinoCommission"]: e.target.value }) }} />
+                    <span className='percent'>%</span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
+                    {getTextByLanguage("Sports Discount")}
+                  </Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input
+                      type="number"
+                      value={modalData && modalData.sportsDiscount ? modalData.sportsDiscount : 0}
+                      onChange={(e) => {
+                        if (userData.role === 'admin') {
+                          setModalData({ ...modalData, ["sportsDiscount"]: e.target.value })
+                        } else {
+                          if (e.target.value <= userData.sportsDiscount) {
+                            setModalData({ ...modalData, ["sportsDiscount"]: e.target.value })
+                          }
+                        }
+                      }
+                      }
+                    />
+                    <span className='percent'>{userData.role !== 'admin' ? `${getTextByLanguage('Maximum value is')} ${userData.sportsDiscount}` : null} %</span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm='6 align-items-center d-flex modal-boder'>
+                    {getTextByLanguage("Casino Discount")}
+                  </Label>
+                  <Col sm='6 align-items-center d-flex'>
+                    <Input
+                      type="number"
+                      value={modalData ? modalData.casinoDiscount : 0}
+                      onChange={(e) => {
+                        if (userData.role === 'admin') {
+                          setModalData({ ...modalData, ["casinoDiscount"]: e.target.value })
+                        } else {
+                          if (e.target.value <= userData.casinoDiscount) {
+                            setModalData({ ...modalData, ["casinoDiscount"]: e.target.value })
+                          }
+                        }
+                      }
+                      }
+                    />
+                    <span className='percent'>{userData.role !== 'admin' ? `${getTextByLanguage('Maximum value is')} ${userData.casinoDiscount}` : null} %</span>
+                  </Col>
+                </FormGroup>
               </React.Fragment>
             ) : null
           }
@@ -1279,73 +1349,6 @@ const UserManageByAgent = () => {
                     <Input type="number" value={withdrawalCredit} onChange={e => { setWithdrawalCredit(e.target.value) }} />
                   </Col>
                 </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 modal-boder'>
-                    {getTextByLanguage("Agent Share")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input type="number" value={agentShare} onChange={e => { setAgentShare(e.target.value) }} />
-                    <span className='percent'>%</span>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Sports Commission")}</Label>
-                  <Col sm='6 align-items-center'>
-                    <Input type="number" value={modalData ? modalData.sportsCommission : 0} onChange={e => { setModalData({ ...modalData, ["sportsCommission"]: e.target.value }) }} />
-                    <span className='percent'>%</span>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>{getTextByLanguage("Casino Commission")}</Label>
-                  <Col sm='6 align-items-center'>
-                    <Input type="number" value={modalData ? modalData.casinoCommission : 0} onChange={e => { setModalData({ ...modalData, ["casinoCommission"]: e.target.value }) }} />
-                    <span className='percent'>%</span>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>
-                    {getTextByLanguage("Sports Discount")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input
-                      type="number"
-                      value={modalData && modalData.sportsDiscount ? modalData.sportsDiscount : 0}
-                      onChange={(e) => {
-                        if (userData.role === 'admin') {
-                          setModalData({ ...modalData, ["sportsDiscount"]: e.target.value })
-                        } else {
-                          if (e.target.value <= userData.sportsDiscount) {
-                            setModalData({ ...modalData, ["sportsDiscount"]: e.target.value })
-                          }
-                        }
-                      }
-                      }
-                    />
-                    <span className='percent'>{userData.role !== 'admin' ? `${getTextByLanguage('Maximum value is')} ${userData.sportsDiscount}` : null} %</span>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Label sm='6 align-items-center d-flex modal-boder'>
-                    {getTextByLanguage("Casino Discount")}
-                  </Label>
-                  <Col sm='6 align-items-center d-flex'>
-                    <Input
-                      type="number"
-                      value={modalData ? modalData.casinoDiscount : 0}
-                      onChange={(e) => {
-                        if (userData.role === 'admin') {
-                          setModalData({ ...modalData, ["casinoDiscount"]: e.target.value })
-                        } else {
-                          if (e.target.value <= userData.casinoDiscount) {
-                            setModalData({ ...modalData, ["casinoDiscount"]: e.target.value })
-                          }
-                        }
-                      }
-                      }
-                    />
-                    <span className='percent'>{userData.role !== 'admin' ? `${getTextByLanguage('Maximum value is')} ${userData.casinoDiscount}` : null} %</span>
-                  </Col>
-                </FormGroup>
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -1464,7 +1467,7 @@ const UserManageByAgent = () => {
                   expandOnRowClicked
                   expandableRowsComponent={<ExpandableTable history={filterData} />}
                   noHeader={true}
-                  expandableRowExpanded={(row) => true}
+                  // expandableRowExpanded={(row) => true}
                   className='react-dataTable'
                 />
               </React.Fragment>
