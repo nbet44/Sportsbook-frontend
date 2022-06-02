@@ -270,7 +270,7 @@ const IceHockeyPageCmp = (props) => {
                                     <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(event, favorId) }}><Star className={`favor-icon ${event.favor ? "active" : ""} `} /></div>
                                     <div className="d-flex justify-content-center">{moment(event.Date).format('MM/DD HH:mm')}</div>
                                 </td>
-                                <td className="match-event"><span className='home-red'>{getTextByLanguage(event.HomeTeam)}</span></td>
+                                <td className="match-event"><span className='team-name'>{getTextByLanguage(event.HomeTeam)}</span></td>
                                 <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], event, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                 <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], event, 0) }} >
                                     <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -292,7 +292,7 @@ const IceHockeyPageCmp = (props) => {
                                 <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${event.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                             </tr>
                             <tr>
-                                <td className="match-event"><span className='away-yellow'>{getTextByLanguage(event.AwayTeam)}</span></td>
+                                <td className="match-event"><span className='team-name'>{getTextByLanguage(event.AwayTeam)}</span></td>
                                 <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], event, 2) }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                 <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], event, 1) }} >
                                     <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? parseFloat(mainMarketResult[1].attr) * -1 : "").toString()}</span>

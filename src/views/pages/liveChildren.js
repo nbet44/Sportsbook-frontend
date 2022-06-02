@@ -1510,7 +1510,7 @@ const LiveChildren = () => {
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td className="match-event">
-                                                                                            <span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                                             {
                                                                                                 item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
                                                                                                     <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>

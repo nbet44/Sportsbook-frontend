@@ -664,7 +664,7 @@ const UserManageByAgent = () => {
         setIsLoading(true)
       }
 
-      if (userData.role !== 'agent') {
+      if (userData.role !== 'admin') {
         const responseLf = await Axios({
           endpoint: "/agent/agent-info-lf",
           method: "POST",
