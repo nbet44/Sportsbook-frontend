@@ -399,7 +399,19 @@ const LiveChildren = () => {
                                                                                                 {/* <div className="d-flex justify-content-center">{moment(item.Date).format('MM/DD/ hh:mm')}</div> */}
                                                                                                 <div className="d-flex justify-content-center">{currentTime}"</div>
                                                                                             </td>
-                                                                                            <td className="match-event"><span className='home-red'>{homeTeamScore} - {getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                            <td className="match-event">
+                                                                                                <span className='team-name'>{homeTeamScore} - {getTextByLanguage(item.HomeTeam)}</span>
+                                                                                                {
+                                                                                                    item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                    ) : null
+                                                                                                }
+                                                                                                {
+                                                                                                    item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                    ) : null
+                                                                                                }
+                                                                                            </td>
                                                                                             <td className={`match-odds match-event ${mainMarketResult[0] && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                             <td className={`match-odds match-event ${mainMarketResult[1] && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                                 <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -421,7 +433,19 @@ const LiveChildren = () => {
                                                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td className="match-event"><span className='away-yellow'>{awayTeamScore} -{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                            <td className="match-event">
+                                                                                                <span className='team-name'>{awayTeamScore} -{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                                {
+                                                                                                    item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                    ) : null
+                                                                                                }
+                                                                                                {
+                                                                                                    item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                    ) : null
+                                                                                                }
+                                                                                            </td>
                                                                                             <td className={`match-odds match-event ${mainMarketResult[0] && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2) }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                                                             <td className={`match-odds match-event ${mainMarketResult[1] && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2) }} >
                                                                                                 <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -593,7 +617,19 @@ const LiveChildren = () => {
                                                                                             <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                                             <div className="d-flex justify-content-center">Live</div>
                                                                                         </td>
-                                                                                        <td className="match-event"><span className='home-red'>{getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -613,7 +649,19 @@ const LiveChildren = () => {
                                                                                         <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td className="match-event"><span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1) }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -784,7 +832,19 @@ const LiveChildren = () => {
                                                                                             <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                                             <div className="d-flex justify-content-center">Live</div>
                                                                                         </td>
-                                                                                        <td className="match-event"><span className='home-red'>{getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -804,7 +864,19 @@ const LiveChildren = () => {
                                                                                         <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td className="match-event"><span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1) }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -975,7 +1047,19 @@ const LiveChildren = () => {
                                                                                             <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                                             <div className="d-flex justify-content-center">Live</div>
                                                                                         </td>
-                                                                                        <td className="match-event"><span className='home-red'>{getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -995,7 +1079,19 @@ const LiveChildren = () => {
                                                                                         <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td className="match-event"><span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1) }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -1166,7 +1262,19 @@ const LiveChildren = () => {
                                                                                             <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                                             <div className="d-flex justify-content-center">Live</div>
                                                                                         </td>
-                                                                                        <td className="match-event"><span className='home-red'>{getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -1186,7 +1294,19 @@ const LiveChildren = () => {
                                                                                         <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td className="match-event"><span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2) }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -1357,7 +1477,19 @@ const LiveChildren = () => {
                                                                                             <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                                             <div className="d-flex justify-content-center">Live</div>
                                                                                         </td>
-                                                                                        <td className="match-event"><span className='home-red'>{getTextByLanguage(item.HomeTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 0) }} >{mainMarketResult[0].results && mainMarketResult[0].results[0] ? mainMarketResult[0].results[0].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[0] ? mainMarketResult[1].results[0].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 0) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? `+ ${parseFloat(mainMarketResult[1].attr) * 1}` : "").toString()}</span>
@@ -1377,7 +1509,19 @@ const LiveChildren = () => {
                                                                                         <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td className="match-event"><span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span></td>
+                                                                                        <td className="match-event">
+                                                                                            <span className='away-yellow'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                                                            {
+                                                                                                item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
+                                                                                                    <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                            {
+                                                                                                item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
+                                                                                                    <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                                                ) : null
+                                                                                            }
+                                                                                        </td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1) }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                                                         <td className={`match-odds match-event ${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1) }} >
                                                                                             <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>

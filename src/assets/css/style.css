@@ -1152,6 +1152,22 @@ footer {
     border-right: 4px solid red;
 }
 
+.team-name {
+    padding-right: 5px;
+}
+
+.yellow-card {
+    padding-right: 5px;
+    padding-left: 3px;
+    border-left: 4px solid yellow;
+}
+
+.red-card {
+    padding-right: 5px;
+    padding-left: 3px;
+    border-left: 4px solid red;
+}
+
 .away-yellow {
     padding-right: 5px;
     border-right: 4px solid yellow;
