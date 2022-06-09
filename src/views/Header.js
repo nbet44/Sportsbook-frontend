@@ -133,15 +133,7 @@ const HeaderCmp = () => {
                         <li><a href="/casino" data-nsfw-filter-status="swf">{getTextByLanguage("Casino")}</a></li>
                         {
                             userData.role !== "user" ? (
-                                <>
-                                    {
-                                        userData.role === "reporter" ? (
-                                            <li><a href="/admin/pre-result" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
-                                        ) : (
-                                            <li><a href="/admin/bet-list" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
-                                        )
-                                    }
-                                </>
+                                <li><a href="/admin/user-manage" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
                             ) : (
                                 <li><a href="/betlist" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
                             )

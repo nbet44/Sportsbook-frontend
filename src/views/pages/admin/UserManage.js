@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Col, Modal, ModalBody, ModalFooter, ModalHeader, Input, Button, FormGroup, Label,
   Card, CardHeader, CardBody, CustomInput, InputGroup
@@ -20,6 +21,7 @@ import { useTranslator } from '@hooks/useTranslator'
 
 const UserManageByAgent = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [currentPage, setCurrentPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [tableData, setTableData] = useState([])
@@ -36,6 +38,7 @@ const UserManageByAgent = () => {
   const [modalData, setModalData] = useState(null)
   const [isUserInfoModal, setUserInfoModal] = useState(false)
   const [isAccountDelete, setAccountDelete] = useState(false)
+  const [isSearch, setIsSearch] = useState(false)
   const [accountLevel, setAccountLevel] = useState({ value: "normal", label: "Normal" })
   const [setting, setSetting] = useState({
     showRule: false,
@@ -46,9 +49,9 @@ const UserManageByAgent = () => {
     danger: false,
     cashout: false,
     loginNotify: false,
-    betNotify: {},
-    maxBetPerGame: {},
-    betLimitMin: {}
+    betNotify: { value: "" },
+    maxBetPerGame: { value: "" },
+    betLimitMin: { value: "" }
   })
 
   const [autoWeeklyCredit, setAutoWeeklyCredit] = useState(0)
@@ -59,8 +62,6 @@ const UserManageByAgent = () => {
 
   const [leftData, setLeftData] = useState({})
   const [rightData, setRightData] = useState({})
-  const [leftWeek, setLeftWeek] = useState({ value: 1 })
-  const [rightWeek, setRightWeek] = useState({ value: 1 })
   const [modalTap, setModalTap] = useState(1)
 
   //-----------------setting options-----------------
@@ -307,7 +308,6 @@ const UserManageByAgent = () => {
     })
     if (responseAgent.status === 200) {
       setLeftData(responseAgent.data)
-      setLeftWeek(value)
     } else {
       toast.error(getTextByLanguage(response.data))
     }
@@ -321,7 +321,6 @@ const UserManageByAgent = () => {
     })
     if (responseAgent.status === 200) {
       setRightData(responseAgent.data)
-      setRightWeek(value)
     } else {
       toast.error(getTextByLanguage(response.data))
     }
@@ -639,6 +638,11 @@ const UserManageByAgent = () => {
 
   useEffect(async () => {
     setTableColumns(sportsColumns)
+    let checkRole = localStorage.getItem("userData")
+    checkRole = JSON.parse(checkRole)
+    if (checkRole.role === 'user') {
+      history.push('/home')
+    }
     if (userData) {
       const request = {
         filter: {
@@ -668,7 +672,7 @@ const UserManageByAgent = () => {
         const responseLf = await Axios({
           endpoint: "/agent/agent-info-lf",
           method: "POST",
-          params: { agentId: userData._id, week: leftWeek }
+          params: { agentId: userData._id, week: 1 }
         })
         console.log(responseLf)
         if (responseLf.status === 200) {
@@ -680,7 +684,7 @@ const UserManageByAgent = () => {
         const responseRg = await Axios({
           endpoint: "/agent/agent-info-rg",
           method: "POST",
-          params: { agentId: userData._id, week: rightWeek }
+          params: { agentId: userData._id, week: 1 }
         })
         console.log(responseRg)
         if (responseRg.status === 200) {
@@ -716,6 +720,9 @@ const UserManageByAgent = () => {
       toast.error(getTextByLanguage(response.data))
       setIsLoading(true)
     }
+
+    await handleSelectLeft(selectedWeek.value)
+    await handleSelectRight(selectedWeek.value)
   }, [selectedWeek])
 
   useEffect(async () => {
@@ -757,6 +764,11 @@ const UserManageByAgent = () => {
           }
         }
       }
+    }
+    if (searchUserName.length > 0) {
+      setIsSearch(true)
+    } else {
+      setIsSearch(false)
     }
     setExpandTableDataFilter(result)
   }
@@ -1214,40 +1226,49 @@ const UserManageByAgent = () => {
                 <FormGroup row>
                   <Label sm='6 modal-boder'>{getTextByLanguage("Max Bets Per Game")}</Label>
                   <Col sm='6 align-items-center'>
-                    <Select
+                    <Input type="number"
+                      // value={setting.maxBetPerGame.value} 
+                      onChange={e => { setSetting({ ...setting, maxBetPerGame: { value: e.target.value } }) }} />
+                    {/* <Select
                       options={maxCountOptions}
                       defaultValue={setting.maxBetPerGame}
                       className="react-select w-40"
                       theme={selectThemeColors}
                       classNamePrefix='select'
                       onChange={e => { setSetting({ ...setting, maxBetPerGame: e }) }}
-                    />
+                    /> */}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Label sm='6 modal-boder'>{getTextByLanguage("Bet Limit Minimum")}</Label>
                   <Col sm='6 align-items-center'>
-                    <Select
+                    <Input type="number"
+                      // value={setting.betLimitMin.value} 
+                      onChange={e => { setSetting({ ...setting, betLimitMin: { value: e.target.value } }) }} />
+                    {/* <Select
                       options={maxCountOptions}
                       defaultValue={setting.betLimitMin}
                       className="react-select w-40"
                       theme={selectThemeColors}
                       classNamePrefix='select'
                       onChange={e => { setSetting({ ...setting, betLimitMin: e }) }}
-                    />
+                    /> */}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
                   <Label sm='6 modal-boder'>{getTextByLanguage("Bet Notification")}</Label>
                   <Col sm='6 align-items-center'>
-                    <Select
+                    <Input type="number"
+                      // value={setting.betNotify} 
+                      onChange={e => { setSetting({ ...setting, betNotify: { value: e.target.value } }) }} />
+                    {/* <Select
                       options={notifycationOptions}
                       defaultValue={setting.betNotify}
                       className="react-select"
                       theme={selectThemeColors}
                       classNamePrefix='select'
                       onChange={e => { setSetting({ ...setting, betNotify: e }) }}
-                    />
+                    /> */}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -1525,7 +1546,7 @@ const UserManageByAgent = () => {
                   expandOnRowClicked
                   expandableRowsComponent={<ExpandableTable history={filterData} />}
                   noHeader={true}
-                  // expandableRowExpanded={(row) => true}
+                  expandableRowExpanded={(row) => isSearch}
                   className='react-dataTable'
                 />
               </React.Fragment>
@@ -1538,16 +1559,6 @@ const UserManageByAgent = () => {
               <Col sm='6' className='pl-0'>
                 <Card >
                   <CardBody>
-                    <Col sm='12' className='pb-2 m-0 px-0 row'>
-                      <Select
-                        options={weekOptions}
-                        defaultValue={weekOptions[0]}
-                        className="react-select sbHolder w-100"
-                        theme={selectThemeColors}
-                        classNamePrefix='select'
-                        onChange={e => { handleSelectLeft(e) }}
-                      />
-                    </Col>
                     {
                       Object.keys(leftData).map((key, i) => (
                         <Col sm='12' className='tableRow d-flex' key={i}>
@@ -1562,16 +1573,6 @@ const UserManageByAgent = () => {
               <Col sm='6' className='pr-0'>
                 <Card >
                   <CardBody>
-                    <Col sm='12' className='pb-2 m-0 px-0 row'>
-                      <Select
-                        options={weekOptions}
-                        defaultValue={weekOptions[0]}
-                        className="react-select sbHolder w-100"
-                        theme={selectThemeColors}
-                        classNamePrefix='select'
-                        onChange={e => { handleSelectRight(e) }}
-                      />
-                    </Col>
                     {
                       Object.keys(rightData).map((key, i) => (
                         <Col sm='12' className='tableRow d-flex' key={i}>
