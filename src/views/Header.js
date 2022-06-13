@@ -10,18 +10,20 @@ import { useTranslator } from '@hooks/useTranslator'
 import { useSelector } from 'react-redux'
 import Axios from '../utility/hooks/Axios'
 import { mainConfig } from '../configs/mainConfig'
-
+import { useHistory } from 'react-router-dom'
 import sliderImage1 from '@src/assets/images/slider/01.jpg'
 import sliderImage2 from '@src/assets/images/slider/02.jpg'
 import sliderImage3 from '@src/assets/images/slider/03.jpg'
 
 const HeaderCmp = () => {
+    const history = useHistory()
     const siteId = mainConfig.siteId
     const image_prefix = mainConfig.server.url
     const [getTextByLanguage] = useTranslator()
     const [activeIndex, setActiveIndex] = useState(0)
     const [animating, setAnimating] = useState(0)
     const userData = useSelector((state) => state.auth.userData)
+    const [subData, setSubData] = useState(null)
     const logoImage = require("@src/assets/images/logo/logo.svg").default
 
     const [images, setImages] = useState([
@@ -72,7 +74,20 @@ const HeaderCmp = () => {
         )
     })
 
+    const handleChangeUser = (data) => {
+        if (subData && subData.role === userData.role) {
+            const temp = JSON.stringify(subData)
+            const temp1 = JSON.stringify(userData)
+            localStorage.setItem("userData", temp)
+            localStorage.setItem("subData", temp1)
+            window.location.href = '/admin/user-manage'
+            // history.push('/admin/user-manage')
+        }
+    }
+
     useEffect(async () => {
+        setSubData(JSON.parse(localStorage.getItem("subData")))
+
         const request = {
             siteId
         }
@@ -121,10 +136,9 @@ const HeaderCmp = () => {
                 </Carousel>
             </Card>
             <Card className="b-menu mb-0">
-                <CardHeader className="p-1 d-block">
-                    <a href="/" data-nsfw-filter-status="swf">
-                        <img src={logoImage} className="img-fluid" alt="" data-nsfw-filter-status="sfw" style={{ maxWidth: "60%" }} />
-                    </a>
+                <CardHeader className="p-1 d-block" style={{ textAlign: "center" }}>
+                    <img src={logoImage} className="img-fluid" onClick={() => handleChangeUser()} alt="" data-nsfw-filter-status="sfw" style={{ maxWidth: "60%" }} />
+
                 </CardHeader>
                 <CardBody className="p-0">
                     <ul className="p-0 m-0" style={{ listStyle: "none" }}>
