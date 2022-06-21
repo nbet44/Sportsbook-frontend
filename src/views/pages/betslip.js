@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
     TabContent, TabPane, Nav, NavItem, NavLink, Button,
-    Card, CardHeader, CardBody, Input, CardFooter
+    Card, CardHeader, Input, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, Col, Label
 } from 'reactstrap'
 import Axios from '../../utility/hooks/Axios'
 import HeaderCmp from '../Header'
@@ -36,6 +36,8 @@ const BetSlipCmp = () => {
     const mixTotalOdds = Object.values(activeEvent).reduce((item, { odds }) => parseFloat(item * odds).toFixed(2), 1)
     const [isAccept, setAccept] = useState(false)
     const [getTextByLanguage] = useTranslator()
+    const [isBet, setIsBet] = useState(false)
+    const [betOdds, setBetOdds] = useState({})
 
     const toggle = (tab) => {
         if (betId) {
@@ -171,6 +173,8 @@ const BetSlipCmp = () => {
                 dispatch(handleSession(response.data.userData))
                 dispatch(approvedBetSlipData(betData, response.data.result))
                 setBetId(response.data.result[0].betId)
+                setBetOdds(response.data.oddData)
+                setIsBet(true)
                 toast.success("success")
                 return true
             } else {
@@ -330,6 +334,34 @@ const BetSlipCmp = () => {
                     </Card>
                 )
             }
+            <Modal isOpen={isBet} toggle={() => setIsBet(false)} className="modal-lg modal-dialog-centered">
+                <ModalHeader toggle={() => setIsBet(false)}>
+                    <div className="left">
+                        <div className="logo-user">
+                            <h6>{getTextByLanguage("Bet Odds")}</h6>
+                        </div>
+                    </div>
+                </ModalHeader>
+                <ModalBody className="useredit-form">
+                    {
+                        Object.keys(betOdds).map((key, i) => (
+                            <Col sm="12" className="d-flex align-items-center">
+                                <Label sm="2" key={i}>{key}</Label>
+                                {
+                                    Object.keys(betOdds[key]).map((id, j) => (
+                                        <Col sm="1" key={j}>{betOdds[key][id]}</Col>
+                                    ))
+                                }
+                            </Col>
+                        ))
+                    }
+                </ModalBody>
+                <ModalFooter className="m-auto">
+                    <Button color='primary' className="cancel" onClick={e => { setIsBet(false) }}>
+                        {getTextByLanguage("Cancel")}
+                    </Button>
+                </ModalFooter>
+            </Modal>
         </div>
     )
 }

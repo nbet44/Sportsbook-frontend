@@ -1,23 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import {
-    TabContent, TabPane, Nav, NavItem, NavLink,
-    Card, CardHeader, CardBody, CardTitle, CardText, CardLink
-} from 'reactstrap'
-import AppCollapse from '@components/app-collapse'
+// import {  Row } from 'reactstrap'
 import Axios from '../../utility/hooks/Axios'
-import HeaderCmp from '../Header'
 import Spinner from "@components/spinner/Fallback-spinner"
-import { flagsByRegionName, mainConfig, mainMarketResultBySportId } from '../../configs/mainConfig'
-import socketIOClient from "socket.io-client"
+import { flagsByRegionName, mainMarketResultBySportId } from '../../configs/mainConfig'
 import moment from 'moment'
-import { Lock, Star } from 'react-feather'
-import BetSlipCmp from './betslip'
+import { Cpu, Lock, Star } from 'react-feather'
 import $, { isEmptyObject } from "jquery"
 import { addBetSlipData, changeOdds } from '../../redux/actions/sports'
-import ReactInterval from 'react-interval'
 import { useTranslator } from '@hooks/useTranslator'
 import { getOddType } from '@utils'
 
@@ -49,11 +41,16 @@ const SoccerPageCmp = (props) => {
                     live: !event.IsPreMatch,
                     id: data.results[index].id,
                     eventId: event.Id,
+                    our_event_id: event.our_event_id,
                     leagueId: event.LeagueId,
                     marketId: data.id,
                     IsPreMatch: event.IsPreMatch,
-                    isOddChanged: false
+                    isOddChanged: false,
+                    period: data.Period,
+                    marketType: data.MarketType,
+                    team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
+                console.log(result, index)
                 const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
