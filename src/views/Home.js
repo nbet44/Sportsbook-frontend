@@ -86,11 +86,30 @@ const Home = () => {
     }
   }
 
-  const toggle = (tab, id) => {
+  const toggle = async (tab, id) => {
     if (active !== tab) {
       setActive(tab)
     }
     setSportId(id)
+    const request = {
+      agentId: userData._id,
+      sportId: id,
+      date: Date.now()
+    }
+    const response = await Axios({
+      endpoint: "/sports/get-league",
+      method: "POST",
+      params: request
+    })
+
+    if (response.status === 200) {
+      if (response.setting) {
+        setSportsData(await getSportsDataBySportId(response.data, response.setting.leagueSort.value))
+        setIsLoading(false)
+      }
+    } else {
+      toast.error(response.data)
+    }
   }
 
   useEffect(async () => {
@@ -150,6 +169,7 @@ const Home = () => {
     )
   }
 
+  console.log(sportsData)
   return (
     <div>
       <HeaderCmp />
@@ -218,26 +238,25 @@ const Home = () => {
               </NavLink>
             </NavItem>
           </Nav>
-          {Object.keys(sportsData).map((key, index) => {
-            const eachData = sportsData[key]
-            if (sportsNameById[eachData[0]["SportId"]]) {
-              return (
-                <Card key={index}>
-                  <CardHeader className="align-items-center d-flex justify-content-between" >
-                    <div className="left">
-                      <h2 id={`sport-title-${eachData[0]["SportId"]}`} className="soccer m-auto pl-3 p-1">{getTextByLanguage(eachData[0]["SportName"])}</h2>
-                    </div>
-                    <div className="right main-links">
-                      <a className="fav-link mr-2" onClick={() => history.push(`/favorite`)}>{getTextByLanguage("Favourite Events")}</a>
-                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 4)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 4)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 3)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 3)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 2)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 2)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 1)) }}>{moment(Date.now() + (3600 * 24 * 1000)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={() => history.push(`/today/${eachData[0]["SportId"]}`)}>{getTextByLanguage("Today Games")}</a>
-                    </div>
-                  </CardHeader>
-
-                  <CardBody className="b-team pt-0">
+          <Card >
+            <CardHeader className="align-items-center d-flex justify-content-between" >
+              <div className="left">
+                <h2 id={`sport-title-${sportId}`} className="soccer m-auto pl-3 p-1">{getTextByLanguage(sportsNameById[sportId])}</h2>
+              </div>
+              <div className="right main-links">
+                <a className="fav-link mr-2" onClick={() => history.push(`/favorite`)}>{getTextByLanguage("Favourite Events")}</a>
+                <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 4)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 4)).format('DD/MM')}</a>
+                <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 3)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 3)).format('DD/MM')}</a>
+                <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 2)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 2)).format('DD/MM')}</a>
+                <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 1)) }}>{moment(Date.now() + (3600 * 24 * 1000)).format('DD/MM')}</a>
+                <a className="event-date" onClick={() => history.push(`/today/${sportId}`)}>{getTextByLanguage("Today Games")}</a>
+              </div>
+            </CardHeader>
+            {Object.keys(sportsData).map((key, index) => {
+              const eachData = sportsData[key]
+              if (sportsNameById[eachData[0]["SportId"]]) {
+                return (
+                  <CardBody className="b-team pt-0" key={index}>
                     <a href="/" className="outright-link">{getTextByLanguage("Outrights")} ({eachData.length})</a>
                     <div className="list-container justify-content-center">
                       <div className="row col-12 home-sports-list">
@@ -264,11 +283,12 @@ const Home = () => {
                       </div>
                     </div>
                   </CardBody>
-                </Card>
-              )
+                )
+              }
+            })
             }
-          })
-          }
+          </Card>
+
         </div>
       </div>
     </div>
