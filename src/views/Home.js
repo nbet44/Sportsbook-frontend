@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import {
-  Card, CardHeader, CardBody, CardTitle, CardText, CardLink
-} from 'reactstrap'
+import { Card, CardHeader, CardBody, Nav, NavItem, NavLink } from 'reactstrap'
 import Axios from '../utility/hooks/Axios'
 import HeaderCmp from './Header'
 import { getSportsDataBySportId } from '../redux/actions/sports'
 import { sportsNameById, flagsByRegionName, topFootballLeagues } from '../configs/mainConfig'
 import moment from 'moment'
 import { useTranslator } from '@hooks/useTranslator'
-import { convertIdFromText } from '../utility/hooks/useTranslator'
 import Spinner from "@components/spinner/Fallback-spinner"
-
+import { useHistory } from 'react-router-dom'
 
 const Home = () => {
-  const dispatch = useDispatch()
-  // const sportsData = useSelector((state) => state.sports.sportsData)
+  const history = useHistory()
+  const [getTextByLanguage] = useTranslator()
+  const userData = useSelector((state) => state.auth.userData)
   const [isLoading, setIsLoading] = useState(true)
   const [sportsData, setSportsData] = useState({})
-  const userData = useSelector((state) => state.auth.userData)
   const [topFootballLeagueData, setTopFootballLeagueData] = useState([])
-  const [getTextByLanguage] = useTranslator()
+  const [active, setActive] = useState('1')
+  const [sportId, setSportId] = useState(4)
 
   const getSportsDataBySportId = (data, sortType) => {
     data.sort(function (a, b) {
@@ -70,6 +68,7 @@ const Home = () => {
   const handleGetLeagueByDate = async (number) => {
     const request = {
       agentId: userData._id,
+      sportId,
       date: number
     }
     const response = await Axios({
@@ -79,7 +78,6 @@ const Home = () => {
     })
     if (response.status === 200) {
       if (response.setting) {
-        // dispatch(getSportsDataBySportId(response.data, response.setting.leagueSort.value))
         setSportsData(await getSportsDataBySportId(response.data, response.setting.leagueSort.value))
         setIsLoading(false)
       }
@@ -88,9 +86,17 @@ const Home = () => {
     }
   }
 
+  const toggle = (tab, id) => {
+    if (active !== tab) {
+      setActive(tab)
+    }
+    setSportId(id)
+  }
+
   useEffect(async () => {
     const request = {
       agentId: userData._id,
+      sportId,
       date: Date.now()
     }
     const response = await Axios({
@@ -98,10 +104,9 @@ const Home = () => {
       method: "POST",
       params: request
     })
-    console.log(response)
+
     if (response.status === 200) {
       if (response.setting) {
-        // dispatch(getSportsDataBySportId(response.data, response.setting.leagueSort.value))
         setSportsData(await getSportsDataBySportId(response.data, response.setting.leagueSort.value))
         setIsLoading(false)
       }
@@ -147,40 +152,92 @@ const Home = () => {
 
   return (
     <div>
-      {/* <h1>{getTextByLanguage("Lig")}</h1> */}
-      {/* <div className="content-news mb-2">
-        <Card className="mb-0">
-          <div className="mt-label">NEWS:</div>
-        </Card>
-      </div> */}
       <HeaderCmp />
+
       <div className="content-body">
-        <div className="b-team__list">
+        <div className="">
+          <Nav tabs className="category-links m-0">
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '1'}
+                onClick={() => {
+                  toggle('1', 4)
+                }}
+              >
+                {getTextByLanguage("Football")}
+              </NavLink>
+            </NavItem>
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '2'}
+                onClick={() => {
+                  toggle('2', 56)
+                }}
+              >
+                {getTextByLanguage("Table Tennis")}
+              </NavLink>
+            </NavItem>
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '3'}
+                onClick={() => {
+                  toggle('3', 7)
+                }}
+              >
+                {getTextByLanguage("Basketball")}
+              </NavLink>
+            </NavItem>
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '4'}
+                onClick={() => {
+                  toggle('4', 5)
+                }}
+              >
+                {getTextByLanguage("Tennis")}
+              </NavLink>
+            </NavItem>
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '5'}
+                onClick={() => {
+                  toggle('5', 12)
+                }}
+              >
+                {getTextByLanguage("Ice Hockey")}
+              </NavLink>
+            </NavItem>
+            <NavItem className="live-bet-tabs">
+              <NavLink
+                active={active === '6'}
+                onClick={() => {
+                  toggle('6', 18)
+                }}
+              >
+                {getTextByLanguage("Volleyball")}
+              </NavLink>
+            </NavItem>
+          </Nav>
           {Object.keys(sportsData).map((key, index) => {
             const eachData = sportsData[key]
             if (sportsNameById[eachData[0]["SportId"]]) {
               return (
-                <React.Fragment key={index}>
+                <Card key={index}>
                   <CardHeader className="align-items-center d-flex justify-content-between" >
                     <div className="left">
                       <h2 id={`sport-title-${eachData[0]["SportId"]}`} className="soccer m-auto pl-3 p-1">{getTextByLanguage(eachData[0]["SportName"])}</h2>
                     </div>
                     <div className="right main-links">
-                      <a className="fav-link mr-2" href="/favorite" data-nsfw-filter-status="swf">{getTextByLanguage("Favourite Events")}</a>
-                      <a className="event-date" onClick={e => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 4)) }} data-nsfw-filter-status="swf">{moment(Date.now() + (3600 * 24 * 1000 * 4)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={e => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 3)) }} data-nsfw-filter-status="swf">{moment(Date.now() + (3600 * 24 * 1000 * 3)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={e => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 2)) }} data-nsfw-filter-status="swf">{moment(Date.now() + (3600 * 24 * 1000 * 2)).format('DD/MM')}</a>
-                      <a className="event-date" onClick={e => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 1)) }} data-nsfw-filter-status="swf">{moment(Date.now() + (3600 * 24 * 1000)).format('DD/MM')}</a>
-                      <a className="event-date" href={`/today/${eachData[0]["SportId"]}`} data-nsfw-filter-status="swf">{getTextByLanguage("Today Games")}</a>
+                      <a className="fav-link mr-2" onClick={() => history.push(`/favorite`)}>{getTextByLanguage("Favourite Events")}</a>
+                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 4)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 4)).format('DD/MM')}</a>
+                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 3)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 3)).format('DD/MM')}</a>
+                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 2)) }}>{moment(Date.now() + (3600 * 24 * 1000 * 2)).format('DD/MM')}</a>
+                      <a className="event-date" onClick={() => { handleGetLeagueByDate(Date.now() + (3600 * 24 * 1000 * 1)) }}>{moment(Date.now() + (3600 * 24 * 1000)).format('DD/MM')}</a>
+                      <a className="event-date" onClick={() => history.push(`/today/${eachData[0]["SportId"]}`)}>{getTextByLanguage("Today Games")}</a>
                     </div>
-                    {/* <div className="right">
-                      <span className="open-button opened" href="#" data-nsfw-filter-status="swf">
-                        <a href="today?sport=soccer" className="left" data-nsfw-filter-status="swf">Today Games</a>
-                        <span className="open-arrow right" data-nsfw-filter-status="swf"></span>
-                      </span>
-                    </div> */}
                   </CardHeader>
-                  <CardBody style={{ borderBottom: "1px solid #4b4b4b" }} className="b-team pt-0">
+
+                  <CardBody className="b-team pt-0">
                     <a href="/" className="outright-link">{getTextByLanguage("Outrights")} ({eachData.length})</a>
                     <div className="list-container justify-content-center">
                       <div className="row col-12 home-sports-list">
@@ -197,7 +254,7 @@ const Home = () => {
                           }
                           return (
                             <React.Fragment key={i}>
-                              <a className="d-flex align-items-center col-4 mb-1" href={`/match/${item.LeagueId}`}>
+                              <a className="d-flex align-items-center col-4 mb-1" onClick={() => history.push(`/match/${item.LeagueId}`)}>
                                 <img src={`https://getbet77.com/files/flags1/${flagImg}.png`} />
                                 <span style={{ fontSize: "12px", marginLeft: "3px" }} ><b>{getTextByLanguage(item.RegionName)}</b> {getTextByLanguage(item.LeagueName)} </span>
                               </a>
@@ -205,27 +262,9 @@ const Home = () => {
                           )
                         })}
                       </div>
-                      {/* <ul className="list-col">
-                        <li className="d-flex align-items-center">
-                          <input type="checkbox" name="sport[tennis][]" value="ATP Challenger Braunschweig - R1" />
-                          <img src="https://getbet77.com/files/flags1/Germany.png" alt="ATP Challenger Braunschweig - R1" />
-                          <a alt="ATP Challenger Braunschweig - R1" href="sl.php?sport=tennis&amp;selliga=ATP+Challenger+Braunschweig+-+R1" data-nsfw-filter-status="swf">
-                            <span data-nsfw-filter-status="swf"> ATP Challenger Braunschwei...</span>
-                          </a>
-                        </li>
-                      </ul>
-                      <ul className="list-col">
-                        <li className="d-flex align-items-center">
-                          <input type="checkbox" name="sport[tennis][]" value="ATP Challenger Braunschweig - R1" />
-                          <img src="https://getbet77.com/files/flags1/Germany.png" alt="ATP Challenger Braunschweig - R1" />
-                          <a alt="ATP Challenger Braunschweig - R1" href="sl.php?sport=tennis&amp;selliga=ATP+Challenger+Braunschweig+-+R1" data-nsfw-filter-status="swf">
-                            <span data-nsfw-filter-status="swf"> ATP Challenger Braunschwei...</span>
-                          </a>
-                        </li>
-                      </ul> */}
                     </div>
                   </CardBody>
-                </React.Fragment>
+                </Card>
               )
             }
           })

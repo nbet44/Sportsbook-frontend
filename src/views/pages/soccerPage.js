@@ -41,11 +41,11 @@ const SoccerPageCmp = (props) => {
                     live: !event.IsPreMatch,
                     id: data.results[index].id,
                     eventId: event.Id,
-                    our_event_id: event.our_event_id,
                     leagueId: event.LeagueId,
                     marketId: data.id,
                     IsPreMatch: event.IsPreMatch,
                     isOddChanged: false,
+                    our_event_id: event.our_event_id,
                     period: data.Period,
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")

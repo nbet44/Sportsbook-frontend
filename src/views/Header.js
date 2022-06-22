@@ -4,7 +4,7 @@ import {
     CarouselItem,
     CarouselControl,
     CarouselIndicators,
-    Card, CardHeader, CardBody, CardTitle, CardText, CardLink
+    Card, CardHeader, CardBody
 } from 'reactstrap'
 import { useTranslator } from '@hooks/useTranslator'
 import { useSelector } from 'react-redux'
@@ -108,11 +108,9 @@ const HeaderCmp = () => {
                 }
                 setImages(result)
             }
-            //     setIsLoading(false)
         }
-        console.log(response)
-
     }, [])
+
     return (
         <div className="content-header row mx-0 mb-2">
             <Card className="b-video mb-0">
@@ -138,18 +136,17 @@ const HeaderCmp = () => {
             <Card className="b-menu mb-0">
                 <CardHeader className="p-1 d-block" style={{ textAlign: "center" }}>
                     <img src={logoImage} className="img-fluid" onClick={() => handleChangeUser()} alt="" data-nsfw-filter-status="sfw" style={{ maxWidth: "60%" }} />
-
                 </CardHeader>
                 <CardBody className="p-0">
                     <ul className="p-0 m-0" style={{ listStyle: "none" }}>
-                        <li><a href="/home" className="" data-nsfw-filter-status="swf">{getTextByLanguage("Home")}</a></li>
-                        <li><a href="/live" data-nsfw-filter-status="swf">{getTextByLanguage("Live")}</a></li>
-                        <li><a href="/casino" data-nsfw-filter-status="swf">{getTextByLanguage("Casino")}</a></li>
+                        <li><a onClick={() => history.push("/home")} >{getTextByLanguage("Home")}</a></li>
+                        <li><a onClick={() => history.push("/live")}>{getTextByLanguage("Live")}</a></li>
+                        <li><a onClick={() => history.push("/casino")}>{getTextByLanguage("Casino")}</a></li>
                         {
                             userData.role !== "user" ? (
-                                <li><a href="/admin/user-manage" data-nsfw-filter-status="swf">{getTextByLanguage(userData.role)}</a></li>
+                                <li><a onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage(userData.role)}</a></li>
                             ) : (
-                                <li><a href="/betlist" data-nsfw-filter-status="swf">{getTextByLanguage("Bet List")}</a></li>
+                                <li><a onClick={() => history.push("/betlist")}>{getTextByLanguage("Bet List")}</a></li>
                             )
                         }
                     </ul>
@@ -160,13 +157,3 @@ const HeaderCmp = () => {
 }
 
 export default HeaderCmp
-
-
-/*
-                <CardHeader className="p-1">
-                    <a href="/" data-nsfw-filter-status="swf">
-                        <img src={logoImage} className="img-fluid" alt="" data-nsfw-filter-status="sfw" style={{ maxWidth: "70%" }} />
-                    </a>
-                </CardHeader>
-
-*/

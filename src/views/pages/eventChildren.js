@@ -3,16 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
-    TabContent, TabPane, Nav, NavItem, NavLink,
-    Card, CardHeader, CardBody, CardTitle, CardText, CardLink
+    Card, CardHeader
 } from 'reactstrap'
 import { Lock } from 'react-feather'
 import $ from "jquery"
 import AppCollapse from '@components/app-collapse'
 import Axios from '../../utility/hooks/Axios'
-import HeaderCmp from '../Header'
 import Spinner from "@components/spinner/Fallback-spinner"
-import BetSlipCmp from './betslip'
 import { addBetSlipData, changeOdds } from '../../redux/actions/sports'
 import ReactInterval from 'react-interval'
 import { useTranslator } from '@hooks/useTranslator'
@@ -30,7 +27,8 @@ const EventChildren = () => {
     const [getTextByLanguage] = useTranslator()
     const [oddType, setOddType] = useState("odds")
 
-    const handleBetSlip = (data, event, market) => {
+    const handleBetSlip = (data, event, market, team) => {
+        console.log(data, event, market)
         if (data[oddType] < 100) {
             if (Object.keys(betSlipData).length <= 5) {
                 const result = {
@@ -47,8 +45,13 @@ const EventChildren = () => {
                     eventId: id,
                     leagueId: event.LeagueId,
                     marketId: market.id,
-                    IsPreMatch: event.IsPreMatch
+                    IsPreMatch: event.IsPreMatch,
+                    our_event_id: event.our_event_id,
+                    period: data.Period,
+                    marketType: data.MarketType,
+                    team
                 }
+                console.log(result)
                 const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
@@ -79,7 +82,6 @@ const EventChildren = () => {
     }
 
     const handleRefresh = async () => {
-        console.log("handleRefresh")
         setIsLoading(true)
         const request = {
             eventId: id
@@ -89,7 +91,6 @@ const EventChildren = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200 && response.data) {
             setSportsData(response.data)
             handleChangeSlipData(response.data)
@@ -98,7 +99,6 @@ const EventChildren = () => {
             if (response.data.Markets) {
                 const markets = response.data.Markets
                 for (let i = 0; i < 45; i++) {
-                    // for (const i in markets) {
                     if (markets[i]) {
                         const obj = {
                             title: getTextByLanguage(markets[i].name.value)
@@ -108,7 +108,7 @@ const EventChildren = () => {
                                 {markets[i].results.map((item, index) => {
                                     const event = item
                                     return (
-                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i]) }}>
+                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], index) }}>
                                             {getTextByLanguage(event.name.value)}
                                             <a>
                                                 {event[oddType]}
@@ -150,7 +150,6 @@ const EventChildren = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200 && response.data) {
             setSportsData(response.data)
             setOddType(getOddType())
@@ -160,7 +159,6 @@ const EventChildren = () => {
             if (response.data.Markets) {
                 const markets = response.data.Markets
                 for (let i = 0; i < 45; i++) {
-                    // for (const i in markets) {
                     if (markets[i]) {
                         const obj = {
                             title: getTextByLanguage(markets[i].name.value)
@@ -170,7 +168,7 @@ const EventChildren = () => {
                                 {markets[i].results.map((item, index) => {
                                     const event = item
                                     return (
-                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i]) }}>
+                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], index) }}>
                                             {event.name.value === "Asian Handicap" || event.name.value === "Handicap" ? (
                                                 <React.Fragment>
                                                     {index === 1 ? (
@@ -224,25 +222,23 @@ const EventChildren = () => {
 
     return (
         <React.Fragment>
-            <ReactInterval timeout={1000} enabled={true} callback={e => { handleTimer() }} />
+            <ReactInterval timeout={1000} enabled={true} callback={() => { handleTimer() }} />
             {isLoading ? (
                 <Spinner></Spinner>
             ) : (
-                <React.Fragment>
-                    <Card className="b-team__list px-0 col h-100 mr-5">
-                        <CardHeader >
-                            <div className="left d-flex align-items-center">
-                                <h3 id="soccer-game" className="soccer mr-1">{getTextByLanguage(sportsData.RegionName)} {getTextByLanguage(sportsData.LeagueName)}</h3>
-                                <span onClick={e => { handleRefresh() }} className="timer-number d-flex align-items-center">{timerNumber}</span>
-                            </div>
-                            <div className="right">
-                                <a className="fav-link mr-2" href="/favorite" data-nsfw-filter-status="swf">{getTextByLanguage("Favourite Events")}</a>
-                                <a style={{ color: "white", fontSize: "15px" }} href="/home" data-nsfw-filter-status="swf">{getTextByLanguage("Back to League")}</a>
-                            </div>
-                        </CardHeader>
-                        <AppCollapse data={eventData} type='border' />
-                    </Card>
-                </React.Fragment>
+                <Card className="b-team__list px-0 col h-100 mr-5">
+                    <CardHeader >
+                        <div className="left d-flex align-items-center">
+                            <h3 id="soccer-game" className="soccer mr-1">{getTextByLanguage(sportsData.RegionName)} {getTextByLanguage(sportsData.LeagueName)}</h3>
+                            <span onClick={e => { handleRefresh() }} className="timer-number d-flex align-items-center">{timerNumber}</span>
+                        </div>
+                        <div className="right">
+                            <a className="fav-link mr-2" href="/favorite" data-nsfw-filter-status="swf">{getTextByLanguage("Favourite Events")}</a>
+                            <a style={{ color: "white", fontSize: "15px" }} href="/home" data-nsfw-filter-status="swf">{getTextByLanguage("Back to League")}</a>
+                        </div>
+                    </CardHeader>
+                    <AppCollapse data={eventData} type='border' />
+                </Card>
             )}
         </React.Fragment>
     )
