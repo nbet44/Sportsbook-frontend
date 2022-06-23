@@ -169,7 +169,6 @@ const Home = () => {
     )
   }
 
-  console.log(sportsData)
   return (
     <div>
       <HeaderCmp />

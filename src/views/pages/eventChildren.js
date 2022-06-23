@@ -47,8 +47,8 @@ const EventChildren = () => {
                     marketId: market.id,
                     IsPreMatch: event.IsPreMatch,
                     our_event_id: event.our_event_id,
-                    period: data.Period,
-                    marketType: data.MarketType,
+                    period: market.Period,
+                    marketType: market.MarketType,
                     team
                 }
                 console.log(result)
@@ -107,8 +107,14 @@ const EventChildren = () => {
                             <Card className="border-0 row flex-row">
                                 {markets[i].results.map((item, index) => {
                                     const event = item
+                                    let team = ""
+                                    if (markets[i].MarketType === "3way") {
+                                        if (index === 0) team = "1"
+                                        if (index === 1) team = "Draw"
+                                        if (index === 2) team = "2"
+                                    }
                                     return (
-                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], index) }}>
+                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
                                             {getTextByLanguage(event.name.value)}
                                             <a>
                                                 {event[oddType]}
@@ -167,8 +173,14 @@ const EventChildren = () => {
                             <Card className="border-0 row flex-row">
                                 {markets[i].results.map((item, index) => {
                                     const event = item
+                                    let team = ""
+                                    if (markets[i].MarketType === "3way") {
+                                        if (index === 0) team = "1"
+                                        if (index === 1) team = "Draw"
+                                        if (index === 2) team = "2"
+                                    }
                                     return (
-                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], index) }}>
+                                        <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
                                             {event.name.value === "Asian Handicap" || event.name.value === "Handicap" ? (
                                                 <React.Fragment>
                                                     {index === 1 ? (

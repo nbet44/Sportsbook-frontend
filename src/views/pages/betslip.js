@@ -349,7 +349,7 @@ const BetSlipCmp = () => {
                                 <Label sm="2" key={i}>{key}</Label>
                                 {
                                     Object.keys(betOdds[key]).map((id, j) => (
-                                        <Col sm="1" key={j}>{betOdds[key][id]}</Col>
+                                        <Col sm="1" className="mr-1" key={j}>{betOdds[key][id]}</Col>
                                     ))
                                 }
                             </Col>
