@@ -113,6 +113,11 @@ const EventChildren = () => {
                                         if (index === 1) team = "Draw"
                                         if (index === 2) team = "2"
                                     }
+
+                                    if (markets[i].MarketType === "Over/Under") {
+                                        if (index === 0) team = "1"
+                                        if (index === 1) team = "2"
+                                    }
                                     return (
                                         <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
                                             {getTextByLanguage(event.name.value)}
@@ -178,6 +183,11 @@ const EventChildren = () => {
                                         if (index === 0) team = "1"
                                         if (index === 1) team = "Draw"
                                         if (index === 2) team = "2"
+                                    }
+
+                                    if (markets[i].MarketType === "Over/Under") {
+                                        if (index === 0) team = "1"
+                                        if (index === 1) team = "2"
                                     }
                                     return (
                                         <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
