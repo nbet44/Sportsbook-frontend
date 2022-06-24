@@ -1335,3 +1335,69 @@ footer {
     width: 100%;
     text-align: center;
 }
+
+.h-leaguename {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #32393f70 !important;
+}
+
+.b-leaguename {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.team-mark {
+    background-color: #32393f70 !important;
+    height: 100%;
+}
+
+.match-mark {
+    height: 100%;
+    border-color: white;
+    background-color: #32393f70 !important;
+}
+
+.match-mark-b {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.match-mark-b h1 {
+    color: white;
+    font-size: 55px;
+    font-weight: bolder;
+}
+.match-mark-b span {
+    font-size: 16px;
+    font-weight: bolder;
+    color: #d3ab19;
+}
+
+.match-header {
+    background-image: url(../images/main-bg.jpg) !important;
+    background-size: 100% auto !important;
+    background-position: center !important;
+}
+
+.match-header-b {
+    background: unset !important;
+}
+
+.team-mark-b {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-mark-b img {
+    width: 100px;
+}
+
+.team-mark-b h5 {
+    padding-right: .5rem;
+    padding-left: .5rem;
+}

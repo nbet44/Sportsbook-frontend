@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 import {
     Card, CardHeader
 } from 'reactstrap'
@@ -14,8 +15,9 @@ import { addBetSlipData, changeOdds } from '../../redux/actions/sports'
 import ReactInterval from 'react-interval'
 import { useTranslator } from '@hooks/useTranslator'
 import { getOddType } from '@utils'
+import { flagsByRegionName } from '../../configs/mainConfig'
 
-const EventChildren = () => {
+const EventChildren = ({ setHeader }) => {
     const { id } = useParams()
     const [sportsData, setSportsData] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
@@ -27,8 +29,8 @@ const EventChildren = () => {
     const [getTextByLanguage] = useTranslator()
     const [oddType, setOddType] = useState("odds")
 
+
     const handleBetSlip = (data, event, market, team) => {
-        console.log(data, event, market)
         if (data[oddType] < 100) {
             if (Object.keys(betSlipData).length <= 5) {
                 const result = {
@@ -51,7 +53,6 @@ const EventChildren = () => {
                     marketType: market.MarketType,
                     team
                 }
-                console.log(result)
                 const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
@@ -92,6 +93,14 @@ const EventChildren = () => {
             params: request
         })
         if (response.status === 200 && response.data) {
+            const item = response.data
+            const homeTeamScore = item.Scoreboard && item.Scoreboard.score ? item.Scoreboard.score.split(":")[0] : 0
+            const awayTeamScore = item.Scoreboard && item.Scoreboard.score ? item.Scoreboard.score.split(":")[1] : 0
+            const time = item.Scoreboard && item.Scoreboard.timer ? parseInt(item.Scoreboard.timer.seconds / 60) : ""
+            const date = moment(item.Date).format('MM/DD HH:mm')
+            const flagImg = flagsByRegionName[item.RegionName]
+            setHeader({ homeTeam: item.HomeTeam, awayTeam: item.AwayTeam, time, homeTeamScore, awayTeamScore, leagueName: item.LeagueName, flagImg, date })
+
             setSportsData(response.data)
             handleChangeSlipData(response.data)
             const leagueData = response.data
@@ -163,6 +172,14 @@ const EventChildren = () => {
         })
         if (response.status === 200 && response.data) {
             setSportsData(response.data)
+            const item = response.data
+            const homeTeamScore = item.Scoreboard && item.Scoreboard.score ? item.Scoreboard.score.split(":")[0] : ""
+            const awayTeamScore = item.Scoreboard && item.Scoreboard.score ? item.Scoreboard.score.split(":")[1] : ""
+            const time = item.Scoreboard && item.Scoreboard.timer ? parseInt(item.Scoreboard.timer.seconds / 60) : ""
+            const flagImg = flagsByRegionName[item.RegionName] ? flagsByRegionName[item.RegionName] : item.RegionName
+            const date = moment(item.Date).format('MM/DD HH:mm')
+            setHeader({ homeTeam: item.HomeTeam, awayTeam: item.AwayTeam, date, time, homeTeamScore, awayTeamScore, leagueName: item.LeagueName, flagImg })
+
             setOddType(getOddType())
             const oddType = getOddType()
             const leagueData = response.data
