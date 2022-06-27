@@ -123,9 +123,34 @@ const EventChildren = ({ setHeader }) => {
                                         if (index === 2) team = "2"
                                     }
 
-                                    if (markets[i].MarketType === "Over/Under") {
+                                    if (markets[i].MarketType === "DoubleChance") {
                                         if (index === 0) team = "1"
                                         if (index === 1) team = "2"
+                                        if (index === 2) team = "both"
+                                    }
+
+                                    if (markets[i].MarketType === "Over/Under") {
+                                        if (index === 0) team = "Over"
+                                        if (index === 1) team = "Under"
+                                    }
+
+                                    if (markets[i].MarketType === "Odd/Even") {
+                                        if (index === 0) team = "Odd"
+                                        if (index === 1) team = "Even"
+                                    }
+
+                                    if (markets[i].MarketType === "BTTS") {
+                                        if (index === 0) team = "Yes"
+                                        if (index === 1) team = "No"
+                                    }
+                                    if (markets[i].MarketType === "BTTSAndEitherTeamToWin") {
+                                        if (index === 0) team = "Yes"
+                                        if (index === 1) team = "No"
+                                    }
+
+                                    if (markets[i].MarketType === "BTTSAndOver/Under") {
+                                        if (index === 0) team = "Over"
+                                        if (index === 1) team = "Under"
                                     }
                                     return (
                                         <span key={index} id={event.id} className="event-box p-1 col m-1" onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
