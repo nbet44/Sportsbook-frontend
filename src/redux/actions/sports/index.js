@@ -96,7 +96,6 @@ export const changeBetSlipType = (data) => {
 }
 
 export const addBetSlipData = (oldData, newData, type) => {
-    // console.log(oldData)
     if (type === "mix") {
         if (Object.keys(oldData).length > 1) {
             for (const i in oldData) {
