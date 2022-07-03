@@ -53,6 +53,50 @@ h4 {
     background-color: #21242a !important;
 }
 
+.tbl-over {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+.odd {
+    border-bottom: 0px !important;
+    border-top: 0px !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.more {
+    color: white !important;
+    cursor: pointer;
+    text-align: center;
+}
+
+.more:hover {
+    color: #cf2424 !important
+}
+
+.up {
+    color: #36ef28 !important;
+    background: url(../images/increace.png) 8px no-repeat;
+}
+
+.down {
+    color: #de5521 !important;
+    background: url(../images/reduce.png) 8px no-repeat;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.odd.active {
+        background: #1e1e1e;
+    }
+
 .match-event {
     border-bottom: 0px !important;
     border-top: 0px !important;
@@ -800,7 +844,7 @@ opacity: 1;
     border-bottom: 0px;
 }
 
-.live-bet-tabs .active {
+.sport-tab .active {
     border-bottom:3px !important;
     border-bottom-color:#30383F !important;
     background:#30383F !important;
@@ -808,16 +852,16 @@ opacity: 1;
     z-index:1;
 }
 
-.live-bet-tabs .nav-link:after {
+.sport-tab .nav-link:after {
     background: none !important;
 }
 
-.live-bet-tabs .active {
+.sport-tab .active {
     color: #36ef28 !important;
     background: #21242A;
 }
 
-.live-bet-tabs {
+.sport-tab {
     font-size: 16px;
     background: #21242A;
     color: #fff;
@@ -1316,7 +1360,7 @@ footer {
 }
 /* datatable  */
 .react-dataTable {
-    overflow: hidden !important;
+    overflow: hidden;
 }
 .dark-layout .react-dataTable .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
     border-right: 1px solid #3b4253;

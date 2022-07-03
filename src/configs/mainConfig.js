@@ -1,10 +1,10 @@
 export const mainConfig = {
     server: {
-        url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/" : "https://nBet44.com/",
-        request_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/admin" : "https://nBet44.com/admin",
-        image_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/images" : "https://nBet44.com/images",
-        upload_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/uploads" : "https://nBet44.com/uploads",
-        socket_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "https://nBet44.com/"
+        url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/" : "https://nbet44.com/",
+        request_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/admin" : "https://nbet44.com/admin",
+        image_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/images" : "https://nbet44.com/images",
+        upload_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/uploads" : "https://nbet44.com/uploads",
+        socket_url: process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000" : "https://nbet44.com/"
     },
     siteId: "2002",
     socket: null

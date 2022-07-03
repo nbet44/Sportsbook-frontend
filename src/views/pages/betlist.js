@@ -62,7 +62,7 @@ const BetListCmp = () => {
       name: '#ID',
       selector: 'betId',
       sortable: true,
-      minWidth: "170px"
+      minWidth: "150px"
     },
     {
       name: 'Time',
@@ -127,7 +127,8 @@ const BetListCmp = () => {
     {
       name: 'Result',
       selector: 'result',
-      sortable: true
+      sortable: true,
+      maxWidth: 40
     },
     {
       name: 'Status',
@@ -383,7 +384,7 @@ const BetListCmp = () => {
                 pagination
                 columns={tableColumns}
                 paginationPerPage={10}
-                className='react-dataTable'
+                className='react-dataTable tbl-over'
                 sortIcon={<ChevronDown size={10} />}
                 paginationDefaultPage={currentPage + 1}
                 paginationComponent={CustomPagination}

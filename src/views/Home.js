@@ -176,7 +176,7 @@ const Home = () => {
       <div className="content-body">
         <div className="">
           <Nav tabs className="category-links m-0">
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '1'}
                 onClick={() => {
@@ -186,7 +186,7 @@ const Home = () => {
                 {getTextByLanguage("Football")}
               </NavLink>
             </NavItem>
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '2'}
                 onClick={() => {
@@ -196,7 +196,7 @@ const Home = () => {
                 {getTextByLanguage("Table Tennis")}
               </NavLink>
             </NavItem>
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '3'}
                 onClick={() => {
@@ -206,7 +206,7 @@ const Home = () => {
                 {getTextByLanguage("Basketball")}
               </NavLink>
             </NavItem>
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '4'}
                 onClick={() => {
@@ -216,7 +216,7 @@ const Home = () => {
                 {getTextByLanguage("Tennis")}
               </NavLink>
             </NavItem>
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '5'}
                 onClick={() => {
@@ -226,7 +226,7 @@ const Home = () => {
                 {getTextByLanguage("Ice Hockey")}
               </NavLink>
             </NavItem>
-            <NavItem className="live-bet-tabs">
+            <NavItem className="sport-tab">
               <NavLink
                 active={active === '6'}
                 onClick={() => {

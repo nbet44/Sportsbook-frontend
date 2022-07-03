@@ -224,7 +224,7 @@ const LiveChildren = () => {
             {isLoading ? <Spinner color='white' size='lg' /> : (
                 <React.Fragment>
                     <Nav tabs className="category-links m-0">
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '1'}
                                 onClick={() => {
@@ -234,7 +234,7 @@ const LiveChildren = () => {
                                 {getTextByLanguage("Football")}
                             </NavLink>
                         </NavItem>
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '2'}
                                 onClick={() => {
@@ -244,7 +244,7 @@ const LiveChildren = () => {
                                 {getTextByLanguage("Table Tennis")}
                             </NavLink>
                         </NavItem>
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '3'}
                                 onClick={() => {
@@ -254,7 +254,7 @@ const LiveChildren = () => {
                                 {getTextByLanguage("Basketball")}
                             </NavLink>
                         </NavItem>
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '4'}
                                 onClick={() => {
@@ -264,7 +264,7 @@ const LiveChildren = () => {
                                 {getTextByLanguage("Tennis")}
                             </NavLink>
                         </NavItem>
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '5'}
                                 onClick={() => {
@@ -274,7 +274,7 @@ const LiveChildren = () => {
                                 {getTextByLanguage("Ice Hockey")}
                             </NavLink>
                         </NavItem>
-                        <NavItem className="live-bet-tabs">
+                        <NavItem className="sport-tab">
                             <NavLink
                                 active={active === '6'}
                                 onClick={() => {
