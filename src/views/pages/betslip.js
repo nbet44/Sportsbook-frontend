@@ -67,7 +67,6 @@ const BetSlipCmp = () => {
 
     const handleInputAmount = (e, data) => {
         const temp = betData
-        console.log(oddType)
         if (active === "1") {
             temp[data.id].amount = e.target.value
             if (e.target.value > 0) {
@@ -269,7 +268,7 @@ const BetSlipCmp = () => {
                                             <div className="line8">{getTextByLanguage(slip.name)}@{slip.odds}</div>
                                             <div className="line0 mb-1" style={{ lineHeight: "3" }}>
                                                 <span className="mr-1" style={{ float: "left" }} >₪</span>
-                                                <Input disabled={isCheck} type="number" style={{ float: "right", maxWidth: "170px" }} value={slip.amount} onChange={e => { handleInputAmount(e, slip) }} />
+                                                <Input disabled={isCheck} type="number" style={{ float: "right", maxWidth: "170px" }} onChange={e => { handleInputAmount(e, slip) }} />
                                             </div>
                                             <div className="line0">{getTextByLanguage("Win")}: {slip.winAmount ? slip.winAmount : 0}</div>
                                             {slip.betId ? <div className="line9">{getTextByLanguage("BetId")}<span className="rspan3">{slip.betId}</span></div> : (
@@ -345,7 +344,7 @@ const BetSlipCmp = () => {
                 <ModalBody className="useredit-form">
                     {
                         Object.keys(betOdds).map((key, i) => (
-                            <Col sm="12" className="d-flex align-items-center">
+                            <Col sm="12" className="d-flex align-items-center" key={i}>
                                 <Label sm="2" key={i}>{key}</Label>
                                 {
                                     Object.keys(betOdds[key]).map((id, j) => (

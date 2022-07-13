@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import '@styles/base/pages/page-auth.scss'
@@ -7,13 +7,11 @@ import { handleLogin } from '@store/actions/auth'
 import { AbilityContext } from '@src/utility/context/Can'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-import { useHistory } from 'react-router-dom'
 import { getHomeRouteForLoggedInUser, isObjEmpty } from '@utils'
 
 const Login = () => {
   const ability = useContext(AbilityContext)
   const dispatch = useDispatch()
-  const history = useHistory()
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
 
@@ -32,7 +30,6 @@ const Login = () => {
           }
           const data = { ...res.data.userData, accessToken: res.data.accessToken ? res.data.accessToken : res.data.token, refreshToken: res.data.refreshToken ? res.data.refreshToken : res.data.token }
           dispatch(handleLogin(data))
-          // ability.update(res.data.userData.permission)
           window.location.href = (getHomeRouteForLoggedInUser(data.role))
           toast.success("success")
         })
@@ -52,6 +49,7 @@ const Login = () => {
                   <FormGroup>
                     <Input
                       onChange={e => setUserId(e.target.value)}
+                      value={userId}
                       className="login-input"
                       type='text'
                       id='login-username'
@@ -62,6 +60,7 @@ const Login = () => {
                   <FormGroup>
                     <Input
                       onChange={e => setPassword(e.target.value)}
+                      value={password}
                       className="login-input"
                       type='password'
                       id='login-password'
