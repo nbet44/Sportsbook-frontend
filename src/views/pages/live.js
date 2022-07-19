@@ -1,7 +1,7 @@
 import React from 'react'
 import HeaderCmp from '../Header'
 import BetSlipCmp from './betslip'
-import LiveChildren from './liveChildren'
+import LiveChildren from './LiveChildren'
 
 const LiveCmp = () => {
     return (

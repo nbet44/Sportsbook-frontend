@@ -44,7 +44,7 @@ const sportsReducer = (state = initialState, action) => {
     case 'ADD_BET_SLIP_DATA':
       return {
         ...state,
-        betSlipData: { ...state.betSlipData, ...action.data },
+        betSlipData: action.data,
         betId: null
       }
     case 'GET_SPORTS_DATA':
