@@ -6,6 +6,7 @@ import { flagsByRegionName, mainMarketResultBySportId } from '../../configs/main
 import { addBetSlipData } from '../../redux/actions/sports'
 import { useDispatch, useSelector } from 'react-redux'
 import $ from "jquery"
+import classnames from 'classnames'
 
 const handleFavor = async (data, favorId) => {
     const request = data
@@ -86,8 +87,8 @@ export const League = (props) => {
     const [League, setLeague] = useState({ RegionName: "", LeagueName: "", flagImg: "" })
 
     useEffect(() => {
-        const RegionName = data[0].RegionName
-        const LeagueName = data[0].LeagueName
+        const RegionName = data[0]?.RegionName
+        const LeagueName = data[0]?.LeagueName
         if (flagsByRegionName[RegionName]) {
             setLeague({ ...League, RegionName, LeagueName, flagImg: flagsByRegionName[RegionName] })
         } else {
@@ -126,8 +127,8 @@ export const League = (props) => {
                             <td>OU</td>
                         </tr>
                         {
-                            data.map((item, ind) => (
-                                <Match data={item} key={ind} />
+                            Object.keys(data).map((item, ind) => (
+                                <Match data={data[item]} key={ind} />
                             ))
                         }
                     </tbody>
@@ -137,7 +138,7 @@ export const League = (props) => {
     )
 }
 
-export const Match = (props) => {
+export const Match_ = (props) => {
     const { data } = props
     const [setting, setSetting] = useState({
         sHome: 0,
@@ -250,8 +251,8 @@ export const Match = (props) => {
                 </td>
                 <td className="match-event">
                     <span className='team-name'>{`${setting.sHome} - ${data.HomeTeam}`}</span>
-                    {setting.yHome ? <span className="yellow-card"><sup>{setting.yHome}</sup></span> : null}
-                    {setting.rHome ? <span className="red-card"><sup>{setting.rHome}</sup></span> : null}
+                    {setting.yHome ? <span className="yellow-card">{setting.yHome}</span> : null}
+                    {setting.rHome ? <span className="red-card">{setting.rHome}</span> : null}
                 </td>
 
                 <td className="odd" onClick={() => { handleBetSlip() }} >
@@ -294,8 +295,8 @@ export const Match = (props) => {
             <tr>
                 <td className="match-event">
                     <span className='team-name'>{`${setting.sAway} - ${data.AwayTeam}`}</span>
-                    {setting.yAway ? <span className="yellow-card"><sup>{setting.yAway}</sup></span> : null}
-                    {setting.rAway ? <span className="red-card"><sup>{setting.rAway}</sup></span> : null}
+                    {setting.yAway ? <span className="yellow-card">{setting.yAway}</span> : null}
+                    {setting.rAway ? <span className="red-card">{setting.rAway}</span> : null}
                 </td>
 
                 <td className="odd" onClick={() => { handleBetSlip() }} >
@@ -348,5 +349,185 @@ export const Match = (props) => {
                 <td className={`match-odds match-draft`} ></td>
             </tr>
         </>
+    )
+}
+
+export const Match = (props) => {
+    const { data } = props
+    const [setting, setSetting] = useState({
+        sHome: 0,
+        sAway: 0,
+        time: "--",
+        yHome: 0,
+        rHome: 0,
+        yAway: 0,
+        rAway: 0
+    })
+
+    const [full, setFull] = useState({
+        lx2: { 0: {}, 1: {}, 2: {} },
+        hdp: { 0: {}, 1: {}, 2: {} },
+        ou: { 0: {}, 1: {} }
+    })
+    const [first, setFirst] = useState({
+        lx2: { 0: {}, 1: {}, 2: {} },
+        hdp: { 0: {}, 1: {}, 2: {} },
+        ou: { 0: {}, 1: {} }
+    })
+    const handleBetSlip = () => { }
+    const handleFavor = () => { }
+    useEffect(() => {
+        const sHome = data.Scoreboard && data.Scoreboard.score ? data.Scoreboard.score.split(":")[0] : "0"
+        const sAway = data.Scoreboard && data.Scoreboard.score ? data.Scoreboard.score.split(":")[1] : "0"
+        const time = data.Scoreboard && data.Scoreboard.timer ? parseInt(data.Scoreboard.timer.seconds / 60) : "--"
+        const yHome = data.Scoreboard?.yellowCards && data.Scoreboard.yellowCards.player1["255"] > 0 ? data.Scoreboard.yellowCards.player1["255"] : 0
+        const rHome = data.Scoreboard?.redCards && data.Scoreboard.redCards.player1["255"] > 0 ? data.Scoreboard.redCards.player1["255"] : 0
+        const yAway = data.Scoreboard?.yellowCards && data.Scoreboard.yellowCards.player2["255"] > 0 ? data.Scoreboard.yellowCards.player2["255"] : 0
+        const rAway = data.Scoreboard?.redCards && data.Scoreboard.redCards.player2["255"] > 0 ? data.Scoreboard.redCards.player2["255"] : 0
+        setSetting({ sHome, sAway, time, yHome, rHome, yAway, rAway })
+
+        let Full = {
+            lx2: {},
+            hdp: {},
+            ou: {}
+        }
+        let First = {
+            lx2: {},
+            hdp: {},
+            ou: {}
+        }
+
+        const market = data.market
+        for (const i in market) {
+            if (market[i].MarketType === "3way") {
+                const results = market[i].results
+                if (market[i].Period === "RegularTime" && market[i].isMain) {
+                    Full = { ...Full, lx2: results }
+                } else if (market[i].Period === "FirstHalf") {
+                    First = { ...First, lx2: results }
+                }
+            }
+            if (market[i].MarketType === "Handicap") {
+                const results = market[i].results
+                if (market[i].Period === "RegularTime") {
+                    Full = { ...Full, hdp: results }
+                } else if (market[i].Period === "FirstHalf") {
+                    First = { ...First, hdp: results }
+                }
+            }
+            if (market[i].MarketType === "Over/Under") {
+                const results = market[i].results
+                if (market[i].Period === "RegularTime") {
+                    Full = { ...Full, ou: results }
+                } else if (market[i].Period === "FirstHalf") {
+                    First = { ...First, ou: results }
+                }
+            }
+        }
+        setFull(Full)
+        setFirst(First)
+    }, [data])
+
+    return (
+        <>
+            <tr>
+                <td rowSpan="3" className="">
+                    <div className="d-flex mb-1 justify-content-center" onClick={() => handleFavor()}><Star className="favor-icon" /></div>
+                    <div className="d-flex justify-content-center">{setting.time}"</div>
+                </td>
+                <td className="match-event">
+                    <span className='team-name'>{`${setting.sHome} - ${data.HomeTeam}`}</span>
+                    {setting.yHome ? <span className="yellow-card">{setting.yHome}</span> : null}
+                    {setting.rHome ? <span className="red-card">{setting.rHome}</span> : null}
+                </td>
+
+                <Result {...{ data: full?.lx2, team: "home", handleBetSlip }} />
+                <Handicap data={full?.hdp} team={'home'} />
+                <OverUp data={full?.ou} team={'home'} />
+
+                <Result data={first?.lx2} team={'home'} />
+                <Handicap data={first?.hdp} team={'home'} />
+                <OverUp data={first?.ou} team={'home'} />
+
+                <td className="more" rowSpan="3">{data.market && data.market.length < 45 ? data.market.length : '+45'}</td>
+            </tr>
+
+            <tr>
+                <td className="match-event">
+                    <span className='team-name'>{`${setting.sAway} - ${data.AwayTeam}`}</span>
+                    {setting.yAway ? <span className="yellow-card">{setting.yAway}</span> : null}
+                    {setting.rAway ? <span className="red-card">{setting.rAway}</span> : null}
+                </td>
+
+                <Result data={full?.lx2} team={'away'} />
+                <Handicap data={full?.hdp} team={'away'} />
+                <OverUp data={full?.ou} team={'away'} />
+
+                <Result data={first?.lx2} team={'away'} />
+                <Handicap data={first?.hdp} team={'away'} />
+                <OverUp data={first?.ou} team={'away'} />
+            </tr>
+
+            <tr>
+                <td className="match-draft">Draw</td>
+                <Result data={full?.lx2} team={'draw'} />
+                <Handicap data={full?.hdp} team={'draw'} />
+                <OverUp data={full?.ou} team={'draw'} />
+
+                <Result data={first?.lx2} team={'draw'} />
+                <Handicap data={first?.hdp} team={'draw'} />
+                <OverUp data={first?.ou} team={'draw'} />
+            </tr>
+        </>
+    )
+}
+
+const Result = (props) => {
+    const { data, team, handleBetSlip } = props
+    // console.log(data)
+    const [odd, setOdd] = useState({ odd: "", lock: false, change: 0 })
+    useEffect(() => {
+        // let val = ''
+        // if (team === 'home') {
+        //     val = data.results[0]
+        // } else if (team === 'away') {
+        //     val = data.results[2]
+        // } else if (team === 'draw') {
+        //     val = data.results[1]
+        // }
+        // const lock = val.visibility === 'Visible'
+        // let change = 0
+        // if (Number(odd.odd) > 0) {
+        //     change = Number(odd.odd) - Number(val.odds)
+        // }
+
+        // setOdd({ odd: val.odds, lock, change })
+    }, [data])
+    return (
+        <td className={classnames('odd', { up: odd.change > 0 }, { down: odd.change < 0 })}
+            onClick={() => { handleBetSlip() }}>
+            {odd.lock ? <Lock /> : odd.odd}
+        </td>
+    )
+}
+
+const Handicap = (props) => {
+    // const { data, team, handleBetSlip } = props
+    return (
+        <td className="odd" >
+            <span className="left">+1</span>
+            <span className="right">0.12</span>
+        </td>
+    )
+}
+
+const OverUp = (props) => {
+    // const { data, team, handleBetSlip } = props
+
+    return (
+        <td className="odd">
+            <span className="left">O 1.5</span>
+            <span className="right">4.56</span>
+        </td>
     )
 }

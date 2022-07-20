@@ -10,7 +10,7 @@ const HeaderCmp = ({ header }) => {
     console.log(header)
     return (
         <Card className="match-header">
-            <CardBody className="match-header-b">
+            <CardBody className="match-header-b pl-5 pr-5">
                 <Card className="h-leaguename">
                     <CardBody className="b-leaguename">
                         <h4 className='mb-0 mr-1'>{getTextByLanguage(header.leagueName)}</h4>
