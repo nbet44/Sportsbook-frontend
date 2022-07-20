@@ -124,7 +124,7 @@ const EventChildren = ({ setHeader }) => {
                     </CardHeader>
                     {
                         (() => {
-                            switch (sportsData.SportId) {
+                            switch (String(sportsData.SportId)) {
                                 case '4':
                                     return <EventFootball data={sportsData} />
                                 case '56':

@@ -141,7 +141,7 @@ const HeaderCmp = () => {
                     <ul className="p-0 m-0" style={{ listStyle: "none" }}>
                         <li><a onClick={() => history.push("/home")} >{getTextByLanguage("Home")}</a></li>
                         <li><a onClick={() => history.push("/live")}>{getTextByLanguage("Live")}</a></li>
-                        <li><a onClick={() => history.push("/casino")}>{getTextByLanguage("Casino")}</a></li>
+                        {/* <li><a onClick={() => history.push("/casino")}>{getTextByLanguage("Casino")}</a></li> */}
                         {
                             userData.role !== "user" ? (
                                 <li><a onClick={() => history.push("/admin/user-manage")}>{getTextByLanguage(userData.role)}</a></li>

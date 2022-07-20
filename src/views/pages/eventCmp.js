@@ -394,7 +394,7 @@ export const EventBasketball = (props) => {
     const [getTextByLanguage] = useTranslator()
     const [oddType, setOddType] = useState("odds")
 
-    const handleBetSlip = (data, event, market, team) => {
+    const handleBetSlip = (data, event, market, team, period) => {
         if (data[oddType] < 100) {
             if (Object.keys(betSlipData).length <= 5) {
                 const result = {
@@ -413,7 +413,7 @@ export const EventBasketball = (props) => {
                     marketId: market.id,
                     IsPreMatch: event.IsPreMatch,
                     our_event_id: event.our_event_id,
-                    period: market.Period,
+                    period,
                     marketType: market.name.value,
                     team
                 }
@@ -444,28 +444,55 @@ export const EventBasketball = (props) => {
                         <Card className="border-0 row flex-row">
                             {markets[i].results.map((item, index) => {
                                 const event = item
-                                let team = ""
-                                if (markets[i].name.value === "Winning Margin" ||
-                                    markets[i].name.value === "1st Half Totals" ||
-                                    markets[i].name.value === "2nd Half Totals" ||
-                                    markets[i].name.value === "Totals" ||
-                                    markets[i].name.value.startsWith("How many points will ")
-                                ) {
+                                let team = "", period = ""
+                                if (markets[i].name.value === "Totals") {
                                     team = markets[i].name.value
-                                }
-
-                                if (markets[i].name.value === "Will the 2nd half total be odd or even?") {
-                                    if (index === 0) team = "Odd"
-                                    if (index === 1) team = "Even"
-                                }
-
-                                if (markets[i].name.value === "2nd Half Money Line") {
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "1st Quarter Totals") {
+                                    team = markets[i].name.value
+                                    period = '1'
+                                } else if (markets[i].name.value === "Winning Margin") {
+                                    team = markets[i].name.value
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "Money Line") {
                                     if (index === 0) team = "1"
                                     if (index === 1) team = "2"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "1st Quarter Money Line") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+                                    period = '1'
+                                } else if (markets[i].name.value === "Handicap") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "1st quarter handicap") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+                                    period = '1'
+                                } else if (markets[i].name.value === "Will the 1st quarter total be odd or even?") {
+                                    if (index === 0) team = "Odd"
+                                    if (index === 1) team = "Even"
+                                    period = '1'
+                                } else if (markets[i].name.value === "Will the final score be odd or even?") {
+                                    if (index === 0) team = "Odd"
+                                    if (index === 1) team = "Even"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "Three Way (Regular time only)") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "x"
+                                    if (index === 2) team = "2"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "Three Way - (1st Quarter)") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "x"
+                                    if (index === 2) team = "2"
+                                    period = '1'
                                 }
 
+                                const actived = Object.keys(betSlipData)
                                 return (
-                                    <span className="event-box p-1 col m-1" key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
+                                    <span className={actived.indexOf(String(event.id)) === -1 ? "event-box p-1 col m-1" : "event-box p-1 col m-1 active"} key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team, period) }}>
                                         {getTextByLanguage(event.name.value)}
                                         <a>
                                             {event["odds"] < 100 ? event[oddType] : <Lock />}
@@ -485,6 +512,7 @@ export const EventBasketball = (props) => {
 
     return <AppCollapse data={eventData} type='border' />
 }
+
 export const EventTennis = (props) => {
     const { id } = useParams()
     const { data } = props
@@ -494,7 +522,7 @@ export const EventTennis = (props) => {
     const [getTextByLanguage] = useTranslator()
     const [oddType, setOddType] = useState("odds")
 
-    const handleBetSlip = (data, event, market, team) => {
+    const handleBetSlip = (data, event, market, team, period) => {
         if (data[oddType] < 100) {
             if (Object.keys(betSlipData).length <= 5) {
                 const result = {
@@ -513,7 +541,7 @@ export const EventTennis = (props) => {
                     marketId: market.id,
                     IsPreMatch: event.IsPreMatch,
                     our_event_id: event.our_event_id,
-                    period: market.Period,
+                    period,
                     marketType: market.name.value,
                     team
                 }
@@ -537,6 +565,7 @@ export const EventTennis = (props) => {
             const markets = data.Markets
             for (let i = 0; i < 45; i++) {
                 if (markets[i]) {
+                    // if (markets[i].name.value.startsWith('Correct Score (')) continue
                     const obj = {
                         title: getTextByLanguage(markets[i].name.value)
                     }
@@ -544,28 +573,54 @@ export const EventTennis = (props) => {
                         <Card className="border-0 row flex-row">
                             {markets[i].results.map((item, index) => {
                                 const event = item
-                                let team = ""
-                                if (markets[i].name.value === "Winning Margin" ||
-                                    markets[i].name.value === "1st Half Totals" ||
-                                    markets[i].name.value === "2nd Half Totals" ||
-                                    markets[i].name.value === "Totals" ||
-                                    markets[i].name.value.startsWith("How many points will ")
-                                ) {
-                                    team = markets[i].name.value
-                                }
+                                let team = "", period = ""
 
-                                if (markets[i].name.value === "Will the 2nd half total be odd or even?") {
-                                    if (index === 0) team = "Odd"
-                                    if (index === 1) team = "Even"
-                                }
-
-                                if (markets[i].name.value === "2nd Half Money Line") {
+                                if (markets[i].name.value === "Match Winner") {
                                     if (index === 0) team = "1"
                                     if (index === 1) team = "2"
-                                }
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "Set Betting") {
+                                    team = event.name.value
+                                    period = 'RegularTime'
+                                } else if ((markets[i].name.value.startsWith('Set') && markets[i].name.value.search('Winner') >= 6)) {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
 
+                                    const round = markets[i].name.value.slice(4, 6)
+                                    period = String(Number(round))
+                                } else if (markets[i].name.value.startsWith('Total Games')) {
+                                    team = event.name.value
+
+                                    const round = markets[i].name.value.slice(-2)
+                                    period = String(Number(round))
+                                } else if ((markets[i].name.value.startsWith('Game') && markets[i].name.value.search('Winner') >= 7 && markets[i].name.value.search('Set'))) {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+
+                                    const set = markets[i].name.value.slice(-2)
+                                    const game = markets[i].name.value.slice(4, 6)
+                                    period = `${String(Number(set))},${String(Number(game))}`
+                                } else if (markets[i].name.value.startsWith('Correct Score -')) {
+                                    team = event.name.value
+
+                                    const round = markets[i].name.value.slice(-2)
+                                    period = String(Number(round))
+                                } else if (markets[i].name.value.startsWith('Correct Score (Set')) {
+                                    if (index % 2 === 0) team = '1'
+                                    else team = '2'
+                                    const set = markets[i].name.value.split('Set')[1].slice(0, 2)
+                                    const game = markets[i].name.value.split('Game')[1].slice(0, 2)
+                                    period = `{${set},${game}}`
+                                } else if (markets[i].name.value.startsWith('Game') && markets[i].name.value.indexOf('to Deuce,') !== -1) {
+                                    team = event.name.value
+
+                                    const set = markets[i].name.value.split('Set')[1].slice(0, 2)
+                                    const game = markets[i].name.value.split('Game')[1].slice(0, 2)
+                                    period = `{${set},${game}}`
+                                }
+                                const actived = Object.keys(betSlipData)
                                 return (
-                                    <span className="event-box p-1 col m-1" key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
+                                    <span className={actived.indexOf(String(event.id)) === -1 ? "event-box p-1 col m-1" : "event-box p-1 col m-1 active"} key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team, period) }}>
                                         {getTextByLanguage(event.name.value)}
                                         <a>
                                             {event["odds"] < 100 ? event[oddType] : <Lock />}
@@ -585,6 +640,7 @@ export const EventTennis = (props) => {
 
     return <AppCollapse data={eventData} type='border' />
 }
+
 export const EventIceHokey = (props) => {
     const { id } = useParams()
     const { data } = props
@@ -685,6 +741,7 @@ export const EventIceHokey = (props) => {
 
     return <AppCollapse data={eventData} type='border' />
 }
+
 export const EventVolleyball = (props) => {
     const { id } = useParams()
     const { data } = props
@@ -694,7 +751,7 @@ export const EventVolleyball = (props) => {
     const [getTextByLanguage] = useTranslator()
     const [oddType, setOddType] = useState("odds")
 
-    const handleBetSlip = (data, event, market, team) => {
+    const handleBetSlip = (data, event, market, team, period) => {
         if (data[oddType] < 100) {
             if (Object.keys(betSlipData).length <= 5) {
                 const result = {
@@ -713,7 +770,7 @@ export const EventVolleyball = (props) => {
                     marketId: market.id,
                     IsPreMatch: event.IsPreMatch,
                     our_event_id: event.our_event_id,
-                    period: market.Period,
+                    period,
                     marketType: market.name.value,
                     team
                 }
@@ -744,28 +801,51 @@ export const EventVolleyball = (props) => {
                         <Card className="border-0 row flex-row">
                             {markets[i].results.map((item, index) => {
                                 const event = item
-                                let team = ""
-                                if (markets[i].name.value === "Winning Margin" ||
-                                    markets[i].name.value === "1st Half Totals" ||
-                                    markets[i].name.value === "2nd Half Totals" ||
-                                    markets[i].name.value === "Totals" ||
-                                    markets[i].name.value.startsWith("How many points will ")
-                                ) {
-                                    team = markets[i].name.value
-                                }
-
-                                if (markets[i].name.value === "Will the 2nd half total be odd or even?") {
-                                    if (index === 0) team = "Odd"
-                                    if (index === 1) team = "Even"
-                                }
-
-                                if (markets[i].name.value === "2nd Half Money Line") {
+                                let team = "", period = ""
+                                if (markets[i].name.value === "2Way - Who will win?") {
                                     if (index === 0) team = "1"
                                     if (index === 1) team = "2"
-                                }
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value.startsWith("How many points will be scored in the")) {
+                                    team = event.name.value
 
+                                    let round = markets[i].name.value.split('How many points will be scored in the ')[1]
+                                    if (round === 'match?') {
+                                        period = 'RegularTime'
+                                    } else {
+                                        round = round.slice(0, 2)
+                                        if (Number(round)) {
+                                            period = String(Number(round))
+                                        } else {
+                                            period = round.slice(0, 1)
+                                        }
+                                    }
+                                } else if (markets[i].name.value === "How many points will be scored in total?") {
+                                    team = event.name.value
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === "Total Points Handicap") {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value.startsWith("Which team will win the ")) {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "2"
+
+                                    let round = markets[i].name.value.split('Which team will win the ')[1]
+                                    if (round === 'match?') {
+                                        period = 'RegularTime'
+                                    } else {
+                                        round = round.slice(0, 2)
+                                        if (Number(round)) {
+                                            period = String(Number(round))
+                                        } else {
+                                            period = round.slice(0, 1)
+                                        }
+                                    }
+                                }
+                                const actived = Object.keys(betSlipData)
                                 return (
-                                    <span className="event-box p-1 col m-1" key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team) }}>
+                                    <span className={actived.indexOf(String(event.id)) === -1 ? "event-box p-1 col m-1" : "event-box p-1 col m-1 active"} key={index} id={event.id} onClick={(e) => { handleBetSlip(event, leagueData, markets[i], team, period) }}>
                                         {getTextByLanguage(event.name.value)}
                                         <a>
                                             {event["odds"] < 100 ? event[oddType] : <Lock />}
