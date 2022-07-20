@@ -446,13 +446,16 @@ export const EventBasketball = (props) => {
                                 const event = item
                                 let team = "", period = ""
                                 if (markets[i].name.value === "Totals") {
-                                    team = markets[i].name.value
+                                    team = event.name.value
                                     period = 'RegularTime'
-                                } else if (markets[i].name.value === "1st Quarter Totals") {
-                                    team = markets[i].name.value
-                                    period = '1'
+                                } else if (markets[i].name.value.indexOf("Quarter Totals") !== -1) {
+                                    team = event.name.value
+                                    period = markets[i].name.value.slice(0, 2)
+                                    if (!Number(period)) {
+                                        period = period.slice(0, 1)
+                                    }
                                 } else if (markets[i].name.value === "Winning Margin") {
-                                    team = markets[i].name.value
+                                    team = event.name.value
                                     period = 'RegularTime'
                                 } else if (markets[i].name.value === "Money Line") {
                                     if (index === 0) team = "1"
