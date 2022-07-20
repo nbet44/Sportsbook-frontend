@@ -44,7 +44,6 @@ const EventChildren = ({ setHeader }) => {
     }
 
     const handleRefresh = async () => {
-        setIsLoading(true)
         const request = {
             eventId: id
         }
@@ -62,7 +61,6 @@ const EventChildren = ({ setHeader }) => {
             const date = moment(item.Date).format('MM/DD HH:mm')
             setHeader({ homeTeam: item.HomeTeam, awayTeam: item.AwayTeam, date, time, homeTeamScore, awayTeamScore, leagueName: item.LeagueName, flagImg })
             setSportsData(response.data)
-            setIsLoading(false)
         } else {
             setIsLoading(true)
             toast.error(response.data)
@@ -107,7 +105,7 @@ const EventChildren = ({ setHeader }) => {
 
     return (
         <>
-            {/* <ReactInterval timeout={1000} enabled={true} callback={() => { handleTimer() }} /> */}
+            <ReactInterval timeout={1000} enabled={true} callback={() => { handleTimer() }} />
             {isLoading ? (
                 <Spinner></Spinner>
             ) : (

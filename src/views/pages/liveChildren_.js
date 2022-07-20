@@ -109,7 +109,7 @@ const LiveChildren = () => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {

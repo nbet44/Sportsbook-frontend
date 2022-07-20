@@ -100,7 +100,7 @@ const BetSlipCmp = () => {
     }
 
     const handleRemoveSlip = (data) => {
-        const checkValue = dispatch(removeBetSlipData(activeEvent, data.id))
+        const checkValue = dispatch(removeBetSlipData(data.id))
         if (checkValue) {
             $(`#${data.id}`).removeClass("active")
         }

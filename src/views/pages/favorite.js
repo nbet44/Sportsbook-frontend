@@ -71,7 +71,7 @@ const FavoriteCmp = () => {
                 leagueId: event.LeagueId,
                 marketId: data.id
             }
-            const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+            const checkValue = dispatch(addBetSlipData(result, slipType))
             if (checkValue) {
                 $(`#${data.results[index].id}`).addClass("active")
             } else {

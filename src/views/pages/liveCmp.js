@@ -11,7 +11,7 @@ export const LiveFootball = (props) => {
     const { leagueData, eventData, oddType, handleRefresh, isRefreshing, timerNumber } = props
     const [getTextByLanguage] = useTranslator()
     const dispatch = useDispatch()
-    const { betSlipData, slipType } = useSelector(state => { return state.sports })
+    const { slipType } = useSelector(state => { return state.sports })
 
     const handleBetSlip = (data, event, index) => {
         if (data.results && data.results[index] && event) {
@@ -38,7 +38,7 @@ export const LiveFootball = (props) => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -164,16 +164,16 @@ export const LiveFootball = (props) => {
                                                                     {/* <div className="d-flex justify-content-center">{moment(item.Date).format('MM/DD/ hh:mm')}</div> */}
                                                                     <div className="d-flex justify-content-center">{currentTime}"</div>
                                                                 </td>
-                                                                <td className="match-event">
+                                                                <td className="match-event match-team">
                                                                     <span className='team-name'>{homeTeamScore} - {getTextByLanguage(item.HomeTeam)}</span>
                                                                     {
                                                                         item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                            <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                            <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                         ) : null
                                                                     }
                                                                     {
                                                                         item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                            <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                            <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                         ) : null
                                                                     }
                                                                 </td>
@@ -198,16 +198,16 @@ export const LiveFootball = (props) => {
                                                                 <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="match-event">
+                                                                <td className="match-event match-team">
                                                                     <span className='team-name'>{awayTeamScore} -{getTextByLanguage(item.AwayTeam)}</span>
                                                                     {
                                                                         item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                            <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                            <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                         ) : null
                                                                     }
                                                                     {
                                                                         item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                            <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                            <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                         ) : null
                                                                     }
                                                                 </td>
@@ -231,7 +231,7 @@ export const LiveFootball = (props) => {
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                                <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                                 <td className={`match-odds match-draft ${mainMarketResult[0] && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                                 <td className={`match-odds match-draft ${mainMarketResult[1] && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[1] ? mainMarketResult[1].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 1, 'Draw') }} >
                                                                     {/* <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span> */}
@@ -298,7 +298,7 @@ export const LiveTableTennis = (props) => {
                     marketType: data.name.value,
                     team
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -420,16 +420,16 @@ export const LiveTableTennis = (props) => {
                                                                 <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                 <div className="d-flex justify-content-center">Live</div>
                                                             </td>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -452,16 +452,16 @@ export const LiveTableTennis = (props) => {
                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -485,7 +485,7 @@ export const LiveTableTennis = (props) => {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                            <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2, 'Draw') }} >
                                                                 {/* <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -552,7 +552,7 @@ export const LiveBasketBall = (props) => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -674,16 +674,16 @@ export const LiveBasketBall = (props) => {
                                                                 <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                 <div className="d-flex justify-content-center">Live</div>
                                                             </td>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -706,16 +706,16 @@ export const LiveBasketBall = (props) => {
                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -739,7 +739,7 @@ export const LiveBasketBall = (props) => {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                            <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2, 'Draw') }} >
                                                                 <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -806,7 +806,7 @@ export const LiveTennis = (props) => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -929,16 +929,16 @@ export const LiveTennis = (props) => {
                                                                 <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                 <div className="d-flex justify-content-center">Live</div>
                                                             </td>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -961,16 +961,16 @@ export const LiveTennis = (props) => {
                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -994,7 +994,7 @@ export const LiveTennis = (props) => {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                            <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2, 'Draw') }} >
                                                                 {/* <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -1061,7 +1061,7 @@ export const LiveHockey = (props) => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -1183,16 +1183,16 @@ export const LiveHockey = (props) => {
                                                                 <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                 <div className="d-flex justify-content-center">Live</div>
                                                             </td>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -1215,16 +1215,16 @@ export const LiveHockey = (props) => {
                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-event">
-                                                                <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
+                                                            <td className="match-event match-team">
+                                                                <span className='team-name match-team'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -1248,7 +1248,7 @@ export const LiveHockey = (props) => {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                            <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 1, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[1] ? mainMarketResult[0].results[1].oddValue : ""}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""}`} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2, 'Draw') }} >
                                                                 {/* <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>
@@ -1315,7 +1315,7 @@ export const LiveVolleyball = (props) => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -1437,16 +1437,16 @@ export const LiveVolleyball = (props) => {
                                                                 <div className="d-flex mb-1 justify-content-center" id={`favor_${favorId}`} onClick={e => { handleFavor(item, favorId) }}><Star className={`favor-icon ${item.favor ? "active" : ""} `} /></div>
                                                                 <div className="d-flex justify-content-center">Live</div>
                                                             </td>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.HomeTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player1["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player1["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player1["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player1["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player1["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -1469,16 +1469,16 @@ export const LiveVolleyball = (props) => {
                                                             <td className="match-odds more-odds" rowSpan="3"><a href={`/event/${item.Id}`}>+{markets.length > 45 ? 45 : markets.length}</a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-event">
+                                                            <td className="match-event match-team">
                                                                 <span className='team-name'>{getTextByLanguage(item.AwayTeam)}</span>
                                                                 {
                                                                     item.Scoreboard.yellowCards && item.Scoreboard.yellowCards.player2["255"] > 0 ? (
-                                                                        <span className="yellow-card"><sup>{item.Scoreboard.yellowCards.player2["255"]}</sup></span>
+                                                                        <span className="yellow-card">{item.Scoreboard.yellowCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                                 {
                                                                     item.Scoreboard.redCards && item.Scoreboard.redCards.player2["255"] > 0 ? (
-                                                                        <span className="red-card"><sup>{item.Scoreboard.redCards.player2["255"]}</sup></span>
+                                                                        <span className="red-card">{item.Scoreboard.redCards.player2["255"]}</span>
                                                                     ) : null
                                                                 }
                                                             </td>
@@ -1502,7 +1502,7 @@ export const LiveVolleyball = (props) => {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td className="match-draft">{getTextByLanguage("Draw")}</td>
+                                                            <td className="match-draft match-team">{getTextByLanguage("Draw")}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].updated : ""}`} id={`${mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[0], item, 2, 'Draw') }} >{mainMarketResult[0].results && mainMarketResult[0].results[2] ? mainMarketResult[0].results[2].oddValue : ""}</td>
                                                             <td className={`match-odds match-draft ${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].updated : ""} `} id={`${mainMarketResult[1].results && mainMarketResult[1].results[2] ? mainMarketResult[1].results[2].id : ""}`} onClick={e => { handleBetSlip(mainMarketResult[1], item, 2, 'Draw') }} >
                                                                 {/* <span className="odd-td-left">{(mainMarketResult[1] && mainMarketResult[1].attr ? mainMarketResult[1].attr * -1 : "").toString()}</span>

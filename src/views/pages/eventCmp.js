@@ -41,7 +41,7 @@ export const EventFootball = (props) => {
                     marketType: market.MarketType,
                     team
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -194,7 +194,7 @@ export const EventTableTennis = (props) => {
                     team
                 }
                 console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -418,7 +418,7 @@ export const EventBasketball = (props) => {
                     team
                 }
                 console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -546,7 +546,7 @@ export const EventTennis = (props) => {
                     team
                 }
                 console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -674,7 +674,7 @@ export const EventIceHokey = (props) => {
                     team
                 }
                 console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -775,7 +775,7 @@ export const EventVolleyball = (props) => {
                     team
                 }
                 console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.id}`).addClass("active")
                 } else {
@@ -842,6 +842,44 @@ export const EventVolleyball = (props) => {
                                             period = round.slice(0, 1)
                                         }
                                     }
+                                } else if (markets[i].name.value.startsWith("Will the number of points in the ") && markets[i].name.value.indexOf('set be odd or even?')) {
+                                    if (index === 0) team = "Odd"
+                                    if (index === 1) team = "Even"
+
+                                    let round = markets[i].name.value.split('Will the number of points in the ')[1]
+                                    if (round.startsWith("match")) {
+                                        period = 'RegularTime'
+                                    } else {
+                                        round = round.slice(0, 2)
+                                        if (Number(round)) {
+                                            period = String(Number(round))
+                                        } else {
+                                            period = round.slice(0, 1)
+                                        }
+                                    }
+                                } else if (markets[i].name.value.startsWith('Correct Score')) {
+                                    team = event.name.value
+
+                                    const round = markets[i].name.value.slice(-3)
+                                    period = String(Number(round.slice(0, 2)))
+                                } else if (markets[i].name.value === 'Set Bet (best-of-five)') {
+                                    team = event.name.value
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value === 'Result after first 2 sets') {
+                                    if (index === 0) team = "1"
+                                    if (index === 1) team = "Draw"
+                                    if (index === 2) team = "2"
+                                    period = '2'
+                                } else if (markets[i].name.value === 'Who will win the match (set handicap)?') {
+                                    if (index % 2 === 0) team = "1"
+                                    else team = "2"
+                                    period = 'RegularTime'
+                                } else if (markets[i].name.value.startsWith('Will the match be decided in the ')) {
+                                    if (index === 0) team = "Yes"
+                                    if (index === 1) team = "No"
+
+                                    const round = markets[i].name.value.split('Will the match be decided in the ')[1]
+                                    period = String(Number(round.slice(0, 1)))
                                 }
                                 const actived = Object.keys(betSlipData)
                                 return (

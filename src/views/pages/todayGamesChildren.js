@@ -1,18 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import {
-    TabContent, TabPane, Nav, NavItem, NavLink,
-    Card, CardHeader, CardBody
-} from 'reactstrap'
+import { Card, CardHeader, CardBody } from 'reactstrap'
 import Axios from '../../utility/hooks/Axios'
-import HeaderCmp from '../Header'
 import { toast } from 'react-toastify'
 import Spinner from "@components/spinner/Fallback-spinner"
 import { Star, Lock } from 'react-feather'
 import moment from 'moment'
 import { flagsByRegionName, mainMarketResultBySportId, sportsNameById } from '../../configs/mainConfig'
-import BetSlipCmp from './betslip'
-import $, { isEmptyObject } from "jquery"
+import $ from "jquery"
 import { addBetSlipData, changeOdds } from '../../redux/actions/sports'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactInterval from 'react-interval'
@@ -57,8 +52,7 @@ const TodayGamesChildrenCmp = () => {
                     marketType: data.MarketType,
                     team: index === 0 ? "1" : (index === 1 ? "Draw" : "2")
                 }
-                console.log(result)
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -142,7 +136,6 @@ const TodayGamesChildrenCmp = () => {
     }
 
     const handleRefresh = async () => {
-        console.log("handleRefresh")
         setRefreshing(true)
         const request = {
             SportId: id
@@ -152,7 +145,6 @@ const TodayGamesChildrenCmp = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200) {
             setLeagueData(response.data.leagueData)
             setEventData(response.data.eventData)
@@ -189,7 +181,6 @@ const TodayGamesChildrenCmp = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200) {
             setLeagueData(response.data.leagueData)
             setEventData(response.data.eventData)

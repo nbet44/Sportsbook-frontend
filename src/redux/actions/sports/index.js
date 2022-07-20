@@ -69,15 +69,14 @@ export const removeAllBetSlipData = (oldData) => {
     }
 }
 
-export const removeBetSlipData = (oldData, id) => {
-    if (!oldData[id]) {
-        return dispatch => {
+export const removeBetSlipData = (id) => {
+    return (dispatch, getState) => {
+        const oldData = getState().sports.betSlipData
+        if (!oldData[id]) {
             return false
         }
-    }
-    delete oldData[id]
-    const newData = oldData
-    return dispatch => {
+        delete oldData[id]
+        const newData = oldData
         dispatch({
             type: "REMOVE_BET_SLIP_DATA",
             data: { ...newData }
@@ -95,23 +94,24 @@ export const changeBetSlipType = (data) => {
     }
 }
 
-export const addBetSlipData = (oldData, newData, type) => {
-    if (type === "mix") {
-        if (Object.keys(oldData).length > 1) {
-            for (const i in oldData) {
-                if (oldData[i].eventId === newData.eventId && oldData[i].id !== newData.id) {
-                    toast.error("You can't make mix with same events")
-                    return dispatch => { return false }
+export const addBetSlipData = (newData, type) => {
+    return (dispatch, getState) => {
+        const oldData = getState().sports.betSlipData
+        if (type === "mix") {
+            if (Object.keys(oldData).length > 1) {
+                for (const i in oldData) {
+                    if (oldData[i].eventId === newData.eventId && oldData[i].id !== newData.id) {
+                        toast.error("You can't make mix with same events")
+                        return false
+                    }
                 }
+            } else {
+                toast.error("You can't make mix with one events")
+                return false
             }
-        } else {
-            toast.error("You can't make mix with one events")
-            return dispatch => { return false }
         }
-    }
-    if (oldData[newData["id"]]) {
-        delete oldData[newData["id"]]
-        return dispatch => {
+        if (oldData[newData["id"]]) {
+            delete oldData[newData["id"]]
             dispatch({
                 type: "ADD_BET_SLIP_DATA",
                 data: { ...oldData }
@@ -121,10 +121,8 @@ export const addBetSlipData = (oldData, newData, type) => {
             //     changeBetSlipType("single")
             // }
             return false
-        }
-    } else {
-        oldData[newData["id"]] = newData
-        return dispatch => {
+        } else {
+            oldData[newData["id"]] = newData
             dispatch({
                 type: "ADD_BET_SLIP_DATA",
                 data: { ...oldData }

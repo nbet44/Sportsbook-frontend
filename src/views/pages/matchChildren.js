@@ -1,20 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import {
-    TabContent, TabPane, Nav, NavItem, NavLink,
-    Card, CardHeader, CardBody, CardTitle, CardText, CardLink
-} from 'reactstrap'
-import AppCollapse from '@components/app-collapse'
+import { Card, CardHeader, CardBody } from 'reactstrap'
 import Axios from '../../utility/hooks/Axios'
-import HeaderCmp from '../Header'
 import Spinner from "@components/spinner/Fallback-spinner"
 import { flagsByRegionName, mainConfig } from '../../configs/mainConfig'
-import socketIOClient from "socket.io-client"
-import moment from 'moment'
-import { Lock, Star } from 'react-feather'
-import BetSlipCmp from './betslip'
 import $, { isEmptyObject } from "jquery"
 import { addBetSlipData, changeOdds } from '../../redux/actions/sports'
 import ReactInterval from 'react-interval'
@@ -60,7 +51,7 @@ const MatchChildren = () => {
                     IsPreMatch: event.IsPreMatch,
                     isOddChanged: false
                 }
-                const checkValue = dispatch(addBetSlipData(betSlipData, result, slipType))
+                const checkValue = dispatch(addBetSlipData(result, slipType))
                 if (checkValue) {
                     $(`#${data.results[index].id}`).addClass("active")
                 } else {
@@ -146,8 +137,6 @@ const MatchChildren = () => {
     }
 
     const handleRefresh = async () => {
-        console.log("handleRefresh")
-        // console.log(betSlipData)
         setRefreshing(true)
         const request = {
             LeagueId: id
@@ -157,7 +146,6 @@ const MatchChildren = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200 && !isEmptyObject(response.data)) {
             if (!isEmptyObject(response.data)) {
                 const data = response.data
@@ -210,7 +198,6 @@ const MatchChildren = () => {
             method: "POST",
             params: request
         })
-        console.log(response)
         if (response.status === 200) {
             if (!isEmptyObject(response.data)) {
                 const data = response.data
