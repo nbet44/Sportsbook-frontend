@@ -596,6 +596,9 @@ export const EventTennis = (props) => {
 
                                     const round = markets[i].name.value.slice(-2)
                                     period = String(Number(round))
+                                    if (period === "NaN") {
+                                        period = 'RegularTime'
+                                    }
                                 } else if ((markets[i].name.value.startsWith('Game') && markets[i].name.value.search('Winner') >= 7 && markets[i].name.value.search('Set'))) {
                                     if (index === 0) team = "1"
                                     if (index === 1) team = "2"
